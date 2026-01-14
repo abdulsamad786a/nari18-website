@@ -12,13 +12,13 @@ if(isset($_GET['action']) && $_GET['action']=="add"){
 		if(mysqli_num_rows($query_p)!=0){
 			$row_p=mysqli_fetch_array($query_p);
 			$_SESSION['cart'][$row_p['id']]=array("quantity" => 1, "price" => $row_p['productPrice']);
-		
 		}else{
 			$message="Product ID is invalid";
 		}
 	}
-		echo "<script>alert('Product has been added to the cart')</script>";
-		echo "<script type='text/javascript'> document.location ='my-cart.php'; </script>";
+	// Set flag to show modal
+	$_SESSION['show_cart_modal'] = true;
+	// Don't redirect, let modal show on current page
 }
 
 
@@ -39,9 +39,14 @@ if(isset($_GET['action']) && $_GET['action']=="add"){
         <!-- Main Style CSS -->
         <link rel="stylesheet" href="assets/css/style-min.css">
         <link rel="stylesheet" href="assets/css/responsive.css">
+        <!-- Blue Color Removal - Override all blue colors with theme color -->
+        <link rel="stylesheet" href="assets/css/blue-color-removal.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </head>
 
     <body class="template-index index-demo1">
@@ -50,16 +55,19 @@ if(isset($_GET['action']) && $_GET['action']=="add"){
           
 
             <!--Top Header-->
-            <div class="top-header">
+            <div class="top-header" style="background: #800020; color: white; padding: 8px 0;">
                 <div class="container">
                     <div class="row align-items-center">
-                        <div class="col-6 col-sm-6 col-md-3 col-lg-4 text-left">
-                            <i class="icon anm anm-phone-l me-2"></i><a href="tel:+91-">+91-8826446755</a>
+                        <div class="col-6 col-sm-6 col-md-3 col-lg-4 text-left d-none d-md-block">
+                            <span class="material-icons-outlined" style="font-size: 14px; vertical-align: middle;">phone</span>
+                            <a href="tel:+91-8826446755" style="color: white; text-decoration: none; margin-left: 4px;">+91-8826446755</a>
                         </div>
-                        <div class="col-12 col-sm-12 col-md-6 col-lg-4 text-center d-none d-md-block">
-                            Get the Best Deal In All Over India <a href="all-category.php" class="text-link ms-1">Shop now</a>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-4 text-center">
+                            <span style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;">Get the Best Deal in All Over India — <a href="all-category.php" style="color: white; text-decoration: underline; text-underline-offset: 4px; opacity: 0.8;">Shop Now</a></span>
                         </div>
-    
+                        <div class="col-6 col-sm-6 col-md-3 col-lg-4 text-right d-none d-md-block">
+                            <span style="font-size: 11px;">Complementary Shipping on Orders Above ₹5000</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -67,7 +75,7 @@ if(isset($_GET['action']) && $_GET['action']=="add"){
 
 
             <!--Header-->
-            <header class="header d-flex align-items-center header-1 header-fixed">
+            <header class="header d-flex align-items-center header-1 header-fixed modern-navbar" id="mainHeader">
                 <?php 
                     if(isset($_Get['action'])){
                         if(!empty($_SESSION['cart'])){
@@ -284,9 +292,180 @@ $cartCount = getCartCount();
             </header>
             <!--End Header-->
             
+            <!-- Modern Navbar Styles with Effects -->
+            <style>
+                /* Modern Navbar Styling */
+                .modern-navbar {
+                    position: sticky !important;
+                    top: 0;
+                    z-index: 50;
+                    transition: all 0.3s ease;
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                    background: rgba(249, 247, 242, 0.9) !important;
+                    backdrop-filter: blur(12px);
+                    -webkit-backdrop-filter: blur(12px);
+                }
+                
+                .modern-navbar .container .row {
+                    align-items: center;
+                }
+                
+                .modern-navbar.scrolled {
+                    height: 70px !important;
+                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                }
+                
+                .modern-navbar.scrolled .container .row {
+                    align-items: center;
+                }
+                
+                .modern-navbar .logo {
+                    transition: all 0.3s ease;
+                    flex-shrink: 0;
+                }
+                
+                .modern-navbar .logo img {
+                    transition: all 0.3s ease;
+                    width: auto;
+                    height: auto;
+                    max-width: 149px;
+                    max-height: 39px;
+                    object-fit: contain;
+                }
+                
+                .modern-navbar.scrolled .logo img {
+                    max-width: 120px;
+                    max-height: 32px;
+                    width: auto;
+                    height: auto;
+                    object-fit: contain;
+                }
+                
+                .modern-navbar.scrolled .logo {
+                    flex-shrink: 0;
+                    min-width: auto;
+                }
+                
+                /* Nav Item Hover Effect - Applied to all navbar text tabs */
+                #siteNav > li > a,
+                #siteNav li a,
+                .navigation a,
+                nav a {
+                    position: relative;
+                    text-transform: uppercase;
+                    letter-spacing: 0.1em;
+                    font-size: 13px;
+                    font-weight: 500;
+                    color: #2c2c2c !important;
+                    transition: color 0.3s ease;
+                }
+                
+                #siteNav > li > a::after,
+                #siteNav li a::after,
+                .navigation a::after,
+                nav a::after {
+                    content: '';
+                    position: absolute;
+                    width: 0;
+                    height: 1px;
+                    bottom: -4px;
+                    left: 0;
+                    background-color: #800020;
+                    transition: width 0.3s ease;
+                }
+                
+                /* AGGRESSIVE OVERRIDE - Force theme color on all navbar links */
+                #siteNav > li > a:hover,
+                #siteNav > li:hover > a,
+                #siteNav li a:hover,
+                #siteNav li:hover > a,
+                #siteNav > li.lvl1 > a:hover,
+                #siteNav > li.lvl1:hover > a,
+                #siteNav > li.parent > a:hover,
+                #siteNav > li.parent:hover > a,
+                .navigation a:hover,
+                nav a:hover,
+                #AccessibleNav #siteNav > li > a:hover,
+                #AccessibleNav #siteNav > li:hover > a,
+                .navigation #siteNav > li > a:hover,
+                .navigation #siteNav > li:hover > a,
+                header #siteNav > li > a:hover,
+                header #siteNav > li:hover > a,
+                body #siteNav > li > a:hover,
+                body #siteNav > li:hover > a {
+                    color: #800020 !important;
+                }
+                
+                #siteNav > li > a:hover::after,
+                #siteNav > li:hover > a::after,
+                #siteNav li a:hover::after,
+                #siteNav li:hover > a::after,
+                .navigation a:hover::after,
+                nav a:hover::after {
+                    width: 100%;
+                }
+                
+                /* Ensure dropdown parent links also have the effect */
+                #siteNav > li.dropdown > a::after,
+                #siteNav > li.parent > a::after {
+                    content: '';
+                    position: absolute;
+                    width: 0;
+                    height: 1px;
+                    bottom: -4px;
+                    left: 0;
+                    background-color: #800020;
+                    transition: width 0.3s ease;
+                }
+                
+                #siteNav > li.dropdown:hover > a::after,
+                #siteNav > li.parent:hover > a::after {
+                    width: 100%;
+                }
+                
+                /* Icon Styling */
+                .modern-navbar .hdr-icon {
+                    color: #2c2c2c;
+                    transition: color 0.3s ease;
+                }
+                
+                .modern-navbar .hdr-icon:hover {
+                    color: #800020;
+                }
+                
+                /* Cart and Wishlist Badges */
+                .modern-navbar .cart-count,
+                .modern-navbar .wishlist-count {
+                    background: #800020;
+                    color: white;
+                    font-size: 9px;
+                    font-weight: bold;
+                    min-width: 16px;
+                    height: 16px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: absolute;
+                    top: -8px;
+                    right: -8px;
+                    padding: 0 4px;
+                }
+                
+                .modern-navbar .wishlist-count {
+                    background: #D4AF37;
+                }
+                
+                /* Responsive adjustments */
+                @media (max-width: 991px) {
+                    .modern-navbar {
+                        height: auto !important;
+                    }
+                }
+                
             <!-- Enhanced Dropdown Menu Styles -->
             <style>
-                /* Classic, Elegant Dropdown Menu Styling - Grid/Horizontal Layout */
+                /* Classic, Elegant Dropdown Menu Styling - Vertical List Layout */
                 @media (min-width: 990px) {
                     #siteNav>li .dropdown,
                     #siteNav>li .dropdown ul {
@@ -294,16 +473,20 @@ $cartCount = getCartCount();
                         border: 1px solid #e8e8e8;
                         border-radius: 8px;
                         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
-                        padding: 16px;
+                        padding: 12px 0;
                         margin-top: 8px;
-                        min-width: 600px;
-                        max-width: 800px;
+                        min-width: 220px;
+                        max-width: 280px;
                         width: auto;
-                        display: grid;
-                        grid-template-columns: repeat(2, 1fr);
-                        gap: 8px;
+                        display: block;
                         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                         backdrop-filter: blur(10px);
+                        position: absolute;
+                        left: 0;
+                        top: 100%;
+                        opacity: 0;
+                        visibility: hidden;
+                        transform: translateY(-10px);
                     }
 
                     #siteNav>li:hover>.dropdown {
@@ -314,9 +497,7 @@ $cartCount = getCartCount();
                     }
 
                     #siteNav>li ul.dropdown {
-                        display: grid;
-                        grid-template-columns: repeat(2, 1fr);
-                        gap: 8px;
+                        display: block;
                         list-style: none;
                         margin: 0;
                         padding: 0;
@@ -325,9 +506,14 @@ $cartCount = getCartCount();
                     #siteNav>li ul.dropdown li {
                         border-top: none;
                         margin: 0;
-                        border-radius: 6px;
+                        border-radius: 0;
                         transition: all 0.2s ease;
                         display: block;
+                        border-bottom: 1px solid #f0f0f0;
+                    }
+                    
+                    #siteNav>li ul.dropdown li:last-child {
+                        border-bottom: none;
                     }
 
                     #siteNav>li ul.dropdown li:first-child {
@@ -339,12 +525,12 @@ $cartCount = getCartCount();
                     }
 
                     #siteNav>li ul.dropdown li a {
-                        color: #2c2c2c;
+                        color: #2c2c2c !important;
                         background: transparent;
                         font-weight: 400;
                         font-size: 14px;
-                        padding: 12px 16px;
-                        border-radius: 6px;
+                        padding: 10px 20px;
+                        border-radius: 0;
                         transition: all 0.2s ease;
                         display: block;
                         width: 100%;
@@ -354,29 +540,165 @@ $cartCount = getCartCount();
                     }
 
                     #siteNav>li ul.dropdown li a:hover,
-                    #siteNav>li ul.dropdown li:hover>a {
-                        color: #8b7355;
-                        background: #f8f6f4;
-                        padding-left: 20px;
+                    #siteNav>li ul.dropdown li:hover>a,
+                    #siteNav>li .dropdown li a:hover,
+                    #siteNav>li .dropdown li:hover>a,
+                    #siteNav>li .dropdown .site-nav:hover,
+                    #siteNav>li .dropdown li .site-nav:hover,
+                    #siteNav>li .dropdown a.site-nav:hover,
+                    .dropdown li a:hover,
+                    .dropdown li:hover>a,
+                    .dropdown .site-nav:hover,
+                    .dropdown a.site-nav:hover {
+                        color: #800020 !important;
+                        background: #f8f6f4 !important;
+                        padding-left: 24px;
                         font-weight: 500;
                     }
-
+                    
+                    /* GLOBAL BLUE COLOR REMOVAL - Replace all blue with theme color #800020 */
+                    /* Override all blue colors from style-min.css (#097596) */
+                    a:hover:not(.btn-elegant):not(.btn-get-directions),
+                    a:active:not(.btn-elegant):not(.btn-get-directions),
+                    a:focus:not(.btn-elegant):not(.btn-get-directions),
+                    a:visited:hover:not(.btn-elegant):not(.btn-get-directions),
+                    a:link:hover:not(.btn-elegant):not(.btn-get-directions),
+                    .site-nav:hover,
+                    .navigation a:hover,
+                    nav a:hover,
+                    #siteNav a:hover,
+                    #siteNav li a:hover,
+                    #siteNav > li > a:hover,
+                    #siteNav > li:hover > a,
+                    .btn:hover:not(.btn-elegant):not(.btn-get-directions),
+                    button:hover:not(.btn-elegant):not(.btn-get-directions),
+                    .link:hover,
+                    [class*="blue"]:not([class*="swatch"]):not([class*="color"]),
+                    [style*="#097596"],
+                    [style*="#007bff"],
+                    [style*="#0d6efd"] {
+                        color: #800020 !important;
+                        border-color: #800020 !important;
+                        background-color: transparent !important;
+                    }
+                    
+                    /* Footer hover rules - Must come after global rules with higher specificity */
+                    html body .footer a:hover,
+                    html body .footer .footer-links a:hover,
+                    html body .footer .footer-links li a:hover,
+                    html body .footer .footer-contact-item a:hover,
+                    html body .footer .footer-contact-item:hover a,
+                    html body .footer .footer-bottom a:hover,
+                    html body .footer .footer-copyright a:hover,
+                    html body .footer .footer-social a:hover {
+                        color: #C5A059 !important;
+                    }
+                    
+                    /* Override blue backgrounds */
+                    [style*="background.*#097596"],
+                    [style*="background.*#007bff"],
+                    [style*="background.*#0d6efd"],
+                    .btn-primary,
+                    .btn-primary:hover,
+                    .btn-primary:focus,
+                    .btn-primary:active,
+                    [class*="btn"][class*="blue"]:not([class*="swatch"]) {
+                        background-color: #800020 !important;
+                        border-color: #800020 !important;
+                        color: #ffffff !important;
+                    }
+                    
+                    /* Override any blue colors from main CSS - More specific selectors */
+                    #siteNav>li .dropdown a:hover,
+                    #siteNav>li .dropdown a:focus,
+                    #siteNav>li .dropdown a:active,
+                    #siteNav>li .dropdown li a.site-nav:hover,
+                    #siteNav>li .dropdown li:hover a.site-nav,
+                    #siteNav>li ul.dropdown li a.site-nav:hover,
+                    #siteNav>li ul.dropdown li:hover a.site-nav {
+                        color: #800020 !important;
+                    }
+                    
+                    /* Force override for all dropdown link states */
+                    #siteNav>li .dropdown a,
+                    #siteNav>li .dropdown .site-nav {
+                        color: #2c2c2c !important;
+                    }
+                    
+                    #siteNav>li .dropdown a:hover,
+                    #siteNav>li .dropdown a:focus,
+                    #siteNav>li .dropdown .site-nav:hover,
+                    #siteNav>li .dropdown .site-nav:focus {
+                        color: #800020 !important;
+                    }
+                }
+            </style>
+            
+            <!-- AGGRESSIVE OVERRIDE - Must be after all other styles -->
+            <style>
+                /* Override blue color from main CSS - Maximum specificity */
+                #siteNav>li .dropdown li a.site-nav:hover,
+                #siteNav>li .dropdown li:hover a.site-nav,
+                #siteNav>li ul.dropdown li a.site-nav:hover,
+                #siteNav>li ul.dropdown li:hover a.site-nav,
+                #siteNav>li .dropdown a.site-nav:hover,
+                #siteNav>li .dropdown li a:hover,
+                #siteNav>li .dropdown li:hover>a,
+                #siteNav>li .dropdown .site-nav:hover,
+                #AccessibleNav #siteNav>li .dropdown a:hover,
+                #AccessibleNav #siteNav>li .dropdown .site-nav:hover,
+                .navigation #siteNav>li .dropdown a:hover,
+                .navigation #siteNav>li .dropdown .site-nav:hover,
+                header #siteNav>li .dropdown a:hover,
+                header #siteNav>li .dropdown .site-nav:hover,
+                body #siteNav>li .dropdown a:hover,
+                body #siteNav>li .dropdown .site-nav:hover {
+                    color: #800020 !important;
+                }
+                
+                /* Override any visited or active states */
+                #siteNav>li .dropdown a:visited:hover,
+                #siteNav>li .dropdown a:active:hover,
+                #siteNav>li .dropdown .site-nav:visited:hover,
+                #siteNav>li .dropdown .site-nav:active:hover {
+                    color: #800020 !important;
+                }
+                
+                /* FINAL AGGRESSIVE OVERRIDE - Force theme color on ALL navbar main links */
+                #siteNav > li.lvl1 > a:hover,
+                #siteNav > li.lvl1:hover > a,
+                #siteNav > li.parent > a:hover,
+                #siteNav > li.parent:hover > a,
+                #siteNav > li:not(.dropdown) > a:hover,
+                #siteNav > li:not(.dropdown):hover > a,
+                body #siteNav > li.lvl1 > a:hover,
+                body #siteNav > li.lvl1:hover > a,
+                body #siteNav > li.parent > a:hover,
+                body #siteNav > li.parent:hover > a,
+                html body #siteNav > li.lvl1 > a:hover,
+                html body #siteNav > li.lvl1:hover > a,
+                html body #siteNav > li.parent > a:hover,
+                html body #siteNav > li.parent:hover > a,
+                html body #siteNav > li:not(.dropdown) > a:hover,
+                html body #siteNav > li:not(.dropdown):hover > a {
+                    color: #800020 !important;
+                }
+            </style>
+            
+            <!-- Additional Dropdown Styles -->
+            <style>
+                @media (min-width: 990px) {
                     /* Smooth animation on hover */
                     #siteNav>li .dropdown {
                         transform: translateY(-10px);
                     }
 
-                    /* Responsive grid - 3 columns for larger screens */
+                    /* Responsive adjustments for larger screens */
                     @media (min-width: 1200px) {
                         #siteNav>li .dropdown,
                         #siteNav>li .dropdown ul {
-                            grid-template-columns: repeat(3, 1fr);
-                            min-width: 700px;
-                            max-width: 900px;
-                        }
-
-                        #siteNav>li ul.dropdown {
-                            grid-template-columns: repeat(3, 1fr);
+                            min-width: 240px;
+                            max-width: 300px;
                         }
                     }
                 }
@@ -385,7 +707,7 @@ $cartCount = getCartCount();
                 @media (max-width: 989px) {
                     .mobile-nav .lvl-2 {
                         background: #f8f6f4;
-                        border-left: 3px solid #8b7355;
+                        border-left: 3px solid #800020;
                         margin-left: 15px;
                         padding: 8px 0;
                         border-radius: 4px;
@@ -399,7 +721,7 @@ $cartCount = getCartCount();
                     }
 
                     .mobile-nav .lvl-2 li a:hover {
-                        color: #8b7355;
+                        color: #800020;
                         background: #ffffff;
                         padding-left: 25px;
                     }
@@ -461,3 +783,822 @@ $cartCount = getCartCount();
                 </ul>
             </div>
             <!--End Mobile Menu-->
+            
+            <!-- Navbar Scroll Effect Script -->
+            <script>
+                // Navbar scroll effect
+                window.addEventListener('scroll', function() {
+                    const header = document.getElementById('mainHeader');
+                    if (window.scrollY > 50) {
+                        header.classList.add('scrolled');
+                    } else {
+                        header.classList.remove('scrolled');
+                    }
+                });
+                
+                // AGGRESSIVE: Force theme color on ALL navbar links
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Force ALL navbar main links (Home, About Us, Contact Us, etc.) - More comprehensive selector
+                    const navLinks = document.querySelectorAll('#siteNav > li > a, #siteNav li.lvl1 > a, #siteNav li.parent > a, #siteNav li a, .navigation #siteNav li > a');
+                    
+                    navLinks.forEach(function(link) {
+                        // Force color with !important via setProperty
+                        link.addEventListener('mouseenter', function() {
+                            this.style.setProperty('color', '#800020', 'important');
+                        });
+                        
+                        link.addEventListener('mouseleave', function() {
+                            this.style.setProperty('color', '#2c2c2c', 'important');
+                        });
+                        
+                        // Also add CSS class for additional control
+                        link.classList.add('theme-hover-link');
+                    });
+                    
+                    // Force dropdown links
+                    const dropdownLinks = document.querySelectorAll('#siteNav .dropdown a, #siteNav .dropdown .site-nav');
+                    
+                    dropdownLinks.forEach(function(link) {
+                        link.addEventListener('mouseenter', function() {
+                            this.style.setProperty('color', '#800020', 'important');
+                        });
+                        
+                        link.addEventListener('mouseleave', function() {
+                            this.style.setProperty('color', '#2c2c2c', 'important');
+                        });
+                    });
+                    
+                    // Add ULTRA AGGRESSIVE global style override with maximum specificity
+                    const style = document.createElement('style');
+                    style.id = 'navbar-theme-override';
+                    style.textContent = `
+                        /* ULTRA AGGRESSIVE - Force navbar main links */
+                        #siteNav > li > a:hover,
+                        #siteNav > li:hover > a,
+                        #siteNav > li.lvl1 > a:hover,
+                        #siteNav > li.lvl1:hover > a,
+                        #siteNav > li.parent > a:hover,
+                        #siteNav > li.parent:hover > a,
+                        #siteNav > li:not(.dropdown) > a:hover,
+                        #siteNav > li:not(.dropdown):hover > a,
+                        #siteNav li a:hover,
+                        #siteNav li:hover > a,
+                        .theme-hover-link:hover,
+                        body #siteNav > li > a:hover,
+                        body #siteNav > li:hover > a,
+                        html body #siteNav > li > a:hover,
+                        html body #siteNav > li:hover > a,
+                        html body #siteNav > li.lvl1 > a:hover,
+                        html body #siteNav > li.lvl1:hover > a,
+                        html body #siteNav > li.parent > a:hover,
+                        html body #siteNav > li.parent:hover > a {
+                            color: #800020 !important;
+                        }
+                        
+                        /* Force dropdown links */
+                        #siteNav .dropdown a:hover,
+                        #siteNav .dropdown .site-nav:hover,
+                        #siteNav .dropdown li:hover a,
+                        #siteNav .dropdown li:hover .site-nav {
+                            color: #800020 !important;
+                        }
+                    `;
+                    document.head.appendChild(style);
+                });
+                
+                // GLOBAL BLUE COLOR REMOVAL - JavaScript override
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Add global style to override all blue colors
+                    const blueRemovalStyle = document.createElement('style');
+                    blueRemovalStyle.id = 'blue-color-removal';
+                    blueRemovalStyle.textContent = `
+                        /* GLOBAL BLUE COLOR REMOVAL - Replace ALL blue with theme color #800020 */
+                        :root {
+                            --bs-blue: #800020 !important;
+                            --bs-primary: #800020 !important;
+                            --bs-primary-rgb: 128, 0, 32 !important;
+                        }
+                        
+                        /* Override all link hover colors */
+                        html body a:hover:not(.btn-elegant):not(.btn-get-directions),
+                        html body a:active:not(.btn-elegant):not(.btn-get-directions),
+                        html body a:focus:not(.btn-elegant):not(.btn-get-directions),
+                        html body a:visited:hover:not(.btn-elegant):not(.btn-get-directions),
+                        html body .site-nav:hover,
+                        html body .navigation a:hover,
+                        html body nav a:hover,
+                        html body #siteNav a:hover,
+                        html body #siteNav li a:hover,
+                        html body #siteNav > li > a:hover,
+                        html body #siteNav > li:hover > a,
+                        html body .btn:hover:not(.btn-success):not(.btn-danger):not(.btn-warning):not(.btn-info):not(.btn-elegant):not(.btn-get-directions),
+                        html body button:hover:not(.btn-success):not(.btn-danger):not(.btn-warning):not(.btn-info):not(.btn-elegant):not(.btn-get-directions),
+                        html body .link:hover {
+                            color: #800020 !important;
+                            border-color: #800020 !important;
+                        }
+                        
+                        /* Footer hover rules - Must come after global rules with higher specificity */
+                        html body .footer a:hover,
+                        html body .footer .footer-links a:hover,
+                        html body .footer .footer-links li a:hover,
+                        html body .footer .footer-contact-item a:hover,
+                        html body .footer .footer-contact-item:hover a,
+                        html body .footer .footer-bottom a:hover,
+                        html body .footer .footer-copyright a:hover,
+                        html body .footer .footer-social a:hover {
+                            color: #C5A059 !important;
+                        }
+                        
+                        /* Override Bootstrap primary/blue buttons */
+                        html body .btn-primary,
+                        html body .btn-primary:hover,
+                        html body .btn-primary:focus,
+                        html body .btn-primary:active,
+                        html body [class*="btn-primary"],
+                        html body [class*="primary"]:not([class*="swatch"]):not([class*="color"]) {
+                            background-color: #800020 !important;
+                            border-color: #800020 !important;
+                            color: #ffffff !important;
+                        }
+                        
+                        /* Override specific blue color codes from style-min.css */
+                        html body [style*="#097596"],
+                        html body [style*="#007bff"],
+                        html body [style*="#0d6efd"],
+                        html body [style*="#0066cc"] {
+                            color: #800020 !important;
+                            border-color: #800020 !important;
+                            background-color: transparent !important;
+                        }
+                    `;
+                    
+                    // Remove existing style if present
+                    const existingStyle = document.getElementById('blue-color-removal');
+                    if(existingStyle) {
+                        existingStyle.remove();
+                    }
+                    
+                    document.head.appendChild(blueRemovalStyle);
+                });
+            </script>
+            
+            <!-- GLOBAL BLUE COLOR REMOVAL STYLESHEET - Load after all other CSS -->
+            <style id="global-blue-removal">
+                /* COMPREHENSIVE BLUE COLOR REMOVAL */
+                /* This overrides ALL blue colors from style-min.css and plugins.css */
+                
+                /* Override :root CSS variables */
+                :root {
+                    --bs-blue: #800020 !important;
+                    --bs-primary: #800020 !important;
+                    --bs-primary-rgb: 128, 0, 32 !important;
+                }
+                
+                /* Override all anchor tag hover states (main source: style-min.css line 223, 228) */
+                html body a:hover:not(.btn-elegant):not(.btn-get-directions),
+                html body a:active:not(.btn-elegant):not(.btn-get-directions),
+                html body a:focus:not(.btn-elegant):not(.btn-get-directions) {
+                    color: #800020 !important;
+                }
+                
+                /* Footer hover rules - Must come after global rules with higher specificity */
+                html body .footer a:hover,
+                html body .footer .footer-links a:hover,
+                html body .footer .footer-links li a:hover,
+                html body .footer .footer-contact-item a:hover,
+                html body .footer .footer-contact-item:hover a,
+                html body .footer .footer-bottom a:hover,
+                html body .footer .footer-copyright a:hover,
+                html body .footer .footer-social a:hover {
+                    color: #C5A059 !important;
+                }
+                
+                /* Override Bootstrap primary buttons */
+                html body .btn-primary,
+                html body .btn-primary:hover,
+                html body .btn-primary:focus,
+                html body .btn-primary:active,
+                html body .btn-primary:not(:disabled):not(.disabled):active {
+                    background-color: #800020 !important;
+                    border-color: #800020 !important;
+                    color: #ffffff !important;
+                }
+                
+                /* Override any element with blue color in inline styles */
+                html body [style*="color: #097596"],
+                html body [style*="color:#097596"],
+                html body [style*="color: #007bff"],
+                html body [style*="color:#007bff"],
+                html body [style*="color: #0d6efd"],
+                html body [style*="color:#0d6efd"] {
+                    color: #800020 !important;
+                }
+                
+                /* Override any element with blue background in inline styles */
+                html body [style*="background: #097596"],
+                html body [style*="background:#097596"],
+                html body [style*="background-color: #097596"],
+                html body [style*="background-color:#097596"],
+                html body [style*="background: #007bff"],
+                html body [style*="background:#007bff"],
+                html body [style*="background-color: #007bff"],
+                html body [style*="background-color:#007bff"] {
+                    background-color: #800020 !important;
+                }
+                
+                /* Override any element with blue border in inline styles */
+                html body [style*="border-color: #097596"],
+                html body [style*="border-color:#097596"],
+                html body [style*="border: #097596"],
+                html body [style*="border:#097596"] {
+                    border-color: #800020 !important;
+                }
+            </style>
+            
+            <!-- Add to Cart Success Modal -->
+            <?php 
+            $show_modal = isset($_SESSION['show_cart_modal']) && $_SESSION['show_cart_modal'] == true;
+            $modal_product = isset($_SESSION['last_added_product']) ? $_SESSION['last_added_product'] : null;
+            if($show_modal && $modal_product) {
+                // Clear the flag
+                unset($_SESSION['show_cart_modal']);
+            }
+            ?>
+            <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+            <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+            <style>
+                .cart-modal-overlay {
+                    position: fixed;
+                    inset: 0;
+                    background: rgba(0, 0, 0, 0.4);
+                    backdrop-filter: blur(8px);
+                    -webkit-backdrop-filter: blur(8px);
+                    display: none;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 9999;
+                    padding: 16px;
+                }
+                
+                .cart-modal-overlay.show {
+                    display: flex;
+                    animation: fadeIn 0.3s ease;
+                }
+                
+                .cart-modal {
+                    background: #ffffff;
+                    width: 100%;
+                    max-width: 32rem;
+                    overflow: hidden;
+                    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+                    border: 1px solid rgba(128, 0, 32, 0.3);
+                    position: relative;
+                    animation: zoomIn 0.3s ease;
+                }
+                
+                .cart-modal-close {
+                    position: absolute;
+                    top: 16px;
+                    right: 16px;
+                    color: #64748b;
+                    background: transparent;
+                    border: none;
+                    cursor: pointer;
+                    padding: 8px;
+                    transition: color 0.3s ease;
+                    z-index: 10;
+                }
+                
+                .cart-modal-close:hover {
+                    color: #800020;
+                }
+                
+                .cart-modal-content {
+                    padding: 40px;
+                    text-align: center;
+                }
+                
+                .cart-modal-icon {
+                    margin-bottom: 24px;
+                    display: flex;
+                    justify-content: center;
+                }
+                
+                .cart-modal-icon-circle {
+                    width: 64px;
+                    height: 64px;
+                    border-radius: 50%;
+                    border: 1px solid rgba(16, 185, 129, 0.3);
+                    background: rgba(16, 185, 129, 0.1);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                
+                .cart-modal-icon-circle .material-symbols-outlined {
+                    color: #10b981;
+                    font-size: 2.5rem;
+                }
+                
+                .cart-modal-title {
+                    font-family: 'Playfair Display', serif;
+                    font-size: 1.875rem;
+                    font-weight: 600;
+                    margin-bottom: 32px;
+                    color: #1e293b;
+                }
+                
+                .cart-modal-product {
+                    display: flex;
+                    align-items: flex-start;
+                    text-align: left;
+                    margin-bottom: 40px;
+                    background: #f8fafc;
+                    padding: 16px;
+                    border-radius: 4px;
+                    border: 1px solid #e2e8f0;
+                }
+                
+                .cart-modal-product-image {
+                    width: 96px;
+                    height: 128px;
+                    flex-shrink: 0;
+                    background: #e2e8f0;
+                    overflow: hidden;
+                    border-radius: 4px;
+                }
+                
+                .cart-modal-product-image img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+                
+                .cart-modal-product-info {
+                    margin-left: 24px;
+                }
+                
+                .cart-modal-product-badge {
+                    font-size: 0.75rem;
+                    text-transform: uppercase;
+                    letter-spacing: 0.1em;
+                    color: #800020;
+                    font-weight: 600;
+                    margin-bottom: 4px;
+                }
+                
+                .cart-modal-product-name {
+                    font-family: 'Playfair Display', serif;
+                    font-size: 1.25rem;
+                    color: #1e293b;
+                    line-height: 1.4;
+                    margin-bottom: 8px;
+                }
+                
+                .cart-modal-product-price {
+                    font-size: 1.125rem;
+                    font-weight: 500;
+                    color: #475569;
+                }
+                
+                .cart-modal-buttons {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 16px;
+                    margin-bottom: 32px;
+                }
+                
+                .cart-modal-btn {
+                    flex: 1;
+                    padding: 12px 32px;
+                    font-size: 0.875rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.1em;
+                    transition: all 0.3s ease;
+                    border: none;
+                    cursor: pointer;
+                }
+                
+                .cart-modal-btn-continue {
+                    border: 1px solid #800020;
+                    color: #800020;
+                    background: transparent;
+                }
+                
+                .cart-modal-btn-continue:hover {
+                    background: #800020;
+                    color: #ffffff;
+                }
+                
+                .cart-modal-btn-checkout {
+                    background: #800020;
+                    color: #ffffff;
+                    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                    transition: all 0.3s ease;
+                }
+                
+                .cart-modal-btn-checkout:hover {
+                    background: rgba(128, 0, 32, 0.9);
+                    color: #C5A059 !important;
+                }
+                
+                /* AGGRESSIVE YELLOW HOVER - Checkout Button - Maximum Specificity */
+                .cart-modal-btn-checkout:hover,
+                .cart-modal-btn-checkout:focus,
+                .cart-modal-btn-checkout:active,
+                .cart-modal-btn-checkout:focus:hover,
+                .cart-modal-btn-checkout:active:hover,
+                html body .cart-modal-btn-checkout:hover,
+                html body a.cart-modal-btn-checkout:hover,
+                html body a.cart-modal-btn-checkout:focus,
+                html body a.cart-modal-btn-checkout:active,
+                html body .cart-modal .cart-modal-btn-checkout:hover,
+                html body .cart-modal-content .cart-modal-btn-checkout:hover,
+                html body .cart-modal-buttons .cart-modal-btn-checkout:hover,
+                html body div.cart-modal-btn-checkout:hover,
+                html body a.cart-modal-btn-checkout:hover,
+                html body a.cart-modal-btn-checkout:focus:hover,
+                html body a.cart-modal-btn-checkout:active:hover {
+                    color: #C5A059 !important;
+                }
+                
+                /* Force yellow on all states */
+                a.cart-modal-btn-checkout:hover,
+                a.cart-modal-btn-checkout:focus,
+                a.cart-modal-btn-checkout:active,
+                a.cart-modal-btn-checkout:visited:hover {
+                    color: #C5A059 !important;
+                }
+                
+                .cart-modal-trust {
+                    margin-top: 32px;
+                    padding-top: 24px;
+                    border-top: 1px solid #e2e8f0;
+                    display: flex;
+                    justify-content: center;
+                    gap: 24px;
+                    opacity: 0.6;
+                    filter: grayscale(100%);
+                    transition: all 0.5s ease;
+                }
+                
+                .cart-modal-trust:hover {
+                    opacity: 1;
+                    filter: grayscale(0);
+                }
+                
+                .cart-modal-trust-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                }
+                
+                .cart-modal-trust-item .material-symbols-outlined {
+                    font-size: 0.875rem;
+                }
+                
+                .cart-modal-trust-item span {
+                    font-size: 10px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                }
+                
+                .cart-modal-gold-bar {
+                    height: 4px;
+                    background: #800020;
+                    width: 100%;
+                    opacity: 0.5;
+                }
+                
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                
+                @keyframes zoomIn {
+                    from { 
+                        transform: scale(0.9);
+                        opacity: 0;
+                    }
+                    to { 
+                        transform: scale(1);
+                        opacity: 1;
+                    }
+                }
+                
+                @media (min-width: 640px) {
+                    .cart-modal-buttons {
+                        flex-direction: row;
+                    }
+                }
+                
+                @media (max-width: 640px) {
+                    .cart-modal-content {
+                        padding: 32px 24px;
+                    }
+                    
+                    .cart-modal-title {
+                        font-size: 1.5rem;
+                    }
+                    
+                    .cart-modal-product {
+                        flex-direction: column;
+                    }
+                    
+                    .cart-modal-product-info {
+                        margin-left: 0;
+                        margin-top: 16px;
+                    }
+                    
+                    .cart-modal-trust {
+                        flex-direction: column;
+                        gap: 12px;
+                    }
+                }
+            </style>
+            
+            <div class="cart-modal-overlay" id="cartModalOverlay">
+                <div class="cart-modal">
+                    <button class="cart-modal-close" onclick="closeCartModal()">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                    <div class="cart-modal-content">
+                        <div class="cart-modal-icon">
+                            <div class="cart-modal-icon-circle">
+                                <span class="material-symbols-outlined">check</span>
+                            </div>
+                        </div>
+                        <h2 class="cart-modal-title">Successfully Added to Cart</h2>
+                        <div class="cart-modal-product" id="cartModalProduct">
+                            <?php if($modal_product): ?>
+                            <div class="cart-modal-product-image">
+                                <img src="admin/productimages/<?php echo $modal_product['id']; ?>/<?php echo $modal_product['image']; ?>" alt="<?php echo htmlspecialchars($modal_product['name']); ?>" />
+                            </div>
+                            <div class="cart-modal-product-info">
+                                <p class="cart-modal-product-badge">New Arrival</p>
+                                <h3 class="cart-modal-product-name"><?php echo htmlspecialchars($modal_product['name']); ?></h3>
+                                <p class="cart-modal-product-price">₹<?php echo number_format($modal_product['price'], 2); ?></p>
+                            </div>
+                            <?php else: ?>
+                            <div class="cart-modal-product-image">
+                                <div style="width: 100%; height: 100%; background: #e2e8f0;"></div>
+                            </div>
+                            <div class="cart-modal-product-info">
+                                <p class="cart-modal-product-badge">New Arrival</p>
+                                <h3 class="cart-modal-product-name">Product Added</h3>
+                                <p class="cart-modal-product-price">Added to Cart</p>
+                            </div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="cart-modal-buttons">
+                            <button class="cart-modal-btn cart-modal-btn-continue" onclick="closeCartModal()">Continue Shopping</button>
+                            <a href="my-cart.php" class="cart-modal-btn cart-modal-btn-checkout" style="text-decoration: none; display: block;">View Cart & Checkout</a>
+                        </div>
+                        <div class="cart-modal-trust">
+                            <div class="cart-modal-trust-item">
+                                <span class="material-symbols-outlined">verified_user</span>
+                                <span>Secure Payment</span>
+                            </div>
+                            <div class="cart-modal-trust-item">
+                                <span class="material-symbols-outlined">local_shipping</span>
+                                <span>Express Delivery</span>
+                            </div>
+                            <div class="cart-modal-trust-item">
+                                <span class="material-symbols-outlined">workspace_premium</span>
+                                <span>Authentic Handloom</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cart-modal-gold-bar"></div>
+                </div>
+            </div>
+            
+            <script>
+                // Show modal if flag is set
+                <?php if($show_modal && $modal_product): ?>
+                document.addEventListener('DOMContentLoaded', function() {
+                    showCartModal();
+                });
+                <?php endif; ?>
+                
+                function showCartModal() {
+                    const modal = document.getElementById('cartModalOverlay');
+                    if(modal) {
+                        modal.classList.add('show');
+                        document.body.style.overflow = 'hidden';
+                        
+                        // Apply yellow hover to checkout button when modal is shown
+                        setTimeout(function() {
+                            const checkoutButtons = document.querySelectorAll('.cart-modal-btn-checkout, a.cart-modal-btn-checkout');
+                            checkoutButtons.forEach(function(button) {
+                                button.addEventListener('mouseenter', function() {
+                                    this.style.setProperty('color', '#C5A059', 'important');
+                                });
+                                button.addEventListener('mouseleave', function() {
+                                    this.style.setProperty('color', '#ffffff', 'important');
+                                });
+                            });
+                        }, 100);
+                    }
+                }
+                
+                function closeCartModal() {
+                    const modal = document.getElementById('cartModalOverlay');
+                    if(modal) {
+                        modal.classList.remove('show');
+                        document.body.style.overflow = '';
+                    }
+                }
+                
+                // Close modal when clicking outside
+                document.addEventListener('click', function(e) {
+                    const modal = document.getElementById('cartModalOverlay');
+                    if(modal && e.target === modal) {
+                        closeCartModal();
+                    }
+                });
+                
+                // Close modal with Escape key
+                document.addEventListener('keydown', function(e) {
+                    if(e.key === 'Escape') {
+                        closeCartModal();
+                    }
+                });
+                
+                // Force yellow hover on checkout button - AGGRESSIVE STYLING
+                document.addEventListener('DOMContentLoaded', function() {
+                    function applyYellowHover() {
+                        const checkoutButtons = document.querySelectorAll('.cart-modal-btn-checkout, a.cart-modal-btn-checkout');
+                        checkoutButtons.forEach(function(button) {
+                            button.addEventListener('mouseenter', function() {
+                                this.style.setProperty('color', '#C5A059', 'important');
+                            });
+                            button.addEventListener('mouseleave', function() {
+                                this.style.setProperty('color', '#ffffff', 'important');
+                            });
+                            button.addEventListener('focus', function() {
+                                this.style.setProperty('color', '#C5A059', 'important');
+                            });
+                            button.addEventListener('blur', function() {
+                                this.style.setProperty('color', '#ffffff', 'important');
+                            });
+                        });
+                    }
+                    
+                    // Apply immediately
+                    applyYellowHover();
+                    
+                    // Re-apply when modal is shown (in case button is added dynamically)
+                    const originalShowCartModal = window.showCartModal;
+                    if(originalShowCartModal) {
+                        window.showCartModal = function() {
+                            originalShowCartModal();
+                            setTimeout(applyYellowHover, 100);
+                        };
+                    }
+                });
+                
+                // Intercept add to cart links and show modal via AJAX
+                document.addEventListener('DOMContentLoaded', function() {
+                    const cartButtons = document.querySelectorAll('a[href*="action=add"], .btn-cart-modern[href*="action=add"]');
+                    
+                    cartButtons.forEach(function(button) {
+                        // Skip disabled buttons
+                        if(button.classList.contains('disabled') || button.style.cursor === 'not-allowed') {
+                            return;
+                        }
+                        
+                        button.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            
+                            // Get product ID from URL
+                            const url = new URL(this.href, window.location.origin);
+                            const productId = url.searchParams.get('id');
+                            
+                            if(!productId) {
+                                window.location.href = this.href;
+                                return;
+                            }
+                            
+                            // First, fetch product details
+                            fetch('get-product-info.php?id=' + productId)
+                                .then(function(response) {
+                                    return response.json();
+                                })
+                                .then(function(productData) {
+                                    // Then add to cart
+                                    return fetch(button.href)
+                                        .then(function() {
+                                            return productData;
+                                        });
+                                })
+                                .then(function(productData) {
+                                    if(productData && productData.success) {
+                                        // Update modal content with product info
+                                        updateCartModal(productData.data);
+                                        // Show modal
+                                        showCartModal();
+                                        // Update cart count
+                                        if(window.updateCartCount) {
+                                            window.updateCartCount();
+                                        }
+                                    } else {
+                                        // Fallback: show modal anyway
+                                        showCartModal();
+                                        if(window.updateCartCount) {
+                                            window.updateCartCount();
+                                        }
+                                    }
+                                })
+                                .catch(function(error) {
+                                    console.error('Error:', error);
+                                    // If AJAX fails, allow normal link behavior
+                                    window.location.href = button.href;
+                                });
+                        });
+                    });
+                });
+                
+                function updateCartModal(product) {
+                    if(!product) return;
+                    
+                    const modalProduct = document.getElementById('cartModalProduct');
+                    if(modalProduct && product.image && product.name && product.price) {
+                        modalProduct.innerHTML = `
+                            <div class="cart-modal-product-image">
+                                <img src="admin/productimages/${product.id}/${product.image}" alt="${product.name}" />
+                            </div>
+                            <div class="cart-modal-product-info">
+                                <p class="cart-modal-product-badge">New Arrival</p>
+                                <h3 class="cart-modal-product-name">${product.name}</h3>
+                                <p class="cart-modal-product-price">₹${parseFloat(product.price).toLocaleString('en-IN', {minimumFractionDigits: 2})}</p>
+                            </div>
+                        `;
+                    }
+                }
+                
+                // Intercept add to cart links and show modal via AJAX
+                document.addEventListener('DOMContentLoaded', function() {
+                    const cartButtons = document.querySelectorAll('a[href*="action=add"], .btn-cart-modern[href*="action=add"]');
+                    
+                    cartButtons.forEach(function(button) {
+                        // Skip disabled buttons
+                        if(button.classList.contains('disabled') || button.style.cursor === 'not-allowed') {
+                            return;
+                        }
+                        
+                        button.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            
+                            // Get product ID from URL
+                            const url = new URL(this.href, window.location.origin);
+                            const productId = url.searchParams.get('id');
+                            
+                            if(!productId) {
+                                window.location.href = this.href;
+                                return;
+                            }
+                            
+                            // First, fetch product details
+                            fetch('get-product-info.php?id=' + productId)
+                                .then(function(response) {
+                                    return response.json();
+                                })
+                                .then(function(productData) {
+                                    // Then add to cart
+                                    return fetch(button.href)
+                                        .then(function() {
+                                            return productData;
+                                        });
+                                })
+                                .then(function(productData) {
+                                    if(productData && productData.success) {
+                                        // Update modal content with product info
+                                        updateCartModal(productData.data);
+                                        // Show modal
+                                        showCartModal();
+                                        // Update cart count
+                                        if(window.updateCartCount) {
+                                            window.updateCartCount();
+                                        }
+                                    } else {
+                                        // Fallback: show modal anyway
+                                        showCartModal();
+                                        if(window.updateCartCount) {
+                                            window.updateCartCount();
+                                        }
+                                    }
+                                })
+                                .catch(function(error) {
+                                    console.error('Error:', error);
+                                    // If AJAX fails, allow normal link behavior
+                                    window.location.href = button.href;
+                                });
+                        });
+                    });
+                });
+            </script>

@@ -1,264 +1,291 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
 <style>
     /* Features Section Styles */
     .footer-features {
-        padding: 60px 0;
-        background: #ECE9E2;
-        position: relative;
-        z-index: 1;
-    }
-
-    .feature-item {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        padding: 15px;
-        transition: all 0.3s ease;
-    }
-
-    .feature-item:hover {
-        transform: translateY(-3px);
-    }
-
-    .footer_icons {
-        background: transparent;
-        width: 70px;
-        height: 70px;
-        min-width: 70px;
-        border-radius: 50%;
+        min-height: 60vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 2px dashed #d0d0d0;
-        color: #000000;
-        flex-shrink: 0;
-        transition: all 0.3s ease;
+        padding: 80px 0;
+        background: #FDFCF8;
     }
 
-    .feature-item:hover .footer_icons {
-        border-color: #8b7355;
-        background: rgba(139, 115, 85, 0.05);
+    .footer-features-wrapper {
+        max-width: 1200px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 0 24px;
     }
 
-    .footer_icons i {
-        font-size: 1.8rem;
-        color: #000000;
-        transition: all 0.3s ease;
+    .footer-features-header {
+        text-align: center;
+        margin-bottom: 96px;
     }
 
-    /* Paper Plane Animation - Fly */
-    .feature-item:hover .fa-paper-plane {
-        animation: flyPlane 1s ease-in-out;
+    .footer-features-header p {
+        text-transform: uppercase;
+        letter-spacing: 0.3em;
+        font-size: 10px;
+        color: #71717a;
+        font-weight: 500;
+        margin-bottom: 8px;
+        font-family: 'Inter', sans-serif;
     }
 
-    @keyframes flyPlane {
-        0% {
-            transform: translate(0, 0) rotate(0deg);
-        }
-        25% {
-            transform: translate(8px, -8px) rotate(15deg);
-        }
-        50% {
-            transform: translate(12px, -12px) rotate(25deg);
-        }
-        75% {
-            transform: translate(8px, -8px) rotate(15deg);
-        }
-        100% {
-            transform: translate(0, 0) rotate(0deg);
-        }
-    }
-
-    /* Truck Animation - Drive/Shake */
-    .feature-item:hover .fa-truck {
-        animation: driveTruck 1s ease-in-out;
-    }
-
-    @keyframes driveTruck {
-        0%, 100% {
-            transform: translateX(0) rotate(0deg);
-        }
-        25% {
-            transform: translateX(5px) rotate(-2deg);
-        }
-        50% {
-            transform: translateX(-5px) rotate(2deg);
-        }
-        75% {
-            transform: translateX(3px) rotate(-1deg);
-        }
-    }
-
-    /* Lock Animation - Secure/Shake */
-    .feature-item:hover .fa-lock {
-        animation: secureLock 1s ease-in-out;
-    }
-
-    @keyframes secureLock {
-        0%, 100% {
-            transform: translateY(0) scale(1);
-        }
-        25% {
-            transform: translateY(-5px) scale(1.1);
-        }
-        50% {
-            transform: translateY(0) scale(1);
-        }
-        75% {
-            transform: translateY(-3px) scale(1.05);
-        }
-    }
-
-    /* Headset Animation - Pulse/Bounce */
-    .feature-item:hover .fa-headset {
-        animation: pulseHeadset 1s ease-in-out;
-    }
-
-    @keyframes pulseHeadset {
-        0%, 100% {
-            transform: scale(1);
-        }
-        25% {
-            transform: scale(1.15);
-        }
-        50% {
-            transform: scale(1.1);
-        }
-        75% {
-            transform: scale(1.12);
-        }
-    }
-
-    .feature-content {
-        flex: 1;
-    }
-
-    .feature-content h5 {
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: #000000;
+    .footer-features-header h1 {
+        font-family: 'Playfair Display', serif;
+        font-style: italic;
+        font-size: 2.5rem;
+        color: #18181b;
         margin: 0;
-        margin-bottom: 4px;
-        line-height: 1.3;
     }
 
-    .feature-content p {
-        color: #666666;
-        font-size: 0.9rem;
+    .footer-features-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0;
+    }
+
+    .feature-divider {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 0 32px;
+        position: relative;
+    }
+
+    .feature-divider:not(:last-child) {
+        border-right: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .feature-divider .icon-wrapper {
+        margin-bottom: 24px;
+        transition: transform 0.5s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .feature-divider:hover .icon-wrapper {
+        transform: translateY(-4px);
+    }
+
+    .feature-divider .icon-wrapper span {
+        font-size: 48px;
+        color: #a1a1aa;
+        display: inline-block;
+        width: 48px;
+        height: 48px;
+    }
+
+    .feature-divider .content {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .feature-divider h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.25rem;
+        color: #18181b;
+        letter-spacing: 0.025em;
         margin: 0;
-        font-weight: 400;
+    }
+
+    .feature-divider p {
+        color: #71717a;
+        font-size: 0.875rem;
+        line-height: 1.6;
+        max-width: 200px;
+        margin: 0 auto;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .footer-features-bottom {
+        margin-top: 128px;
+        padding-top: 48px;
+        border-top: 1px solid #f4f4f5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    .footer-features-bottom .left {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: #a1a1aa;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .footer-features-bottom .right {
+        display: flex;
+        gap: 32px;
+    }
+
+    .footer-features-bottom .right a {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: #a1a1aa;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .footer-features-bottom .right a:hover {
+        color: #1a1a1a;
     }
 
     /* Responsive Design */
-    @media (max-width: 992px) {
-        .footer-features {
-            padding: 50px 0;
+    @media (min-width: 768px) {
+        .feature-divider {
+            align-items: flex-start;
+            text-align: left;
         }
 
-        .footer_icons {
-            width: 60px;
-            height: 60px;
-            min-width: 60px;
+        .feature-divider p {
+            margin: 0;
         }
 
-        .footer_icons i {
-            font-size: 1.5rem;
-        }
-
-        .feature-content h5 {
-            font-size: 1rem;
+        .footer-features-bottom {
+            flex-direction: row;
         }
     }
 
-    @media (max-width: 768px) {
-        .footer-features {
-            padding: 40px 0;
+    @media (max-width: 991px) {
+        .footer-features-grid {
+            grid-template-columns: repeat(2, 1fr);
         }
 
-        .feature-item {
-            flex-direction: column;
-            text-align: center;
-            gap: 15px;
+        .feature-divider:nth-child(2) {
+            border-right: none;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding-bottom: 48px;
         }
 
-        .footer_icons {
-            width: 65px;
-            height: 65px;
-            min-width: 65px;
-        }
-
-        .footer_icons i {
-            font-size: 1.6rem;
-        }
-
-        .feature-content h5 {
-            font-size: 0.95rem;
+        .feature-divider:nth-child(4) {
+            border-right: none;
         }
     }
 
-    @media (max-width: 576px) {
-        .footer_icons {
-            width: 60px;
-            height: 60px;
-            min-width: 60px;
+    @media (max-width: 767px) {
+        .footer-features {
+            padding: 60px 0;
         }
 
-        .footer_icons i {
-            font-size: 1.4rem;
+        .footer-features-header {
+            margin-bottom: 64px;
         }
 
-        .feature-content h5 {
-            font-size: 0.9rem;
+        .footer-features-header h1 {
+            font-size: 2rem;
         }
+
+        .footer-features-grid {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .feature-divider {
+            padding: 32px 0;
+        }
+
+        .feature-divider:not(:last-child) {
+            border-right: none;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .footer-features-bottom {
+            margin-top: 64px;
+            padding-top: 32px;
+        }
+    }
+
+    .material-symbols-outlined {
+        font-family: 'Material Symbols Outlined' !important;
+        font-weight: normal !important;
+        font-style: normal !important;
+        font-size: 48px !important;
+        line-height: 1 !important;
+        letter-spacing: normal !important;
+        text-transform: none !important;
+        display: inline-block !important;
+        white-space: nowrap !important;
+        word-wrap: normal !important;
+        direction: ltr !important;
+        font-feature-settings: 'liga' !important;
+        -webkit-font-feature-settings: 'liga' !important;
+        -webkit-font-smoothing: antialiased !important;
+        font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24 !important;
+        speak: none;
+        font-variant: normal;
+        text-rendering: optimizeLegibility;
+    }
+    
+    .feature-divider .icon-wrapper span.material-symbols-outlined {
+        font-family: 'Material Symbols Outlined' !important;
     }
 </style>
+
 <!-- Features Section -->
 <div class="footer-features">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-                <div class="feature-item">
-                    <div class="footer_icons">
-                        <i class="fa fa-paper-plane"></i>
-                    </div>
-                    <div class="feature-content">
-                        <h5>No Return & Exchange</h5>
-                    </div>
+    <div class="footer-features-wrapper">
+        <div class="footer-features-header">
+            <p>Established in India</p>
+            <h1>Nari18 by Richa Singh</h1>
+        </div>
+
+        <div class="footer-features-grid">
+            <div class="feature-divider">
+                <div class="icon-wrapper">
+                    <span class="material-symbols-outlined">send</span>
+                </div>
+                <div class="content">
+                    <h3>No Return & Exchange</h3>
+                    <p>Strict hygiene & customization policies for luxury garments.</p>
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-                <div class="feature-item">
-                    <div class="footer_icons">
-                        <i class="fa fa-truck"></i>
-                    </div>
-                    <div class="feature-content">
-                        <h5>Free Shipping</h5>
-                        <p>Free Shipping</p>
-                    </div>
+            <div class="feature-divider">
+                <div class="icon-wrapper">
+                    <span class="material-symbols-outlined">local_shipping</span>
+                </div>
+                <div class="content">
+                    <h3>Complimentary Shipping</h3>
+                    <p>On all domestic orders over ₹10,000 within India.</p>
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-                <div class="feature-item">
-                    <div class="footer_icons">
-                        <i class="fa fa-lock"></i>
-                    </div>
-                    <div class="feature-content">
-                        <h5>100% Secure Payment</h5>
-                    </div>
+            <div class="feature-divider">
+                <div class="icon-wrapper">
+                    <span class="material-symbols-outlined">lock</span>
+                </div>
+                <div class="content">
+                    <h3>100% Secure Payment</h3>
+                    <p>Encrypted processing for international & domestic cards.</p>
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-6">
-                <div class="feature-item">
-                    <div class="footer_icons">
-                        <i class="fa fa-headset"></i>
-                    </div>
-                    <div class="feature-content">
-                        <h5>24/7 Customers Support</h5>
-                    </div>
+            <div class="feature-divider">
+                <div class="icon-wrapper">
+                    <span class="material-symbols-outlined">support_agent</span>
                 </div>
+                <div class="content">
+                    <h3>24/7 Concierge Support</h3>
+                    <p>Dedicated assistance for sizing and styling consultations.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-features-bottom">
+            <div class="left">A Luxury Collective</div>
+            <div class="right">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
             </div>
         </div>
     </div>

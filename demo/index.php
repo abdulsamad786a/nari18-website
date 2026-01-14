@@ -377,7 +377,7 @@
             </div>
             <div class="col-lg-6">
                 <div class="store_div p-4 rounded-3 posistr">
-                    <img src="assets/images/strimg2.jpg" alt="Store Location 1" class="store-image mb-3 rounded-3" width="100%" height="auto">
+                    <img src="assets/images/store.jpg" alt="Store Location 1" class="store-image mb-3 rounded-3" width="100%" height="auto">
                     <div class="overlay">
                         <h5>Gurugram</h5>
                         <h3>Nari18</h3>

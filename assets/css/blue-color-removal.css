@@ -1,0 +1,120 @@
+/* ============================================
+   GLOBAL BLUE COLOR REMOVAL
+   Replace ALL blue colors with theme color #800020
+   This file should be loaded AFTER style-min.css
+   ============================================ */
+
+/* Override CSS Variables */
+:root {
+    --bs-blue: #800020 !important;
+    --bs-primary: #800020 !important;
+    --bs-primary-rgb: 128, 0, 32 !important;
+    --bs-info: #800020 !important;
+}
+
+/* Override all anchor tag hover states (from style-min.css) */
+a:hover,
+a:active,
+a:focus {
+    color: #800020 !important;
+}
+
+/* Override Bootstrap primary buttons */
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-primary:not(:disabled):not(.disabled).active {
+    background-color: #800020 !important;
+    border-color: #800020 !important;
+    color: #ffffff !important;
+}
+
+/* Override all navigation links */
+.site-nav:hover,
+.navigation a:hover,
+nav a:hover,
+#siteNav a:hover,
+#siteNav li a:hover,
+#siteNav > li > a:hover,
+#siteNav > li:hover > a {
+    color: #800020 !important;
+}
+
+/* Override buttons with blue colors */
+.btn:hover:not(.btn-success):not(.btn-danger):not(.btn-warning):not(.btn-info),
+button:hover:not(.btn-success):not(.btn-danger):not(.btn-warning):not(.btn-info) {
+    color: #800020 !important;
+    border-color: #800020 !important;
+}
+
+/* Override any element with specific blue color codes */
+[style*="#097596"],
+[style*="#007bff"],
+[style*="#0d6efd"],
+[style*="#0066cc"],
+[style*="#0000ff"],
+[style*="#0066ff"],
+[style*="#0080ff"],
+[style*="#3399ff"],
+[style*="#364F6A"] {
+    color: #800020 !important;
+    border-color: #800020 !important;
+    background-color: transparent !important;
+}
+
+/* Override blue backgrounds */
+[style*="background: #097596"],
+[style*="background:#097596"],
+[style*="background-color: #097596"],
+[style*="background-color:#097596"],
+[style*="background: #007bff"],
+[style*="background:#007bff"],
+[style*="background-color: #007bff"],
+[style*="background-color:#007bff"] {
+    background-color: #800020 !important;
+}
+
+/* Override blue borders */
+[style*="border-color: #097596"],
+[style*="border-color:#097596"],
+[style*="border: #097596"],
+[style*="border:#097596"],
+[style*="border-left: #097596"],
+[style*="border-left:#097596"],
+[style*="border-bottom: #097596"],
+[style*="border-bottom:#097596"] {
+    border-color: #800020 !important;
+}
+
+/* Override any class with "blue" in name (except swatches and color pickers) */
+[class*="blue"]:not([class*="swatch"]):not([class*="color"]):not([class*="picker"]) {
+    color: #800020 !important;
+    background-color: transparent !important;
+    border-color: #800020 !important;
+}
+
+/* Maximum specificity overrides */
+html body a:hover,
+html body a:active,
+html body a:focus,
+html body .site-nav:hover,
+html body .navigation a:hover,
+html body nav a:hover,
+html body #siteNav a:hover,
+html body #siteNav li a:hover,
+html body #siteNav > li > a:hover,
+html body #siteNav > li:hover > a {
+    color: #800020 !important;
+}
+
+html body .btn-primary,
+html body .btn-primary:hover,
+html body .btn-primary:focus,
+html body .btn-primary:active {
+    background-color: #800020 !important;
+    border-color: #800020 !important;
+    color: #ffffff !important;
+}
+
