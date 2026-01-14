@@ -9,4 +9,8 @@ if (mysqli_connect_errno())
 {
  echo "Failed to connect to MySQL: " . mysqli_connect_error();
 }
+
+// 2factor.in API Configuration
+define('TWO_FACTOR_API_KEY', '37380a45-d1bd-11f0-a6b2-0200cd936042');
+define('TWO_FACTOR_TEMPLATE', 'LoginOTP');
 ?>
