@@ -63,7 +63,7 @@ if(isset($_GET['action']) && $_GET['action']=="add"){
                             <a href="tel:+91-8826446755" style="color: white; text-decoration: none; margin-left: 4px;">+91-8826446755</a>
                         </div>
                         <div class="col-12 col-sm-12 col-md-6 col-lg-4 text-center">
-                            <span style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;">Get the Best Deal in All Over India — <a href="all-category.php" style="color: white; text-decoration: underline; text-underline-offset: 4px; opacity: 0.8;">Shop Now</a></span>
+                            <span style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;">Get the Best Deal in All Over India — <a href="all-category.php" style="color: #C5A059 !important; text-decoration: underline; text-underline-offset: 4px; opacity: 1 !important;">Shop Now</a></span>
                         </div>
                         <div class="col-6 col-sm-6 col-md-3 col-lg-4 text-right d-none d-md-block">
                             <span style="font-size: 11px;">Complementary Shipping on Orders Above ₹5000</span>
@@ -294,6 +294,16 @@ $cartCount = getCartCount();
             
             <!-- Modern Navbar Styles with Effects -->
             <style>
+                /* Top Header Shop Now Link - Yellow Color */
+                .top-header a[href*="all-category.php"],
+                .top-header a[href*="all-category.php"]:hover,
+                .top-header a[href*="all-category.php"]:active,
+                .top-header a[href*="all-category.php"]:focus,
+                .top-header a[href*="all-category.php"]:visited {
+                    color: #C5A059 !important;
+                    opacity: 1 !important;
+                }
+
                 /* Modern Navbar Styling */
                 .modern-navbar {
                     position: sticky !important;
