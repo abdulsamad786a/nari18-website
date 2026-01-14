@@ -283,6 +283,129 @@ $cartCount = getCartCount();
                 </div>
             </header>
             <!--End Header-->
+            
+            <!-- Enhanced Dropdown Menu Styles -->
+            <style>
+                /* Classic, Elegant Dropdown Menu Styling - Grid/Horizontal Layout */
+                @media (min-width: 990px) {
+                    #siteNav>li .dropdown,
+                    #siteNav>li .dropdown ul {
+                        background: #ffffff;
+                        border: 1px solid #e8e8e8;
+                        border-radius: 8px;
+                        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+                        padding: 16px;
+                        margin-top: 8px;
+                        min-width: 600px;
+                        max-width: 800px;
+                        width: auto;
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 8px;
+                        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                        backdrop-filter: blur(10px);
+                    }
+
+                    #siteNav>li:hover>.dropdown {
+                        opacity: 1;
+                        visibility: visible;
+                        transform: translateY(0);
+                        top: 100%;
+                    }
+
+                    #siteNav>li ul.dropdown {
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 8px;
+                        list-style: none;
+                        margin: 0;
+                        padding: 0;
+                    }
+
+                    #siteNav>li ul.dropdown li {
+                        border-top: none;
+                        margin: 0;
+                        border-radius: 6px;
+                        transition: all 0.2s ease;
+                        display: block;
+                    }
+
+                    #siteNav>li ul.dropdown li:first-child {
+                        margin-top: 0;
+                    }
+
+                    #siteNav>li ul.dropdown li:last-child {
+                        margin-bottom: 0;
+                    }
+
+                    #siteNav>li ul.dropdown li a {
+                        color: #2c2c2c;
+                        background: transparent;
+                        font-weight: 400;
+                        font-size: 14px;
+                        padding: 12px 16px;
+                        border-radius: 6px;
+                        transition: all 0.2s ease;
+                        display: block;
+                        width: 100%;
+                        letter-spacing: 0.3px;
+                        position: relative;
+                        text-align: left;
+                    }
+
+                    #siteNav>li ul.dropdown li a:hover,
+                    #siteNav>li ul.dropdown li:hover>a {
+                        color: #8b7355;
+                        background: #f8f6f4;
+                        padding-left: 20px;
+                        font-weight: 500;
+                    }
+
+                    /* Smooth animation on hover */
+                    #siteNav>li .dropdown {
+                        transform: translateY(-10px);
+                    }
+
+                    /* Responsive grid - 3 columns for larger screens */
+                    @media (min-width: 1200px) {
+                        #siteNav>li .dropdown,
+                        #siteNav>li .dropdown ul {
+                            grid-template-columns: repeat(3, 1fr);
+                            min-width: 700px;
+                            max-width: 900px;
+                        }
+
+                        #siteNav>li ul.dropdown {
+                            grid-template-columns: repeat(3, 1fr);
+                        }
+                    }
+                }
+
+                /* Mobile dropdown styling */
+                @media (max-width: 989px) {
+                    .mobile-nav .lvl-2 {
+                        background: #f8f6f4;
+                        border-left: 3px solid #8b7355;
+                        margin-left: 15px;
+                        padding: 8px 0;
+                        border-radius: 4px;
+                    }
+
+                    .mobile-nav .lvl-2 li a {
+                        padding: 10px 20px;
+                        color: #2c2c2c;
+                        font-size: 14px;
+                        transition: all 0.2s ease;
+                    }
+
+                    .mobile-nav .lvl-2 li a:hover {
+                        color: #8b7355;
+                        background: #ffffff;
+                        padding-left: 25px;
+                    }
+                }
+            </style>
+            
             <!--Mobile Menu-->
             <div class="mobile-nav-wrapper" role="navigation">
                 <div class="closemobileMenu">Close Menu <i class="icon anm anm-times-l"></i></div>

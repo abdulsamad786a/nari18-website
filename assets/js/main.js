@@ -411,7 +411,7 @@
             fade: true,
             arrows: false,
             autoplay: true,
-            autoplaySpeed: 7000,
+            autoplaySpeed: 5000,
             lazyLoad: 'ondemand'
         });
     }
