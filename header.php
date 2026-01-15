@@ -47,6 +47,15 @@ if(isset($_GET['action']) && $_GET['action']=="add"){
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <style>
+            /* Top Header Shop Now Link - Yellow Hover - Maximum Specificity */
+            html body .top-header .top-header-shop-now-link:hover,
+            html body .top-header a.top-header-shop-now-link:hover,
+            .top-header .top-header-shop-now-link:hover,
+            .top-header-shop-now-link:hover {
+                color: #C5A059 !important;
+            }
+        </style>
     </head>
 
     <body class="template-index index-demo1">
@@ -63,7 +72,7 @@ if(isset($_GET['action']) && $_GET['action']=="add"){
                             <a href="tel:+91-8826446755" style="color: white; text-decoration: none; margin-left: 4px;">+91-8826446755</a>
                         </div>
                         <div class="col-12 col-sm-12 col-md-6 col-lg-4 text-center">
-                            <span style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;">Get the Best Deal in All Over India — <a href="all-category.php" style="color: #C5A059 !important; text-decoration: underline; text-underline-offset: 4px; opacity: 1 !important;">Shop Now</a></span>
+                            <span style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;">Get the Best Deal in All Over India — <a href="all-category.php" class="top-header-shop-now-link" style="color: white; text-decoration: underline; text-underline-offset: 4px; opacity: 0.8;">Shop Now</a></span>
                         </div>
                         <div class="col-6 col-sm-6 col-md-3 col-lg-4 text-right d-none d-md-block">
                             <span style="font-size: 11px;">Complementary Shipping on Orders Above ₹5000</span>
@@ -72,7 +81,21 @@ if(isset($_GET['action']) && $_GET['action']=="add"){
                 </div>
             </div>
             <!--End Top Header-->
-
+            
+            <!-- Shop Now Link Hover Effect Script -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const shopNowLink = document.querySelector('.top-header-shop-now-link');
+                    if (shopNowLink) {
+                        shopNowLink.addEventListener('mouseenter', function() {
+                            this.style.setProperty('color', '#C5A059', 'important');
+                        });
+                        shopNowLink.addEventListener('mouseleave', function() {
+                            this.style.setProperty('color', 'white', 'important');
+                        });
+                    }
+                });
+            </script>
 
             <!--Header-->
             <header class="header d-flex align-items-center header-1 header-fixed modern-navbar" id="mainHeader">
@@ -294,16 +317,6 @@ $cartCount = getCartCount();
             
             <!-- Modern Navbar Styles with Effects -->
             <style>
-                /* Top Header Shop Now Link - Yellow Color */
-                .top-header a[href*="all-category.php"],
-                .top-header a[href*="all-category.php"]:hover,
-                .top-header a[href*="all-category.php"]:active,
-                .top-header a[href*="all-category.php"]:focus,
-                .top-header a[href*="all-category.php"]:visited {
-                    color: #C5A059 !important;
-                    opacity: 1 !important;
-                }
-
                 /* Modern Navbar Styling */
                 .modern-navbar {
                     position: sticky !important;

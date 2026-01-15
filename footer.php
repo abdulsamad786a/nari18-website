@@ -271,15 +271,22 @@
     }
     
     .footer-links a {
-        color: rgba(255, 255, 255, 0.8);
+        color: rgba(255, 255, 255, 0.8) !important;
         text-decoration: none;
         font-size: 0.875rem;
         font-weight: 300;
         transition: all 0.3s ease;
     }
     
-    .footer-links a:hover {
+    .footer-column .footer-links a:hover,
+    .footer-links a:hover,
+    html body .footer .footer-column .footer-links a:hover,
+    html body .footer .footer-links a:hover,
+    html body .footer .footer-links li a:hover,
+    .footer .footer-column .footer-links li a:hover,
+    .footer .footer-links li:hover a {
         color: #C5A059 !important;
+        text-decoration: none !important;
     }
     
     .footer-contact-item {
@@ -360,6 +367,7 @@
         color: rgba(255, 255, 255, 0.9) !important;
         font-weight: 400;
         text-decoration: none;
+        font-size: inherit !important;
     }
     
     .footer-copyright a:hover {
@@ -422,12 +430,18 @@
     
     .whatsapp-float:hover {
         transform: scale(1.1);
+        color: white !important;
+        background: #25D366 !important;
     }
     
     .whatsapp-float svg {
         width: 32px;
         height: 32px;
-        fill: currentColor;
+        fill: white !important;
+    }
+    
+    .whatsapp-float:hover svg {
+        fill: white !important;
     }
     
     /* Scroll to Top Arrow */
@@ -555,6 +569,17 @@
             width: 56px;
             height: 56px;
         }
+    }
+    
+    /* FINAL OVERRIDE - Maximum specificity for footer links hover */
+    html body .footer .footer-column .footer-links li a:hover,
+    html body .footer .footer-column .footer-links a:hover,
+    html body .footer .footer-links li a:hover,
+    html body .footer .footer-links a:hover,
+    html body .footer .footer-column ul.footer-links li a:hover,
+    html body .footer .footer-column ul.footer-links a:hover {
+        color: #C5A059 !important;
+        text-decoration: none !important;
     }
 </style>
 <!--Footer with Stitching Section-->
