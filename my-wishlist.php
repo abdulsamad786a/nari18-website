@@ -75,6 +75,23 @@ $num=mysqli_num_rows($ret);
         .hero-gradient { background: linear-gradient(rgba(0,0,0,0.02), rgba(0,0,0,0)); }
         /* Override page wrapper for wishlist */
         #page-content { background: #fdfbf7; }
+        
+        /* Wishlist Add to Cart button hover effect - yellow/gold text */
+        .wishlist-add-cart-btn {
+            display: inline-block;
+        }
+        .wishlist-add-cart-btn:hover .button-text {
+            color: #D4AF37 !important;
+        }
+        
+        /* Close/Remove icon hover effect */
+        .wishlist-remove-btn:hover svg {
+            stroke: #b91c1c !important;
+        }
+        .alert-close-btn:hover svg {
+            stroke: #15803d !important;
+            opacity: 0.7;
+        }
     </style>
 <main style="background: #fdfbf7; min-height: 100vh;">
 <section class="pt-20 pb-12" style="background: #faf9f5; border-bottom: 1px solid #e5e7eb;">
@@ -94,8 +111,8 @@ $num=mysqli_num_rows($ret);
 <div class="text-sm" style="color: #15803d;">
 There are <strong><?php echo $num; ?></strong> products in this wishlist
 </div>
-<button type="button" onclick="this.parentElement.style.display='none'" style="color: #15803d;" class="hover:opacity-70">
-<span class="material-icons-outlined text-lg">close</span>
+<button type="button" onclick="this.parentElement.style.display='none'" class="alert-close-btn">
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: all 0.3s;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </button>
 </div>
 
@@ -120,8 +137,8 @@ while ($row=mysqli_fetch_array($ret)) {
 ?>
 <tr style="border-top: 1px solid #f5f5f4;">
 <td class="py-10 pr-6 align-middle">
-<a href="my-wishlist.php?del=<?php echo htmlentities($row['wid']);?>" onClick="return confirm('Are you sure you want to remove this item?')" style="color: #d6d3d1;" class="hover:text-red-700 transition-colors inline-block">
-<span class="material-icons-outlined text-lg">close</span>
+<a href="my-wishlist.php?del=<?php echo htmlentities($row['wid']);?>" onClick="return confirm('Are you sure you want to remove this item?')" class="wishlist-remove-btn inline-block">
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d6d3d1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: all 0.3s;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 </a>
 </td>
 <td class="py-10">
@@ -153,8 +170,8 @@ while ($row=mysqli_fetch_array($ret)) {
 </td>
 <td class="py-10 text-right">
 <?php if($row['stock']=='In Stock'): ?>
-<a href="my-wishlist.php?action=add&id=<?php echo $row['pid']; ?>" class="text-white px-8 py-3 text-[11px] uppercase tracking-[0.2em] transition-all duration-300 inline-block" style="background: #6d101d;" onmouseover="this.style.background='#8b1525'" onmouseout="this.style.background='#6d101d'">
-Add to Cart
+<a href="my-wishlist.php?action=add&id=<?php echo $row['pid']; ?>" class="wishlist-add-cart-btn text-white px-8 py-3 text-[11px] uppercase tracking-[0.2em] transition-all duration-300 inline-block" style="background: #6d101d;" onmouseover="this.style.background='#8b1525'" onmouseout="this.style.background='#6d101d'">
+<span class="button-text" style="color: white; transition: color 0.3s;">Add to Cart</span>
 </a>
 <?php else: ?>
 <button disabled class="text-white px-8 py-3 text-[11px] uppercase tracking-[0.2em] cursor-not-allowed opacity-50" style="background: #d6d3d1;">
@@ -171,12 +188,12 @@ Out of Stock
 <!-- Empty State -->
 <div class="flex flex-col items-center justify-center py-20 text-center">
 <div class="mb-10" style="opacity: 0.2;">
-<span class="material-icons-outlined font-light" style="font-size: 120px;">shopping_bag</span>
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
 </div>
 <h3 class="text-2xl tracking-wide mb-4" style="font-family: 'Playfair Display', serif;">Your wishlist is currently empty</h3>
 <p class="max-w-sm mx-auto mb-10 text-sm leading-relaxed" style="color: #78716c;">Explore our latest collections to find pieces that resonate with your personal style.</p>
-<a class="text-white px-10 py-4 text-[12px] uppercase tracking-[0.25em] transition-all duration-500 inline-block" href="all-category.php" style="background: #6d101d;" onmouseover="this.style.background='#8b1525'" onmouseout="this.style.background='#6d101d'">
-Continue Shopping
+<a class="wishlist-add-cart-btn text-white px-10 py-4 text-[12px] uppercase tracking-[0.25em] transition-all duration-500 inline-block" href="all-category.php" style="background: #6d101d;" onmouseover="this.style.background='#8b1525'" onmouseout="this.style.background='#6d101d'">
+<span class="button-text" style="color: white; transition: color 0.3s;">Continue Shopping</span>
 </a>
 </div>
 <?php endif; ?>
