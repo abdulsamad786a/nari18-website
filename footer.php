@@ -1,6 +1,57 @@
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<!-- Ensure Font Awesome, Material Symbols, and Google Fonts are loaded for footer icons -->
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script>
+// Fallback: Ensure icons load even if CDN links fail
+(function() {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', ensureIconsLoaded);
+    } else {
+        ensureIconsLoaded();
+    }
+    
+    function ensureIconsLoaded() {
+        // Check if Font Awesome icons are rendering
+        setTimeout(function() {
+            var faIcons = document.querySelectorAll('.fab.fa-cc-visa, .fab.fa-cc-mastercard');
+            if (faIcons.length > 0) {
+                faIcons.forEach(function(icon) {
+                    var computedStyle = window.getComputedStyle(icon, ':before');
+                    if (!computedStyle.content || computedStyle.content === 'none' || computedStyle.content === '""') {
+                        // Icon not loading, try to reload Font Awesome
+                        var head = document.head || document.getElementsByTagName('head')[0];
+                        var faLink = document.createElement('link');
+                        faLink.rel = 'stylesheet';
+                        faLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+                        faLink.crossOrigin = 'anonymous';
+                        head.appendChild(faLink);
+                    }
+                });
+            }
+            
+            // Check if Material Symbols are rendering
+            var msIcons = document.querySelectorAll('.material-symbols-outlined');
+            if (msIcons.length > 0) {
+                msIcons.forEach(function(icon) {
+                    var computedStyle = window.getComputedStyle(icon);
+                    if (computedStyle.fontFamily.indexOf('Material Symbols') === -1) {
+                        // Font not loaded, try to reload
+                        var head = document.head || document.getElementsByTagName('head')[0];
+                        var msLink = document.createElement('link');
+                        msLink.rel = 'stylesheet';
+                        msLink.href = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200';
+                        head.appendChild(msLink);
+                    }
+                });
+            }
+        }, 500);
+    }
+})();
+</script>
 <style>
     /* Premium Footer Design with Black to Red Gradient */
     .footer {
@@ -48,8 +99,20 @@
     
     .stitching-icon span {
         color: rgba(255, 255, 255, 0.4);
-        font-size: 2.25rem;
+        font-size: 48px !important;
         font-weight: 300;
+        font-family: 'Material Symbols Outlined' !important;
+        font-weight: normal !important;
+        font-style: normal !important;
+        display: inline-block !important;
+        line-height: 1 !important;
+        text-transform: none !important;
+        letter-spacing: normal !important;
+        word-wrap: normal !important;
+        white-space: nowrap !important;
+        direction: ltr !important;
+        -webkit-font-feature-settings: 'liga' !important;
+        -webkit-font-smoothing: antialiased !important;
     }
     
     .stitching-title {
@@ -298,9 +361,21 @@
     
     .footer-contact-item .material-symbols-outlined {
         color: rgba(255, 255, 255, 0.8);
-        font-size: 1.5rem;
+        font-size: 1.5rem !important;
         margin-top: 2px;
         transition: transform 0.3s ease;
+        font-family: 'Material Symbols Outlined' !important;
+        font-weight: normal !important;
+        font-style: normal !important;
+        display: inline-block !important;
+        line-height: 1 !important;
+        text-transform: none !important;
+        letter-spacing: normal !important;
+        word-wrap: normal !important;
+        white-space: nowrap !important;
+        direction: ltr !important;
+        -webkit-font-feature-settings: 'liga' !important;
+        -webkit-font-smoothing: antialiased !important;
     }
     
     .footer-contact-item:hover .material-symbols-outlined {
@@ -392,12 +467,17 @@
         background: rgba(255, 255, 255, 0.1);
         padding: 8px 12px;
         border-radius: 4px;
-        display: flex;
+        display: inline-flex !important;
         align-items: center;
         justify-content: center;
         transition: all 0.3s ease;
         width: 50px;
         height: 32px;
+        font-family: "Font Awesome 6 Brands", "Font Awesome 6 Free" !important;
+        font-weight: 400 !important;
+        font-style: normal !important;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
     
     .footer-payment i:hover {
@@ -580,6 +660,22 @@
     html body .footer .footer-column ul.footer-links a:hover {
         color: #C5A059 !important;
         text-decoration: none !important;
+    }
+    
+    /* FINAL OVERRIDE - Ensure footer contact icons are correct size on home page */
+    html body .footer .footer-contact-item .material-symbols-outlined,
+    html body .footer .footer-column .footer-contact-item .material-symbols-outlined,
+    .footer .footer-contact-item .material-symbols-outlined,
+    .footer .footer-column .footer-contact-item .material-symbols-outlined {
+        font-size: 1.5rem !important;
+    }
+    
+    /* FINAL OVERRIDE - Ensure architecture icon (stitching icon) is same size on all pages as homepage */
+    html body .footer .stitching-icon span.material-symbols-outlined,
+    html body .footer .stitching-section .stitching-icon span.material-symbols-outlined,
+    .footer .stitching-icon span.material-symbols-outlined,
+    .footer .stitching-section .stitching-icon span.material-symbols-outlined {
+        font-size: 48px !important;
     }
 </style>
 <!--Footer with Stitching Section-->
