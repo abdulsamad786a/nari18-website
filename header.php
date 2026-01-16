@@ -264,7 +264,7 @@ if(isset($_GET['action']) && $_GET['action']=="add"){
                                             <?php if(strlen($_SESSION['login'])==0) { ?>
                                             <a href="login.php" class="account-menu-item account-menu-primary">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
-                                                <span>Sign In</span>
+                                                <span class="btn-text">Sign In</span>
                                             </a>
                                             <a href="register.php" class="account-menu-item">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
@@ -695,8 +695,11 @@ $cartCount = getCartCount();
                 
                 .account-menu-primary:hover {
                     background: #600018 !important;
-                    color: #D4AF37 !important;
                     border-left: none !important;
+                }
+                
+                .account-menu-primary:hover .btn-text {
+                    color: #D4AF37 !important;
                 }
                 
                 .account-menu-primary svg {

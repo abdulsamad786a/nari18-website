@@ -123,6 +123,34 @@ function buildCategoryPageUrl($pageNum) {
 ?>
 <?php include('header.php'); ?>
 
+<!-- Material Icons for Category Page -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+<style>
+    /* Force Material Icons to render properly */
+    .material-symbols-outlined,
+    .material-icons-outlined,
+    .material-icons {
+        font-family: 'Material Symbols Outlined', 'Material Icons Outlined', 'Material Icons' !important;
+        font-weight: normal !important;
+        font-style: normal !important;
+        font-size: 24px !important;
+        line-height: 1 !important;
+        letter-spacing: normal !important;
+        text-transform: none !important;
+        display: inline-block !important;
+        white-space: nowrap !important;
+        word-wrap: normal !important;
+        direction: ltr !important;
+        -webkit-font-feature-settings: 'liga' !important;
+        -webkit-font-smoothing: antialiased !important;
+        text-rendering: optimizeLegibility !important;
+        -moz-osx-font-smoothing: grayscale !important;
+        font-feature-settings: 'liga' !important;
+    }
+</style>
+
 <!-- Tailwind CSS CDN with config -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
 <script>
