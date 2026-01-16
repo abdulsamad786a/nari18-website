@@ -143,7 +143,7 @@ if(isset($_POST['submit'])){
             if ($val < 1) $val = 1; // min 1 on legacy submit
             $_SESSION['cart'][$key]['quantity']=$val;
         }
-        echo "<script>alert('Your Cart has been Updated');</script>";
+        $_SESSION['cart_notification'] = ['title' => 'Cart Updated', 'message' => 'Your cart has been updated successfully.'];
     }
 }
 
@@ -153,7 +153,7 @@ if(isset($_POST['remove_code'])) {
         foreach($_POST['remove_code'] as $key){
             unset($_SESSION['cart'][$key]);
         }
-        echo "<script>alert('Your Cart has been Updated');</script>";
+        $_SESSION['cart_notification'] = ['title' => 'Cart Updated', 'message' => 'Your cart has been updated successfully.'];
     }
 }
 
@@ -180,7 +180,7 @@ if(isset($_POST['update'])) {
     $bcity=$_POST['billingcity'];
     $bpincode=$_POST['billingpincode'];
     $query=mysqli_query($con,"update users set billingAddress='$baddress',billingState='$bstate',billingCity='$bcity',billingPincode='$bpincode' where id='".$_SESSION['id']."'");
-    if($query) { echo "<script>alert('Billing Address has been updated');</script>"; }
+    if($query) { $_SESSION['cart_notification'] = ['title' => 'Address Updated', 'message' => 'Billing address has been updated successfully.']; }
 }
 
 // Shipping update
@@ -190,73 +190,144 @@ if(isset($_POST['shipupdate'])) {
     $scity=$_POST['shippingcity'];
     $spincode=$_POST['shippingpincode'];
     $query=mysqli_query($con,"update users set shippingAddress='$saddress',shippingState='$sstate',shippingCity='$scity',shippingPincode='$spincode' where id='".$_SESSION['id']."'");
-    if($query) { echo "<script>alert('Shipping Address has been updated');</script>"; }
+    if($query) { $_SESSION['cart_notification'] = ['title' => 'Address Updated', 'message' => 'Shipping address has been updated successfully.']; }
 }
 ?>
-<!DOCTYPE html>
-<html class="light" lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Nari18 | Premium Boutique - Shopping Cart</title>
-    <link rel="shortcut icon" href="assets/images/favicon.png" />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
-    <!-- Font Awesome for Footer Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Plugins CSS for Footer compatibility -->
-    <link rel="stylesheet" href="assets/css/plugins.css">
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#800020",
-                        secondary: "#D4AF37",
-                        "background-light": "#F9F7F2",
-                        "background-dark": "#121212",
-                    },
-                    fontFamily: {
-                        display: ["Playfair Display", "serif"],
-                        sans: ["Montserrat", "sans-serif"],
-                    },
-                    borderRadius: {
-                        DEFAULT: "4px",
-                    },
+<?php include 'header.php'; ?>
+
+<!-- Cart Page Specific Styles and Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+<style>
+    /* Force Material Icons to render properly on cart page */
+    .material-symbols-outlined,
+    .material-icons-outlined,
+    .material-icons {
+        font-family: 'Material Symbols Outlined', 'Material Icons Outlined', 'Material Icons' !important;
+        font-weight: normal !important;
+        font-style: normal !important;
+        font-size: 24px !important;
+        line-height: 1 !important;
+        letter-spacing: normal !important;
+        text-transform: none !important;
+        display: inline-block !important;
+        white-space: nowrap !important;
+        word-wrap: normal !important;
+        direction: ltr !important;
+        -webkit-font-feature-settings: 'liga' !important;
+        -webkit-font-smoothing: antialiased !important;
+        text-rendering: optimizeLegibility !important;
+        -moz-osx-font-smoothing: grayscale !important;
+        font-feature-settings: 'liga' !important;
+    }
+    /* Adjust icon sizes for specific contexts */
+    .qty-btn .material-symbols-outlined {
+        font-size: 18px !important;
+    }
+    .remove-item .material-symbols-outlined {
+        font-size: 20px !important;
+    }
+    button[name="ordersubmit"] .material-symbols-outlined {
+        font-size: 16px !important;
+    }
+    /* Remove borders from quantity selector and remove button */
+    .qty-btn {
+        border: none !important;
+        background: transparent !important;
+        outline: none !important;
+    }
+    .qty-btn:focus {
+        outline: none !important;
+        box-shadow: none !important;
+    }
+    .remove-item {
+        border: none !important;
+        background: transparent !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+    .remove-item:focus {
+        outline: none !important;
+        box-shadow: none !important;
+    }
+    .qty-input {
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+    .qty-input:focus {
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+    /* Update Cart Button Hover Effect */
+    .update-cart-btn {
+        background-color: #ffffff !important;
+    }
+    .update-cart-btn:hover {
+        background-color: #800020 !important;
+    }
+    .update-cart-btn .update-cart-text {
+        color: #800020 !important;
+    }
+    .update-cart-btn:hover .update-cart-text {
+        color: #D4AF37 !important;
+    }
+    /* Custom Checkbox Styling */
+    .custom-checkbox {
+        appearance: auto !important;
+        -webkit-appearance: checkbox !important;
+        -moz-appearance: checkbox !important;
+        width: 18px !important;
+        height: 18px !important;
+        border: 2px solid #800020 !important;
+        border-radius: 3px !important;
+        cursor: pointer !important;
+        background-color: #fff !important;
+    }
+    .custom-checkbox:checked {
+        background-color: #800020 !important;
+        border-color: #800020 !important;
+    }
+</style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script>
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    primary: "#800020",
+                    secondary: "#D4AF37",
+                    "background-light": "#F9F7F2",
+                    "background-dark": "#121212",
+                },
+                fontFamily: {
+                    display: ["Playfair Display", "serif"],
+                    sans: ["Montserrat", "sans-serif"],
+                },
+                borderRadius: {
+                    DEFAULT: "4px",
                 },
             },
-        };
-    </script>
-    <style>
-        /* Override any conflicting styles - Cart Page Specific */
-        body.cart-page {
-            font-family: 'Montserrat', sans-serif !important;
-            background-color: #F9F7F2 !important;
-            color: #1e293b !important;
+        },
+    };
+</script>
+<style>
+        /* Cart Page Specific Styles */
+        #page-content {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #F9F7F2;
+            color: #1e293b;
+            min-height: 60vh;
         }
-        body.cart-page.dark {
-            background-color: #121212 !important;
-            color: #f1f5f9 !important;
-        }
-        .cart-page h1, .cart-page h2, .cart-page h3, .cart-page .serif-font {
+        #page-content h1, #page-content h2, #page-content h3, #page-content .serif-font {
             font-family: 'Playfair Display', serif !important;
         }
         /* Main content area styling */
-        .cart-page main {
-            background-color: #F9F7F2 !important;
-        }
-        .cart-page.dark main {
-            background-color: #121212 !important;
-        }
-        /* Header styling */
-        .cart-page header {
-            background: rgba(255, 255, 255, 0.8) !important;
-            backdrop-filter: blur(12px) !important;
-        }
-        .cart-page.dark header {
-            background: rgba(24, 24, 27, 0.8) !important;
+        #page-content main {
+            background-color: #F9F7F2;
         }
         /* Input elegant styling */
         .input-elegant {
@@ -284,50 +355,31 @@ if(isset($_POST['shipupdate'])) {
             color: #9ca3af !important;
         }
         /* Primary color overrides */
-        .cart-page .bg-primary {
+        #page-content .bg-primary {
             background-color: #800020 !important;
         }
-        .cart-page .text-primary {
+        #page-content .text-primary {
             color: #800020 !important;
         }
-        .cart-page .border-primary {
+        #page-content .border-primary {
             border-color: #800020 !important;
         }
-        .cart-page .hover\:text-primary:hover {
+        #page-content .hover\:text-primary:hover {
             color: #800020 !important;
         }
-        .cart-page .hover\:bg-primary:hover {
+        #page-content .hover\:bg-primary:hover {
             background-color: #800020 !important;
         }
-        /* Secondary color overrides for dark mode */
-        .cart-page.dark .text-secondary,
-        .cart-page.dark .dark\:text-secondary {
-            color: #D4AF37 !important;
-        }
-        .cart-page.dark .border-secondary,
-        .cart-page.dark .dark\:border-secondary {
-            border-color: #D4AF37 !important;
-        }
-        .cart-page.dark .hover\:text-secondary:hover,
-        .cart-page.dark .dark\:hover\:text-secondary:hover {
-            color: #D4AF37 !important;
-        }
         /* Cart table styling */
-        .cart-page table {
+        #page-content table {
             background-color: transparent !important;
         }
-        .cart-page .divide-stone-100 > * + * {
+        #page-content .divide-stone-100 > * + * {
             border-color: rgba(245, 245, 244, 1) !important;
         }
-        .cart-page.dark .divide-stone-800 > * + * {
-            border-color: rgba(41, 37, 36, 1) !important;
-        }
         /* Order summary card */
-        .cart-page .bg-white {
+        #page-content .bg-white {
             background-color: #ffffff !important;
-        }
-        .cart-page.dark .dark\:bg-zinc-900 {
-            background-color: #18181b !important;
         }
         /* Custom scrollbar */
         ::-webkit-scrollbar {
@@ -351,91 +403,177 @@ if(isset($_POST['shipupdate'])) {
         .product-img-wrapper:hover img {
             filter: grayscale(0);
         }
+        
+        /* Custom Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-box {
+            background: #fff;
+            padding: 40px 50px;
+            max-width: 380px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .modal-overlay.active .modal-box {
+            transform: scale(1);
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            transition: transform 0.3s;
+        }
+        .modal-close:hover {
+            transform: rotate(90deg);
+        }
+        .modal-close svg {
+            stroke: #a8a29e;
+            transition: stroke 0.3s;
+        }
+        .modal-close:hover svg {
+            stroke: #1c1917;
+        }
+        .modal-icon {
+            width: 70px;
+            height: 70px;
+            border: 2px solid #e5e7eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+        }
+        .modal-icon svg {
+            stroke: #800020;
+        }
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 400;
+            color: #1c1917;
+            margin-bottom: 12px;
+        }
+        .modal-desc {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            color: #78716c;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        .modal-btn {
+            padding: 14px 30px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        .modal-btn-cancel {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            color: #1c1917;
+        }
+        .modal-btn-cancel:hover {
+            background: #f5f5f4;
+            border-color: #d6d3d1;
+        }
+        .modal-btn-confirm {
+            background: #800020;
+            color: #fff;
+        }
+        .modal-btn-confirm:hover {
+            background: #600018;
+        }
+        
+        /* Notification Modal Styles */
+        .notification-modal .modal-icon {
+            border-color: #bbf7d0;
+            background: #f0fdf4;
+        }
+        .notification-modal .modal-icon svg {
+            stroke: #15803d;
+        }
+        .notification-modal .modal-btn-confirm {
+            background: #15803d;
+        }
+        .notification-modal .modal-btn-confirm:hover {
+            background: #166534;
+        }
         /* Smooth transitions */
         .transition-smooth {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         /* Stone colors for text */
-        .cart-page .text-stone-400 {
+        #page-content .text-stone-400 {
             color: #a8a29e !important;
         }
-        .cart-page .text-stone-500 {
+        #page-content .text-stone-500 {
             color: #78716c !important;
         }
-        .cart-page .text-stone-600 {
+        #page-content .text-stone-600 {
             color: #57534e !important;
         }
-        .cart-page .text-stone-800 {
+        #page-content .text-stone-800 {
             color: #292524 !important;
         }
-        .cart-page.dark .dark\:text-stone-400 {
-            color: #a8a29e !important;
-        }
         /* Border colors */
-        .cart-page .border-stone-100 {
+        #page-content .border-stone-100 {
             border-color: #f5f5f4 !important;
         }
-        .cart-page .border-stone-200 {
+        #page-content .border-stone-200 {
             border-color: #e7e5e4 !important;
         }
-        .cart-page.dark .dark\:border-stone-800 {
-            border-color: #292524 !important;
-        }
         /* Ensure checkout button has correct colors */
-        .cart-page button[name="ordersubmit"],
-        .cart-page .checkout-btn {
+        #page-content button[name="ordersubmit"],
+        #page-content .checkout-btn {
             background-color: #800020 !important;
             border-color: #800020 !important;
             color: #ffffff !important;
         }
-        .cart-page button[name="ordersubmit"]:hover,
-        .cart-page .checkout-btn:hover {
+        #page-content button[name="ordersubmit"]:hover,
+        #page-content .checkout-btn:hover {
             background-color: #ffffff !important;
             color: #800020 !important;
         }
-        .cart-page.dark button[name="ordersubmit"],
-        .cart-page.dark .checkout-btn {
-            background-color: transparent !important;
-            border-color: #D4AF37 !important;
-            color: #D4AF37 !important;
-        }
-        .cart-page.dark button[name="ordersubmit"]:hover,
-        .cart-page.dark .checkout-btn:hover {
-            background-color: #D4AF37 !important;
-            color: #000000 !important;
-        }
     </style>
-</head>
-<body class="cart-page bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-300">
-
-<!-- Header -->
-<header class="border-b border-stone-200 dark:border-stone-800 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <div class="flex items-center space-x-12">
-            <a class="text-2xl font-display font-bold tracking-tighter text-primary dark:text-secondary" href="index.php">
-                <img src="assets/images/logo.png" alt="Nari18" title="Nari18" class="h-10 dark:brightness-110" />
-            </a>
-            <nav class="hidden lg:flex space-x-8 text-[11px] font-semibold tracking-[0.2em] uppercase text-stone-600 dark:text-stone-400">
-                <a class="hover:text-primary dark:hover:text-secondary transition-colors" href="index.php">Home</a>
-                <a class="hover:text-primary dark:hover:text-secondary transition-colors" href="about.php">About Us</a>
-                <a class="hover:text-primary dark:hover:text-secondary transition-colors" href="all-category.php">Shop Catalog</a>
-                <a class="hover:text-primary dark:hover:text-secondary transition-colors" href="all-category.php">New Arrivals</a>
-            </nav>
-        </div>
-        <div class="flex items-center space-x-6 text-stone-600 dark:text-stone-400">
-            <a href="search-result.php" class="hover:text-primary dark:hover:text-secondary transition-colors"><span class="material-symbols-outlined">search</span></a>
-            <a href="my-account.php" class="hover:text-primary dark:hover:text-secondary transition-colors"><span class="material-symbols-outlined">person</span></a>
-            <a href="my-cart.php" class="hover:text-primary dark:hover:text-secondary transition-colors relative">
-                <span class="material-symbols-outlined">shopping_bag</span>
-                <span class="absolute -top-1 -right-1 bg-primary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center" id="header-cart-count"><?php echo isset($_SESSION['qnty']) ? $_SESSION['qnty'] : 0; ?></span>
-            </a>
-        </div>
-    </div>
-</header>
 
 <!-- Main Content -->
+<div id="page-content" style="background: #F9F7F2;">
 <main class="max-w-7xl mx-auto px-6 py-12">
-    <h1 class="text-4xl font-display mb-12 text-center lg:text-left">Your Shopping Cart</h1>
+    <h1 class="text-4xl font-display mb-12 text-center lg:text-left" style="font-family: 'Playfair Display', serif;">Your Shopping Cart</h1>
     
     <form method="post" id="cartForm">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -498,19 +636,19 @@ if(isset($_POST['shipupdate'])) {
                             <td class="py-8 text-center text-sm">Rs: <?php echo number_format($row['productPrice'], 2); ?></td>
                             <td class="py-8">
                                 <div class="flex items-center justify-center">
-                                    <div class="flex border border-stone-200 dark:border-stone-700 items-center">
-                                        <button type="button" class="qty-btn px-3 py-1 hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors" data-role="minus" data-pid="<?php echo $row['id']; ?>">
+                                    <div class="flex items-center">
+                                        <button type="button" class="qty-btn px-2 py-1 text-stone-500 hover:text-primary transition-colors" data-role="minus" data-pid="<?php echo $row['id']; ?>">
                                             <span class="material-symbols-outlined text-sm">remove</span>
                                         </button>
                                         <input type="text" 
-                                               class="w-12 text-center text-sm bg-transparent border-none focus:ring-0 qty-input" 
+                                               class="w-10 text-center text-sm bg-transparent border-none focus:ring-0 focus:outline-none qty-input" 
                                                value="<?php echo (int)$_SESSION['cart'][$row['id']]['quantity']; ?>" 
                                                name="quantity[<?php echo $row['id']; ?>]" 
                                                pattern="[0-9]*"
                                                inputmode="numeric"
                                                data-pid="<?php echo $row['id']; ?>"
                                                id="qty-<?php echo $row['id']; ?>" />
-                                        <button type="button" class="qty-btn px-3 py-1 hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors" data-role="plus" data-pid="<?php echo $row['id']; ?>">
+                                        <button type="button" class="qty-btn px-2 py-1 text-stone-500 hover:text-primary transition-colors" data-role="plus" data-pid="<?php echo $row['id']; ?>">
                                             <span class="material-symbols-outlined text-sm">add</span>
                                         </button>
                                     </div>
@@ -518,7 +656,7 @@ if(isset($_POST['shipupdate'])) {
                             </td>
                             <td class="py-8 text-right font-medium" id="line-total-<?php echo $row['id']; ?>">Rs: <?php echo number_format($_SESSION['cart'][$row['id']]['quantity']*$row['productPrice'],2); ?></td>
                             <td class="py-8 text-right pl-4">
-                                <button type="button" class="remove-item text-stone-300 hover:text-red-600 transition-colors" data-pid="<?php echo $row['id']; ?>" title="Remove item">
+                                <button type="button" class="remove-item text-stone-300 hover:text-red-600 transition-colors border-none bg-transparent p-0" data-pid="<?php echo $row['id']; ?>" title="Remove item">
                                     <span class="material-symbols-outlined">close</span>
                                 </button>
                             </td>
@@ -535,8 +673,8 @@ if(isset($_POST['shipupdate'])) {
                         <span class="material-symbols-outlined text-sm mr-2 transition-transform group-hover:-translate-x-1">arrow_back</span>
                         Continue Shopping
                     </a>
-                    <button type="submit" name="submit" class="text-[11px] font-semibold uppercase tracking-widest border border-primary text-primary dark:text-secondary dark:border-secondary px-6 py-2 hover:bg-primary hover:text-white dark:hover:bg-secondary dark:hover:text-black transition-all">
-                        Update Cart
+                    <button type="submit" name="submit" class="update-cart-btn text-[11px] font-semibold uppercase tracking-widest border border-primary px-6 py-2 transition-all" style="background-color: #ffffff !important;">
+                        <span class="update-cart-text" style="color: #800020; transition: color 0.3s;">Update Cart</span>
                     </button>
                 </div>
             </div>
@@ -578,7 +716,7 @@ if(isset($_POST['shipupdate'])) {
                             Update Billing Address
                         </button>
                         <label class="flex items-center space-x-3 cursor-pointer group">
-                            <input type="checkbox" id="copyAddress" onclick="copyBillingToShipping()" class="form-checkbox text-primary h-4 w-4 border-stone-300 dark:border-stone-700 rounded-none focus:ring-0" />
+                            <input type="checkbox" id="copyAddress" onclick="copyBillingToShipping()" class="custom-checkbox" style="width: 18px; height: 18px; accent-color: #800020; cursor: pointer;" />
                             <span class="text-[11px] font-medium uppercase tracking-widest text-stone-500 group-hover:text-stone-800 dark:group-hover:text-stone-200 transition-colors">Same as Shipping Address</span>
                         </label>
                     </div>
@@ -676,8 +814,8 @@ if(isset($_POST['shipupdate'])) {
                     </button>
                     
                     <!-- Payment Icons -->
-                    <div class="mt-8 flex flex-wrap justify-center gap-4 opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
-                        <img alt="Secure Payment" class="h-7" src="assets/Secure_Payment.webp" />
+                    <div class="mt-4 w-full">
+                        <img alt="Secure Payment" class="w-full h-auto object-contain" src="assets/Secure_Payment.webp" style="max-height: 50px;" />
                     </div>
                 </div>
                 
@@ -693,6 +831,7 @@ if(isset($_POST['shipupdate'])) {
     </div>
     </form>
 </main>
+</div><!-- End page-content -->
 
 <script>
 // Copy Billing to Shipping Address
@@ -746,40 +885,8 @@ function copyBillingToShipping() {
             
             const pid = removeBtn.getAttribute('data-pid');
             
-            if (confirm('Are you sure you want to remove this item from cart?')) {
-                lock = true;
-                
-                postJSON(window.location.href, {
-                    ajax: '1',
-                    action: 'remove_item',
-                    pid: pid
-                }).then(res=>{
-                    if (!res || !res.ok) return;
-                    
-                    // Remove the row with animation
-                    const row = document.getElementById('row-'+pid);
-                    if (row) {
-                        row.style.transition = 'opacity 0.3s, transform 0.3s';
-                        row.style.opacity = '0';
-                        row.style.transform = 'translateX(-20px)';
-                        setTimeout(()=> {
-                            row.remove();
-                            // Check if cart is empty
-                            if (res.cart_empty) {
-                                setTimeout(()=> location.reload(), 300);
-                            }
-                        }, 300);
-                    }
-                    
-                    // Update totals
-                    updateTotals(res);
-                    
-                    // Update header cart count
-                    const headerCount = document.getElementById('header-cart-count');
-                    if (headerCount) headerCount.textContent = res.cart_count;
-                    
-                }).catch(console.error).finally(()=>{ lock = false; });
-            }
+            // Show custom modal instead of browser confirm
+            showRemoveModal(pid);
             return;
         }
         
@@ -881,6 +988,178 @@ function copyBillingToShipping() {
         if (grandHidden) grandHidden.value = res.grand;
     }
 })();
+</script>
+
+<!-- Remove Item Modal -->
+<div id="removeModal" class="modal-overlay">
+    <div class="modal-box">
+        <button type="button" class="modal-close" onclick="closeRemoveModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <div class="modal-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+            </svg>
+        </div>
+        <h3 class="modal-title">Remove Item?</h3>
+        <p class="modal-desc">Are you sure you want to remove this item from your cart? This action cannot be undone.</p>
+        <div class="modal-buttons">
+            <button type="button" class="modal-btn modal-btn-cancel" onclick="closeRemoveModal()">Cancel</button>
+            <button type="button" id="confirmRemoveBtn" class="modal-btn modal-btn-confirm">Remove</button>
+        </div>
+    </div>
+</div>
+
+<!-- Notification Modal -->
+<div id="notificationModal" class="modal-overlay notification-modal">
+    <div class="modal-box">
+        <button type="button" class="modal-close" onclick="closeNotificationModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <div class="modal-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+        </div>
+        <h3 class="modal-title" id="notificationTitle">Success!</h3>
+        <p class="modal-desc" id="notificationDesc">Your action has been completed successfully.</p>
+        <div class="modal-buttons">
+            <button type="button" class="modal-btn modal-btn-confirm" onclick="closeNotificationModal()">OK</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let pendingRemovePid = null;
+    
+    function showRemoveModal(pid) {
+        pendingRemovePid = pid;
+        document.getElementById('removeModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeRemoveModal() {
+        document.getElementById('removeModal').classList.remove('active');
+        document.body.style.overflow = '';
+        pendingRemovePid = null;
+    }
+    
+    function showNotificationModal(title, message) {
+        document.getElementById('notificationTitle').textContent = title;
+        document.getElementById('notificationDesc').textContent = message;
+        document.getElementById('notificationModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeNotificationModal() {
+        document.getElementById('notificationModal').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    // Close modal when clicking outside
+    document.getElementById('removeModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeRemoveModal();
+        }
+    });
+    
+    document.getElementById('notificationModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeNotificationModal();
+        }
+    });
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeRemoveModal();
+            closeNotificationModal();
+        }
+    });
+    
+    // Handle confirm remove button click
+    document.getElementById('confirmRemoveBtn').addEventListener('click', function() {
+        if (!pendingRemovePid) return;
+        
+        const pid = pendingRemovePid;
+        closeRemoveModal();
+        
+        // Post to remove the item
+        fetch(window.location.href, {
+            method: 'POST',
+            headers: { 'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8' },
+            body: new URLSearchParams({
+                ajax: '1',
+                action: 'remove_item',
+                pid: pid
+            }).toString()
+        })
+        .then(r => r.json())
+        .then(res => {
+            if (!res || !res.ok) return;
+            
+            // Remove the row with animation
+            const row = document.getElementById('row-'+pid);
+            if (row) {
+                row.style.transition = 'opacity 0.3s, transform 0.3s';
+                row.style.opacity = '0';
+                row.style.transform = 'translateX(-20px)';
+                setTimeout(()=> {
+                    row.remove();
+                    // Check if cart is empty
+                    if (res.cart_empty) {
+                        setTimeout(()=> location.reload(), 300);
+                    }
+                }, 300);
+            }
+            
+            // Update totals
+            const subtotal = document.getElementById('subtotal');
+            if (subtotal) subtotal.textContent = res.subtotal;
+
+            const tax = document.getElementById('tax');
+            if (tax) tax.textContent = res.tax;
+
+            const shipping = document.getElementById('shipping');
+            if (shipping) {
+                const subtotalVal = parseFloat(res.subtotal.replace(/,/g, ''));
+                if (subtotalVal >= 5000) {
+                    shipping.textContent = 'Free';
+                    shipping.className = 'text-green-600 font-medium uppercase text-[10px]';
+                } else {
+                    shipping.textContent = 'Rs: ' + res.shipping;
+                    shipping.className = 'font-medium';
+                }
+            }
+
+            const grand = document.getElementById('grand');
+            const grandHidden = document.getElementById('grandtotal');
+            if (grand) grand.textContent = 'Rs: ' + res.grand;
+            if (grandHidden) grandHidden.value = res.grand;
+            
+            // Update header cart count
+            const headerCount = document.getElementById('header-cart-count');
+            if (headerCount) headerCount.textContent = res.cart_count;
+        })
+        .catch(console.error);
+    });
+    
+    // Check for session notification on page load
+    <?php if(isset($_SESSION['cart_notification'])): ?>
+    document.addEventListener('DOMContentLoaded', function() {
+        showNotificationModal('<?php echo addslashes($_SESSION['cart_notification']['title']); ?>', '<?php echo addslashes($_SESSION['cart_notification']['message']); ?>');
+    });
+    <?php unset($_SESSION['cart_notification']); endif; ?>
 </script>
 
 <!-- Include Home Page Footer -->

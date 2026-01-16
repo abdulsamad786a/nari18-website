@@ -7,6 +7,7 @@ if(strlen($_SESSION['login'])==0)
     header('location:login.php');
 }
 else{
+    // Handle Account Info Update
     if(isset($_POST['update']))
     {
         $name=$_POST['name'];
@@ -18,27 +19,62 @@ else{
         }
     }
 
-date_default_timezone_set('Asia/Kolkata');// change according timezone
-$currentTime = date( 'd-m-Y h:i:s A', time () );
+    // Handle Password Change
+    date_default_timezone_set('Asia/Kolkata');
+    $currentTime = date( 'd-m-Y h:i:s A', time () );
 
-if(isset($_POST['submit']))
-{
-    $sql=mysqli_query($con,"SELECT password FROM  users where password='".md5($_POST['cpass'])."' && id='".$_SESSION['id']."'");
-    $num=mysqli_fetch_array($sql);
-    if($num>0)
+    if(isset($_POST['submit']))
     {
-        $con=mysqli_query($con,"update students set password='".md5($_POST['newpass'])."', updationDate='$currentTime' where id='".$_SESSION['id']."'");
-        echo "<script>alert('Password Changed Successfully !!');</script>";
+        $sql=mysqli_query($con,"SELECT password FROM  users where password='".md5($_POST['cpass'])."' && id='".$_SESSION['id']."'");
+        $num=mysqli_fetch_array($sql);
+        if($num>0)
+        {
+            $con=mysqli_query($con,"update students set password='".md5($_POST['newpass'])."', updationDate='$currentTime' where id='".$_SESSION['id']."'");
+            echo "<script>alert('Password Changed Successfully !!');</script>";
+        }
+        else
+        {
+            echo "<script>alert('Current Password not match !!');</script>";
+        }
     }
-    else
-    {
-        echo "<script>alert('Current Password not match !!');</script>";
-    }
-}
 
-// Fetch user data
-$userQuery = mysqli_query($con,"select * from users where id='".$_SESSION['id']."'");
-$userData = mysqli_fetch_array($userQuery);
+    // Handle Billing Address Update
+    if(isset($_POST['updatebilling']))
+    {
+        $baddress=$_POST['billingaddress'];
+        $bstate=$_POST['bilingstate'];
+        $bcity=$_POST['billingcity'];
+        $bpincode=$_POST['billingpincode'];
+        $query=mysqli_query($con,"update users set billingAddress='$baddress',billingState='$bstate',billingCity='$bcity',billingPincode='$bpincode' where id='".$_SESSION['id']."'");
+        if($query)
+        {
+            echo "<script>alert('Billing Address has been updated');</script>";
+        }
+    }
+
+    // Handle Shipping Address Update
+    if(isset($_POST['shipupdate']))
+    {
+        $saddress=$_POST['shippingaddress'];
+        $sstate=$_POST['shippingstate'];
+        $scity=$_POST['shippingcity'];
+        $spincode=$_POST['shippingpincode'];
+        $query=mysqli_query($con,"update users set shippingAddress='$saddress',shippingState='$sstate',shippingCity='$scity',shippingPincode='$spincode' where id='".$_SESSION['id']."'");
+        if($query)
+        {
+            echo "<script>alert('Shipping Address has been updated');</script>";
+        }
+    }
+
+    // Handle Pending Order Deletion
+    if(isset($_GET['deletepending'])) {
+        mysqli_query($con,"delete from orders where userId='".$_SESSION['id']."' and paymentMethod is null and id='".$_GET['deletepending']."' ");
+        echo "<script>alert('Successfully Deleted');</script>";
+    }
+
+    // Fetch user data
+    $userQuery = mysqli_query($con,"select * from users where id='".$_SESSION['id']."'");
+    $userData = mysqli_fetch_array($userQuery);
 ?>
 <?php include 'header.php'?>
 
@@ -157,6 +193,7 @@ $userData = mysqli_fetch_array($userQuery);
         border-bottom: 1px solid var(--border-light);
         text-decoration: none;
         transition: all 0.3s ease;
+        cursor: pointer;
     }
     
     .premium-nav-item.active {
@@ -218,7 +255,7 @@ $userData = mysqli_fetch_array($userQuery);
     
     /* Content Area */
     .premium-content-area {
-        max-width: 768px;
+        max-width: 100%;
     }
     
     .premium-welcome-header {
@@ -504,6 +541,159 @@ $userData = mysqli_fetch_array($userQuery);
         font-style: normal;
         letter-spacing: 0.2em;
     }
+    
+    /* Address Cards Grid */
+    .premium-address-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+    
+    @media (min-width: 768px) {
+        .premium-address-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+    
+    .premium-address-card {
+        background: #ffffff;
+        padding: 32px;
+        border: 1px solid var(--border-light);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    
+    /* Table Styles for Order History */
+    .premium-table-wrapper {
+        background: #ffffff;
+        border: 1px solid var(--border-light);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        overflow-x: auto;
+    }
+    
+    .premium-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 800px;
+    }
+    
+    .premium-table thead {
+        background: var(--background-light);
+        border-bottom: 2px solid var(--border-light);
+    }
+    
+    .premium-table th {
+        padding: 16px;
+        text-align: left;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        font-weight: 700;
+        color: #6b7280;
+    }
+    
+    .premium-table td {
+        padding: 16px;
+        border-bottom: 1px solid var(--border-light);
+        font-size: 0.875rem;
+        color: var(--text-dark);
+    }
+    
+    .premium-table tbody tr:hover {
+        background: #fafafa;
+    }
+    
+    .premium-table-img {
+        width: 60px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+    
+    .premium-table-product-name {
+        font-family: 'Playfair Display', serif;
+        font-style: italic;
+        color: var(--text-dark);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+    
+    .premium-table-product-name:hover {
+        color: var(--primary);
+    }
+    
+    .premium-table-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--primary);
+        color: #ffffff;
+        padding: 10px 20px;
+        border: none;
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+    }
+    
+    .premium-table-btn:hover {
+        background: #000000;
+        color: #ffffff;
+    }
+    
+    .premium-table-btn.btn-danger {
+        background: #dc2626;
+    }
+    
+    .premium-table-btn.btn-danger:hover {
+        background: #991b1b;
+    }
+    
+    /* Track Order Form */
+    .premium-track-form {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+    
+    @media (min-width: 768px) {
+        .premium-track-form {
+            flex-direction: row;
+            align-items: flex-end;
+        }
+        
+        .premium-track-form .premium-form-group {
+            flex: 1;
+        }
+    }
+    
+    /* Empty State */
+    .premium-empty-state {
+        text-align: center;
+        padding: 64px 32px;
+        background: #ffffff;
+        border: 1px solid var(--border-light);
+    }
+    
+    .premium-empty-state .material-symbols-outlined {
+        font-size: 64px;
+        color: #d1d5db;
+        margin-bottom: 16px;
+    }
+    
+    .premium-empty-state h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.5rem;
+        color: var(--text-dark);
+        margin-bottom: 8px;
+    }
+    
+    .premium-empty-state p {
+        color: #6b7280;
+        font-size: 0.875rem;
+    }
 </style>
 
 <script type="text/javascript">
@@ -536,6 +726,17 @@ function valid()
     return true;
 }
 
+// Popup window for track order
+var popUpWin=0;
+function popUpWindow(URLStr, left, top, width, height)
+{
+    if(popUpWin)
+    {
+        if(!popUpWin.closed) popUpWin.close();
+    }
+    popUpWin = open(URLStr,'popUpWin', 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,copyhistory=yes,width='+600+',height='+600+',left='+left+', top='+top+',screenX='+left+',screenY='+top+'');
+}
+
 // Tab switching functionality
 document.addEventListener('DOMContentLoaded', function() {
     const tabLinks = document.querySelectorAll('[data-tab]');
@@ -543,9 +744,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     tabLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            if(this.getAttribute('href') === '#') {
-                e.preventDefault();
-            }
+            e.preventDefault();
             
             const tabId = this.getAttribute('data-tab');
             if(!tabId) return;
@@ -561,8 +760,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     content.classList.add('active');
                 }
             });
+            
+            // Update URL hash without scrolling
+            history.replaceState(null, null, '#' + tabId);
         });
     });
+    
+    // Check for hash on page load
+    const hash = window.location.hash.substring(1);
+    if(hash) {
+        const targetTab = document.querySelector('[data-tab="' + hash + '"]');
+        if(targetTab) {
+            targetTab.click();
+        }
+    }
 });
 </script>
 
@@ -598,19 +809,19 @@ document.addEventListener('DOMContentLoaded', function() {
                         <span class="premium-nav-text">Change Password</span>
                         <span class="material-symbols-outlined premium-nav-arrow">chevron_right</span>
                     </a>
-                    <a href="bill-ship-addresses.php" class="premium-nav-item">
+                    <a href="#" class="premium-nav-item" data-tab="addresses">
                         <span class="premium-nav-text">Shipping / Billing Address</span>
                         <span class="material-symbols-outlined premium-nav-arrow">chevron_right</span>
                     </a>
-                    <a href="order-history.php" class="premium-nav-item">
+                    <a href="#" class="premium-nav-item" data-tab="order-history">
                         <span class="premium-nav-text">Order History</span>
                         <span class="material-symbols-outlined premium-nav-arrow">chevron_right</span>
                     </a>
-                    <a href="track-orders.php" class="premium-nav-item">
+                    <a href="#" class="premium-nav-item" data-tab="track-order">
                         <span class="premium-nav-text">Track Order</span>
                         <span class="material-symbols-outlined premium-nav-arrow">chevron_right</span>
                     </a>
-                    <a href="pending-orders.php" class="premium-nav-item">
+                    <a href="#" class="premium-nav-item" data-tab="pending-orders">
                         <span class="premium-nav-text">Payment Pending Orders</span>
                         <span class="material-symbols-outlined premium-nav-arrow">chevron_right</span>
                     </a>
@@ -711,6 +922,280 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                         </form>
                     </div>
+                </div>
+                
+                <!-- Shipping / Billing Address Tab -->
+                <div id="addresses" class="premium-tab-content">
+                    <header class="premium-welcome-header">
+                        <h2 class="premium-welcome-title">
+                            Shipping / <span class="user-name">Billing Address</span>
+                        </h2>
+                        <p class="premium-welcome-description">
+                            Manage your shipping and billing addresses. Keep them updated for faster checkout.
+                        </p>
+                    </header>
+                    
+                    <div class="premium-address-grid">
+                        <!-- Billing Address Card -->
+                        <div class="premium-address-card">
+                            <div class="premium-section-header">
+                                <span class="premium-section-line"></span>
+                                <h3 class="premium-section-title">Billing Address</h3>
+                            </div>
+                            
+                            <form method="post" class="premium-form">
+                                <div class="premium-form-group">
+                                    <label class="premium-form-label">Address <span class="required">*</span></label>
+                                    <input type="text" name="billingaddress" class="premium-form-input" value="<?php echo htmlspecialchars($userData['billingAddress']); ?>" placeholder="Enter billing address" required>
+                                </div>
+                                
+                                <div class="premium-form-group">
+                                    <label class="premium-form-label">State <span class="required">*</span></label>
+                                    <input type="text" name="bilingstate" class="premium-form-input" value="<?php echo htmlspecialchars($userData['billingState']); ?>" placeholder="Enter state" required>
+                                </div>
+                                
+                                <div class="premium-form-group">
+                                    <label class="premium-form-label">City <span class="required">*</span></label>
+                                    <input type="text" name="billingcity" class="premium-form-input" value="<?php echo htmlspecialchars($userData['billingCity']); ?>" placeholder="Enter city" required>
+                                </div>
+                                
+                                <div class="premium-form-group">
+                                    <label class="premium-form-label">Pincode <span class="required">*</span></label>
+                                    <input type="text" name="billingpincode" class="premium-form-input" value="<?php echo htmlspecialchars($userData['billingPincode']); ?>" placeholder="Enter pincode" required>
+                                </div>
+                                
+                                <div class="premium-submit-wrapper">
+                                    <button type="submit" name="updatebilling" class="premium-submit-btn">
+                                        Update Billing
+                                        <span class="material-symbols-outlined">receipt_long</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Shipping Address Card -->
+                        <div class="premium-address-card">
+                            <div class="premium-section-header">
+                                <span class="premium-section-line"></span>
+                                <h3 class="premium-section-title">Shipping Address</h3>
+                            </div>
+                            
+                            <form method="post" class="premium-form">
+                                <div class="premium-form-group">
+                                    <label class="premium-form-label">Address <span class="required">*</span></label>
+                                    <input type="text" name="shippingaddress" class="premium-form-input" value="<?php echo htmlspecialchars($userData['shippingAddress']); ?>" placeholder="Enter shipping address" required>
+                                </div>
+                                
+                                <div class="premium-form-group">
+                                    <label class="premium-form-label">State <span class="required">*</span></label>
+                                    <input type="text" name="shippingstate" class="premium-form-input" value="<?php echo htmlspecialchars($userData['shippingState']); ?>" placeholder="Enter state" required>
+                                </div>
+                                
+                                <div class="premium-form-group">
+                                    <label class="premium-form-label">City <span class="required">*</span></label>
+                                    <input type="text" name="shippingcity" class="premium-form-input" value="<?php echo htmlspecialchars($userData['shippingCity']); ?>" placeholder="Enter city" required>
+                                </div>
+                                
+                                <div class="premium-form-group">
+                                    <label class="premium-form-label">Pincode <span class="required">*</span></label>
+                                    <input type="text" name="shippingpincode" class="premium-form-input" value="<?php echo htmlspecialchars($userData['shippingPincode']); ?>" placeholder="Enter pincode" required>
+                                </div>
+                                
+                                <div class="premium-submit-wrapper">
+                                    <button type="submit" name="shipupdate" class="premium-submit-btn">
+                                        Update Shipping
+                                        <span class="material-symbols-outlined">local_shipping</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Order History Tab -->
+                <div id="order-history" class="premium-tab-content">
+                    <header class="premium-welcome-header">
+                        <h2 class="premium-welcome-title">
+                            Order <span class="user-name">History</span>
+                        </h2>
+                        <p class="premium-welcome-description">
+                            View all your past orders and track their current status.
+                        </p>
+                    </header>
+                    
+                    <?php
+                    $orderQuery = mysqli_query($con, "SELECT products.productImage1 as pimg1, products.productName as pname, products.id as proid, orders.productId as opid, orders.quantity as qty, products.productPrice as pprice, products.shippingCharge as shippingcharge, orders.paymentMethod as paym, orders.orderDate as odate, orders.id as orderid FROM orders JOIN products ON orders.productId = products.id WHERE orders.userId = '".$_SESSION['id']."' AND orders.paymentMethod IS NOT NULL ORDER BY orders.orderDate DESC");
+                    $orderNum = mysqli_num_rows($orderQuery);
+                    
+                    if($orderNum > 0) {
+                    ?>
+                    <div class="premium-table-wrapper">
+                        <table class="premium-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Image</th>
+                                    <th>Product</th>
+                                    <th>Qty</th>
+                                    <th>Price</th>
+                                    <th>Shipping</th>
+                                    <th>Total</th>
+                                    <th>Payment</th>
+                                    <th>Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $cnt = 1;
+                                while($row = mysqli_fetch_array($orderQuery)) {
+                                    $qty = $row['qty'];
+                                    $price = $row['pprice'];
+                                    $shippcharge = $row['shippingcharge'];
+                                ?>
+                                <tr>
+                                    <td><?php echo $cnt; ?></td>
+                                    <td>
+                                        <img class="premium-table-img" src="admin/productimages/<?php echo $row['proid']; ?>/<?php echo $row['pimg1']; ?>" alt="Product">
+                                    </td>
+                                    <td>
+                                        <a href="product-details.php?pid=<?php echo $row['opid']; ?>" class="premium-table-product-name"><?php echo htmlentities($row['pname']); ?></a>
+                                    </td>
+                                    <td><?php echo $qty; ?></td>
+                                    <td>₹<?php echo number_format($price); ?></td>
+                                    <td>₹<?php echo number_format($shippcharge); ?></td>
+                                    <td><strong>₹<?php echo number_format(($qty * $price) + $shippcharge); ?></strong></td>
+                                    <td><?php echo $row['paym']; ?></td>
+                                    <td><?php echo $row['odate']; ?></td>
+                                    <td>
+                                        <a href="javascript:void(0);" onClick="popUpWindow('track-order.php?oid=<?php echo htmlentities($row['orderid']); ?>')" class="premium-table-btn">
+                                            Track
+                                        </a>
+                                    </td>
+                                </tr>
+                                <?php $cnt++; } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <?php } else { ?>
+                    <div class="premium-empty-state">
+                        <span class="material-symbols-outlined">shopping_bag</span>
+                        <h3>No Orders Yet</h3>
+                        <p>You haven't placed any orders yet. Start shopping to see your order history here.</p>
+                    </div>
+                    <?php } ?>
+                </div>
+                
+                <!-- Track Order Tab -->
+                <div id="track-order" class="premium-tab-content">
+                    <header class="premium-welcome-header">
+                        <h2 class="premium-welcome-title">
+                            Track <span class="user-name">Order</span>
+                        </h2>
+                        <p class="premium-welcome-description">
+                            Enter your Order ID and billing email to track your order status.
+                        </p>
+                    </header>
+                    
+                    <div class="premium-account-card">
+                        <div class="premium-section-header">
+                            <span class="premium-section-line"></span>
+                            <h3 class="premium-section-title">Track Your Order</h3>
+                        </div>
+                        
+                        <form method="post" action="order-details.php" class="premium-form">
+                            <div class="premium-track-form">
+                                <div class="premium-form-group">
+                                    <label class="premium-form-label">Order ID <span class="required">*</span></label>
+                                    <input type="text" name="orderid" class="premium-form-input" placeholder="Enter your Order ID" required>
+                                </div>
+                                
+                                <div class="premium-form-group">
+                                    <label class="premium-form-label">Billing Email <span class="required">*</span></label>
+                                    <input type="email" name="email" class="premium-form-input" placeholder="Enter billing email" required>
+                                </div>
+                                
+                                <div class="premium-submit-wrapper" style="padding-top: 0;">
+                                    <button type="submit" name="submit" class="premium-submit-btn">
+                                        Track Order
+                                        <span class="material-symbols-outlined">search</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Payment Pending Orders Tab -->
+                <div id="pending-orders" class="premium-tab-content">
+                    <header class="premium-welcome-header">
+                        <h2 class="premium-welcome-title">
+                            Payment <span class="user-name">Pending Orders</span>
+                        </h2>
+                        <p class="premium-welcome-description">
+                            Orders that are waiting for payment completion. Complete your payment or remove unwanted orders.
+                        </p>
+                    </header>
+                    
+                    <?php
+                    $pendingQuery = mysqli_query($con, "SELECT products.productImage1 as pimg1, products.productName as pname, orders.productId as opid, products.id as proid, products.shippingCharge as shipcharge, orders.quantity as qty, products.productPrice as pprice, orders.paymentMethod as paym, orders.orderDate as odate, orders.id as orderid FROM orders JOIN products ON orders.productId = products.id WHERE orders.userId = '".$_SESSION['id']."' AND orders.paymentMethod IS NULL ORDER BY orders.orderDate DESC");
+                    $pendingNum = mysqli_num_rows($pendingQuery);
+                    
+                    if($pendingNum > 0) {
+                    ?>
+                    <div class="premium-table-wrapper">
+                        <table class="premium-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Image</th>
+                                    <th>Product</th>
+                                    <th>Qty</th>
+                                    <th>Price</th>
+                                    <th>Shipping</th>
+                                    <th>Total</th>
+                                    <th>Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $cnt = 1;
+                                while($row = mysqli_fetch_array($pendingQuery)) {
+                                    $qty = $row['qty'];
+                                    $price = $row['pprice'];
+                                    $shippcharge = $row['shipcharge'];
+                                ?>
+                                <tr>
+                                    <td><?php echo $cnt; ?></td>
+                                    <td>
+                                        <img class="premium-table-img" src="admin/productimages/<?php echo $row['proid']; ?>/<?php echo $row['pimg1']; ?>" alt="Product">
+                                    </td>
+                                    <td>
+                                        <a href="product-details.php?pid=<?php echo $row['opid']; ?>" class="premium-table-product-name"><?php echo htmlentities($row['pname']); ?></a>
+                                    </td>
+                                    <td><?php echo $qty; ?></td>
+                                    <td>₹<?php echo number_format($price); ?></td>
+                                    <td>₹<?php echo number_format($shippcharge); ?></td>
+                                    <td><strong>₹<?php echo number_format(($qty * $price) + $shippcharge); ?></strong></td>
+                                    <td><?php echo $row['odate']; ?></td>
+                                    <td>
+                                        <a href="my-account.php?deletepending=<?php echo $row['orderid']; ?>#pending-orders" class="premium-table-btn btn-danger" onclick="return confirm('Are you sure you want to delete this order?');">
+                                            Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                                <?php $cnt++; } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <?php } else { ?>
+                    <div class="premium-empty-state">
+                        <span class="material-symbols-outlined">pending_actions</span>
+                        <h3>No Pending Orders</h3>
+                        <p>You don't have any orders with pending payment. All caught up!</p>
+                    </div>
+                    <?php } ?>
                 </div>
                 
             </div>

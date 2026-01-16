@@ -92,6 +92,136 @@ $num=mysqli_num_rows($ret);
             stroke: #15803d !important;
             opacity: 0.7;
         }
+        
+        /* Custom Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-box {
+            background: #fff;
+            padding: 40px 50px;
+            max-width: 380px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        .modal-overlay.active .modal-box {
+            transform: scale(1);
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            transition: transform 0.3s;
+        }
+        .modal-close:hover {
+            transform: rotate(90deg);
+        }
+        .modal-close svg {
+            stroke: #a8a29e;
+            transition: stroke 0.3s;
+        }
+        .modal-close:hover svg {
+            stroke: #1c1917;
+        }
+        .modal-icon {
+            width: 70px;
+            height: 70px;
+            border: 2px solid #e5e7eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+        }
+        .modal-icon svg {
+            stroke: #6d101d;
+        }
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 400;
+            color: #1c1917;
+            margin-bottom: 12px;
+        }
+        .modal-desc {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            color: #78716c;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        .modal-btn {
+            padding: 14px 30px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        .modal-btn-cancel {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            color: #1c1917;
+        }
+        .modal-btn-cancel:hover {
+            background: #f5f5f4;
+            border-color: #d6d3d1;
+        }
+        .modal-btn-confirm {
+            background: #6d101d;
+            color: #fff;
+        }
+        .modal-btn-confirm:hover {
+            background: #8b1525;
+        }
+        
+        /* Notification Modal Styles */
+        .notification-modal .modal-icon {
+            border-color: #fce7f3;
+            background: #fdf2f8;
+        }
+        .notification-modal .modal-icon svg {
+            stroke: #6d101d;
+            fill: #fce7f3;
+        }
+        .notification-modal .modal-btn-confirm {
+            background: #6d101d;
+        }
+        .notification-modal .modal-btn-confirm:hover {
+            background: #8b1525;
+        }
     </style>
 <main style="background: #fdfbf7; min-height: 100vh;">
 <section class="pt-20 pb-12" style="background: #faf9f5; border-bottom: 1px solid #e5e7eb;">
@@ -137,9 +267,9 @@ while ($row=mysqli_fetch_array($ret)) {
 ?>
 <tr style="border-top: 1px solid #f5f5f4;">
 <td class="py-10 pr-6 align-middle">
-<a href="my-wishlist.php?del=<?php echo htmlentities($row['wid']);?>" onClick="return confirm('Are you sure you want to remove this item?')" class="wishlist-remove-btn inline-block">
+<button type="button" onclick="showRemoveModal(<?php echo htmlentities($row['wid']);?>, '<?php echo addslashes(htmlentities($row['pname']));?>')" class="wishlist-remove-btn inline-block bg-transparent border-none cursor-pointer p-0">
 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d6d3d1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: all 0.3s;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-</a>
+</button>
 </td>
 <td class="py-10">
 <div class="flex items-center gap-6">
@@ -199,5 +329,112 @@ Out of Stock
 <?php endif; ?>
 </section>
 </main>
+
+<!-- Remove Item Modal -->
+<div id="removeModal" class="modal-overlay">
+    <div class="modal-box">
+        <button type="button" class="modal-close" onclick="closeRemoveModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <div class="modal-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+            </svg>
+        </div>
+        <h3 class="modal-title">Remove Item?</h3>
+        <p class="modal-desc">Are you sure you want to remove this item from your wishlist? This action cannot be undone.</p>
+        <div class="modal-buttons">
+            <button type="button" class="modal-btn modal-btn-cancel" onclick="closeRemoveModal()">Cancel</button>
+            <a id="confirmRemoveBtn" href="#" class="modal-btn modal-btn-confirm" style="text-decoration: none;">Remove</a>
+        </div>
+    </div>
+</div>
+
+<!-- Notification Modal -->
+<div id="notificationModal" class="modal-overlay notification-modal">
+    <div class="modal-box">
+        <button type="button" class="modal-close" onclick="closeNotificationModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <div class="modal-icon" id="notificationIcon">
+            <!-- Heart icon for wishlist -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+        </div>
+        <h3 class="modal-title" id="notificationTitle">Success!</h3>
+        <p class="modal-desc" id="notificationDesc">Your action has been completed successfully.</p>
+        <div class="modal-buttons">
+            <button type="button" class="modal-btn modal-btn-confirm" onclick="closeNotificationModal()">OK</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentDeleteId = null;
+    
+    function showRemoveModal(wid, productName) {
+        currentDeleteId = wid;
+        document.getElementById('confirmRemoveBtn').href = 'my-wishlist.php?del=' + wid;
+        document.getElementById('removeModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeRemoveModal() {
+        document.getElementById('removeModal').classList.remove('active');
+        document.body.style.overflow = '';
+        currentDeleteId = null;
+    }
+    
+    function showNotificationModal(title, message) {
+        document.getElementById('notificationTitle').textContent = title;
+        document.getElementById('notificationDesc').textContent = message;
+        document.getElementById('notificationModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeNotificationModal() {
+        document.getElementById('notificationModal').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    // Close modal when clicking outside
+    document.getElementById('removeModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeRemoveModal();
+        }
+    });
+    
+    document.getElementById('notificationModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeNotificationModal();
+        }
+    });
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeRemoveModal();
+            closeNotificationModal();
+        }
+    });
+    
+    // Check for session notification on page load
+    <?php if(isset($_SESSION['wishlist_notification'])): ?>
+    document.addEventListener('DOMContentLoaded', function() {
+        showNotificationModal('Added to Wishlist', '<?php echo addslashes($_SESSION['wishlist_notification']); ?>');
+    });
+    <?php unset($_SESSION['wishlist_notification']); endif; ?>
+</script>
+
 <?php include 'footer.php';?>
 <?php } ?>
