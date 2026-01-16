@@ -68,22 +68,45 @@ if(isset($_GET['action']) && $_GET['action']=="add"){
           
 
             <!--Top Header-->
-            <div class="top-header" style="background: #800020; color: white; padding: 8px 0;">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-6 col-sm-6 col-md-3 col-lg-4 text-left d-none d-md-block">
-                            <span class="material-icons-outlined" style="font-size: 14px; vertical-align: middle;">phone</span>
-                            <a href="tel:+91-8826446755" style="color: white; text-decoration: none; margin-left: 4px;">+91-8826446755</a>
+            <div class="top-header" style="background: #800020; color: white; padding: 8px 0; width: 100%;">
+                <div style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: nowrap; gap: 150px;">
+                        <div style="flex: 1; text-align: left; display: none;" class="top-header-left">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; display: inline-block;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                            <a href="tel:+91-8826446755" class="top-header-phone-link" style="color: white; text-decoration: none; margin-left: 4px; font-size: 11px;"><span class="phone-text">+91-8826446755</span></a>
                         </div>
-                        <div class="col-12 col-sm-12 col-md-6 col-lg-4 text-center">
-                            <span style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;">Get the Best Deal in All Over India — <a href="all-category.php" class="top-header-shop-now-link" style="color: white; text-decoration: underline; text-underline-offset: 4px; opacity: 0.8;">Shop Now</a></span>
+                        <div style="flex: 2; text-align: center;">
+                            <span style="font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap;">Get the Best Deal in All Over India — <a href="all-category.php" class="top-header-shop-now-link" style="color: white; text-decoration: underline; text-underline-offset: 4px; opacity: 0.8;">Shop Now</a></span>
                         </div>
-                        <div class="col-6 col-sm-6 col-md-3 col-lg-4 text-right d-none d-md-block">
-                            <span style="font-size: 11px;">Complementary Shipping on Orders Above ₹5000</span>
+                        <div style="flex: 1; text-align: right; display: none;" class="top-header-right">
+                            <span style="font-size: 11px; white-space: nowrap;">Complementary Shipping on Orders Above ₹5000</span>
                         </div>
                     </div>
                 </div>
             </div>
+            <style>
+                @media (min-width: 768px) {
+                    .top-header-left, .top-header-right {
+                        display: block !important;
+                    }
+                }
+                .top-header-phone-link:hover .phone-text {
+                    color: #C5A059 !important;
+                }
+            </style>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const phoneLink = document.querySelector('.top-header-phone-link');
+                    if (phoneLink) {
+                        phoneLink.addEventListener('mouseenter', function() {
+                            this.querySelector('.phone-text').style.setProperty('color', '#C5A059', 'important');
+                        });
+                        phoneLink.addEventListener('mouseleave', function() {
+                            this.querySelector('.phone-text').style.setProperty('color', 'white', 'important');
+                        });
+                    }
+                });
+            </script>
             <!--End Top Header-->
             
             <!-- Shop Now Link Hover Effect Script -->
@@ -220,25 +243,51 @@ if(isset($_GET['action']) && $_GET['action']=="add"){
                             <!--Account-->
                             <div class="account-parent iconset">
                                 <div class="account-link" title="Account"><i class="hdr-icon icon anm anm-user-al"></i></div>
-                                <div id="accountBox">
-                                    <div class="customer-links">
-                                    
-                                        <ul class="m-0">
-                                        <?php if(strlen($_SESSION['login'])==0)
-                                        {   ?>
-                                            <li><a href="login.php"><i class="icon anm anm-sign-in-al"></i>Sign In</a></li>                                            
-                                            <?php }
-                                        else{ ?>
+                                <div id="accountBox" class="premium-account-dropdown">
+                                    <div class="account-dropdown-inner">
+                                        <?php if(strlen($_SESSION['login'])!=0) { ?>
+                                        <!-- Logged In User Header -->
+                                        <div class="account-dropdown-header">
+                                            <div class="account-avatar">
+                                                <span><?php echo strtoupper(substr($_SESSION['username'], 0, 1)); ?></span>
+                                            </div>
+                                            <div class="account-user-info">
+                                                <span class="account-greeting">Welcome back</span>
+                                                <span class="account-username"><?php echo htmlentities($_SESSION['username']);?></span>
+                                            </div>
+                                        </div>
+                                        <div class="account-dropdown-divider"></div>
+                                        <?php } ?>
+                                        
+                                        <!-- Menu Items -->
+                                        <div class="account-dropdown-menu">
+                                            <?php if(strlen($_SESSION['login'])==0) { ?>
+                                            <a href="login.php" class="account-menu-item account-menu-primary">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+                                                <span>Sign In</span>
+                                            </a>
+                                            <a href="register.php" class="account-menu-item">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                                                <span>Create Account</span>
+                                            </a>
+                                            <?php } else { ?>
+                                            <a href="my-account.php" class="account-menu-item">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                                <span>My Account</span>
+                                            </a>
                                             
-                                            <li><a href="#"><i class="icon anm anm-sign-in-al"></i>Welcome - <?php echo htmlentities($_SESSION['username']);?></a></li> 
+                                            <a href="my-wishlist.php" class="account-menu-item">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                                <span>Wishlist</span>
+                                            </a>
+                                            
+                                            <div class="account-dropdown-divider"></div>
+                                            <a href="logout.php" class="account-menu-item account-menu-logout">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                                                <span>Sign Out</span>
+                                            </a>
                                             <?php } ?>
-
-                                            
-                                            <li><a href="register.php"><i class="icon anm anm-user-al"></i>Register</a></li>
-                                            <li><a href="my-account.php"><i class="icon anm anm-user-cil"></i>My Account</a></li>
-                                            <li><a href="my-wishlist.php"><i class="icon anm anm-heart-l"></i>Wishlist</a></li>
-                                            <li><a href="logout.php"><i class="icon anm anm-sign-out-al"></i>Sign out</a></li>
-                                        </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -488,6 +537,192 @@ $cartCount = getCartCount();
                     .modern-navbar {
                         height: auto !important;
                     }
+                }
+                
+                /* Premium Account Dropdown Styles */
+                .account-parent {
+                    position: relative !important;
+                }
+                
+                #accountBox.premium-account-dropdown {
+                    position: absolute !important;
+                    top: 100% !important;
+                    right: 0 !important;
+                    left: auto !important;
+                    width: 240px !important;
+                    min-width: 240px !important;
+                    max-width: 240px !important;
+                    background: #ffffff !important;
+                    border-radius: 8px !important;
+                    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15) !important;
+                    opacity: 0;
+                    visibility: hidden;
+                    transform: translateY(8px);
+                    transition: all 0.25s ease;
+                    z-index: 9999 !important;
+                    overflow: visible !important;
+                    border: 1px solid #e5e5e5 !important;
+                    padding: 0 !important;
+                    margin: 0 !important;
+                }
+                
+                .account-parent:hover #accountBox.premium-account-dropdown {
+                    opacity: 1;
+                    visibility: visible;
+                    transform: translateY(0);
+                }
+                
+                .account-dropdown-inner {
+                    padding: 0 !important;
+                    margin: 0 !important;
+                    width: 100% !important;
+                }
+                
+                .account-dropdown-header {
+                    display: flex !important;
+                    align-items: center !important;
+                    gap: 12px !important;
+                    padding: 16px !important;
+                    background: linear-gradient(135deg, #800020 0%, #5a0016 100%) !important;
+                    border-radius: 7px 7px 0 0 !important;
+                    margin: 0 !important;
+                }
+                
+                .account-avatar {
+                    width: 44px !important;
+                    height: 44px !important;
+                    min-width: 44px !important;
+                    border-radius: 50% !important;
+                    background: rgba(255, 255, 255, 0.2) !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+                }
+                
+                .account-avatar span {
+                    color: #ffffff !important;
+                    font-size: 18px !important;
+                    font-weight: 600 !important;
+                    text-transform: uppercase !important;
+                    line-height: 1 !important;
+                }
+                
+                .account-user-info {
+                    display: flex !important;
+                    flex-direction: column !important;
+                    gap: 2px !important;
+                    flex: 1 !important;
+                    min-width: 0 !important;
+                }
+                
+                .account-greeting {
+                    font-size: 10px !important;
+                    color: rgba(255, 255, 255, 0.8) !important;
+                    text-transform: uppercase !important;
+                    letter-spacing: 0.1em !important;
+                    line-height: 1.2 !important;
+                    white-space: nowrap !important;
+                }
+                
+                .account-username {
+                    font-size: 15px !important;
+                    font-weight: 600 !important;
+                    color: #ffffff !important;
+                    text-transform: capitalize !important;
+                    line-height: 1.2 !important;
+                    white-space: nowrap !important;
+                    overflow: hidden !important;
+                    text-overflow: ellipsis !important;
+                }
+                
+                .account-dropdown-divider {
+                    height: 1px !important;
+                    background: #eeeeee !important;
+                    margin: 0 !important;
+                    border: none !important;
+                }
+                
+                .account-dropdown-menu {
+                    padding: 8px 0 !important;
+                    margin: 0 !important;
+                }
+                
+                .account-menu-item {
+                    display: flex !important;
+                    align-items: center !important;
+                    gap: 12px !important;
+                    padding: 10px 16px !important;
+                    color: #444444 !important;
+                    text-decoration: none !important;
+                    font-size: 13px !important;
+                    font-weight: 500 !important;
+                    transition: all 0.2s ease !important;
+                    border-left: 3px solid transparent !important;
+                    white-space: nowrap !important;
+                }
+                
+                .account-menu-item:hover {
+                    background: #f8f6f3 !important;
+                    color: #800020 !important;
+                    border-left-color: #800020 !important;
+                }
+                
+                .account-menu-item svg {
+                    color: #999999 !important;
+                    transition: color 0.2s ease !important;
+                    flex-shrink: 0 !important;
+                    width: 18px !important;
+                    height: 18px !important;
+                }
+                
+                .account-menu-item:hover svg {
+                    color: #800020 !important;
+                }
+                
+                .account-menu-item span {
+                    flex: 1 !important;
+                }
+                
+                .account-menu-primary {
+                    background: #800020 !important;
+                    color: #ffffff !important;
+                    margin: 8px 12px !important;
+                    border-radius: 6px !important;
+                    border-left: none !important;
+                    justify-content: center !important;
+                }
+                
+                .account-menu-primary:hover {
+                    background: #600018 !important;
+                    color: #D4AF37 !important;
+                    border-left: none !important;
+                }
+                
+                .account-menu-primary svg {
+                    color: #ffffff !important;
+                }
+                
+                .account-menu-primary:hover svg {
+                    color: #D4AF37 !important;
+                }
+                
+                .account-menu-logout {
+                    color: #c53030 !important;
+                }
+                
+                .account-menu-logout:hover {
+                    background: #fff5f5 !important;
+                    color: #9b2c2c !important;
+                    border-left-color: #c53030 !important;
+                }
+                
+                .account-menu-logout svg {
+                    color: #c53030 !important;
+                }
+                
+                .account-menu-logout:hover svg {
+                    color: #9b2c2c !important;
                 }
                 
             <!-- Enhanced Dropdown Menu Styles -->
@@ -1216,7 +1451,10 @@ $cartCount = getCartCount();
                 
                 .cart-modal-btn-continue:hover {
                     background: #800020;
-                    color: #ffffff;
+                    border-color: #800020;
+                }
+                .cart-modal-btn-continue:hover .btn-text {
+                    color: #D4AF37 !important;
                 }
                 
                 .cart-modal-btn-checkout {
@@ -1380,7 +1618,7 @@ $cartCount = getCartCount();
                             <?php endif; ?>
                         </div>
                         <div class="cart-modal-buttons">
-                            <button class="cart-modal-btn cart-modal-btn-continue" onclick="closeCartModal()">Continue Shopping</button>
+                            <button class="cart-modal-btn cart-modal-btn-continue" onclick="closeCartModal()"><span class="btn-text">Continue Shopping</span></button>
                             <a href="my-cart.php" class="cart-modal-btn cart-modal-btn-checkout" style="text-decoration: none; display: block;">View Cart & Checkout</a>
                         </div>
                         <div class="cart-modal-trust">
@@ -1566,66 +1804,4 @@ $cartCount = getCartCount();
                         `;
                     }
                 }
-                
-                // Intercept add to cart links and show modal via AJAX
-                document.addEventListener('DOMContentLoaded', function() {
-                    const cartButtons = document.querySelectorAll('a[href*="action=add"], .btn-cart-modern[href*="action=add"]');
-                    
-                    cartButtons.forEach(function(button) {
-                        // Skip disabled buttons
-                        if(button.classList.contains('disabled') || button.style.cursor === 'not-allowed') {
-                            return;
-                        }
-                        
-                        button.addEventListener('click', function(e) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            
-                            // Get product ID from URL
-                            const url = new URL(this.href, window.location.origin);
-                            const productId = url.searchParams.get('id');
-                            
-                            if(!productId) {
-                                window.location.href = this.href;
-                                return;
-                            }
-                            
-                            // First, fetch product details
-                            fetch('get-product-info.php?id=' + productId)
-                                .then(function(response) {
-                                    return response.json();
-                                })
-                                .then(function(productData) {
-                                    // Then add to cart
-                                    return fetch(button.href)
-                                        .then(function() {
-                                            return productData;
-                                        });
-                                })
-                                .then(function(productData) {
-                                    if(productData && productData.success) {
-                                        // Update modal content with product info
-                                        updateCartModal(productData.data);
-                                        // Show modal
-                                        showCartModal();
-                                        // Update cart count
-                                        if(window.updateCartCount) {
-                                            window.updateCartCount();
-                                        }
-                                    } else {
-                                        // Fallback: show modal anyway
-                                        showCartModal();
-                                        if(window.updateCartCount) {
-                                            window.updateCartCount();
-                                        }
-                                    }
-                                })
-                                .catch(function(error) {
-                                    console.error('Error:', error);
-                                    // If AJAX fails, allow normal link behavior
-                                    window.location.href = button.href;
-                                });
-                        });
-                    });
-                });
             </script>

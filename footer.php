@@ -677,6 +677,11 @@
     .footer .stitching-section .stitching-icon span.material-symbols-outlined {
         font-size: 48px !important;
     }
+    
+    /* Minicart Continue Shopping Button Hover */
+    .minicart-continue-btn:hover .btn-text {
+        color: #D4AF37 !important;
+    }
 </style>
 <!--Footer with Stitching Section-->
 <footer class="footer">
@@ -888,7 +893,7 @@
 
             </div>
             <div class="minicart-action d-flex mt-3">
-                <a href="index.php" class="proceed-to-checkout btn btn-primary w-50 me-1">Continue Shopping</a>
+                <a href="index.php" class="proceed-to-checkout btn btn-primary w-50 me-1 minicart-continue-btn"><span class="btn-text">Continue Shopping</span></a>
                 <a href="my-cart.php" class="cart-btn btn btn-secondary w-50 ms-1">View Cart</a>
             </div>
         </div>
@@ -902,7 +907,7 @@
         <div class="cartEmpty-content mt-4">
             <i class="icon anm anm-cart-l fs-1 text-muted"></i>
             <p class="my-3">No Products in the Cart</p>
-            <a href="index.php" class="btn btn-primary cart-btn">Continue shopping</a>
+            <a href="index.php" class="btn btn-primary cart-btn minicart-continue-btn"><span class="btn-text">Continue shopping</span></a>
         </div>
     </div>
 

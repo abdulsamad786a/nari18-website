@@ -393,9 +393,13 @@ else{
     }
     
     .premium-submit-btn:hover {
-        background: #000000;
-        border-color: #000000;
+        background: var(--primary);
+        border-color: var(--primary);
         box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    }
+    .premium-submit-btn:hover .btn-text,
+    .premium-submit-btn:hover .material-symbols-outlined {
+        color: #D4AF37 !important;
     }
     
     /* Change Password Tab Content */
@@ -871,7 +875,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             
                             <div class="premium-submit-wrapper">
                                 <button type="submit" name="update" class="premium-submit-btn">
-                                    Update Info
+                                    <span class="btn-text">Update Info</span>
                                     <span class="material-symbols-outlined">arrow_forward</span>
                                 </button>
                             </div>
@@ -916,7 +920,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             
                             <div class="premium-submit-wrapper">
                                 <button type="submit" name="submit" class="premium-submit-btn">
-                                    Change Password
+                                    <span class="btn-text">Change Password</span>
                                     <span class="material-symbols-outlined">lock</span>
                                 </button>
                             </div>
@@ -966,7 +970,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 
                                 <div class="premium-submit-wrapper">
                                     <button type="submit" name="updatebilling" class="premium-submit-btn">
-                                        Update Billing
+                                        <span class="btn-text">Update Billing</span>
                                         <span class="material-symbols-outlined">receipt_long</span>
                                     </button>
                                 </div>
@@ -1003,7 +1007,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 
                                 <div class="premium-submit-wrapper">
                                     <button type="submit" name="shipupdate" class="premium-submit-btn">
-                                        Update Shipping
+                                        <span class="btn-text">Update Shipping</span>
                                         <span class="material-symbols-outlined">local_shipping</span>
                                     </button>
                                 </div>
@@ -1117,7 +1121,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 
                                 <div class="premium-submit-wrapper" style="padding-top: 0;">
                                     <button type="submit" name="submit" class="premium-submit-btn">
-                                        Track Order
+                                        <span class="btn-text">Track Order</span>
                                         <span class="material-symbols-outlined">search</span>
                                     </button>
                                 </div>

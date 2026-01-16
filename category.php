@@ -220,6 +220,12 @@ function buildCategoryPageUrl($pageNum) {
     .product-card-wrapper:hover .quick-add-btn {
         transform: translateY(0);
     }
+    .quick-add-link:hover .quick-add-text {
+        color: #D4AF37 !important;
+    }
+    .clear-filters-btn:hover .btn-text {
+        color: #D4AF37 !important;
+    }
     .product-image-container img {
         transition: transform 1s ease;
     }
@@ -432,7 +438,7 @@ function buildCategoryPageUrl($pageNum) {
                                class="sidebar-category <?php echo $isActive ? 'active' : ''; ?> group-hover:text-primary transition-colors">
                                 <?php echo htmlentities($catRow['categoryName']); ?>
                             </a>
-                            <span class="text-xs <?php echo $isActive ? 'text-primary' : 'text-stone-400'; ?>"><?php echo $countRow['cnt']; ?></span>
+                            <span class="text-xs" style="<?php echo $isActive ? 'color: #800020;' : 'color: #a8a29e;'; ?>"><?php echo $countRow['cnt']; ?></span>
                         </li>
                         <?php } ?>
                     </ul>
@@ -478,19 +484,6 @@ function buildCategoryPageUrl($pageNum) {
                     </div>
                 </div>
                 
-                <!-- Promotional Banner -->
-                <div class="promo-banner relative group overflow-hidden bg-stone-100 aspect-[3/4] flex items-center justify-center border border-stone-200 hidden lg:flex">
-                    <img alt="New Season Collection" class="absolute inset-0 w-full h-full object-cover opacity-90" src="assets/images/banners/shop-banner.jpg" onerror="this.style.display='none'"/>
-                    <div class="absolute inset-0 bg-black/20"></div>
-                    <div class="relative text-center p-4 sm:p-6 border border-white/30 m-3 sm:m-4 flex flex-col items-center justify-center">
-                        <span class="text-white text-[10px] tracking-[0.5em] uppercase mb-2">Editorial</span>
-                        <h4 class="text-xl sm:text-2xl text-accent-gold mb-3 sm:mb-4 italic" style="font-family: 'Playfair Display', serif;">The Festive Edit</h4>
-                        <div class="h-px w-8 bg-accent-gold mb-3 sm:mb-4"></div>
-                        <a href="all-category.php" class="bg-white/90 hover:bg-white text-black text-[10px] tracking-widest uppercase py-2 sm:py-3 px-4 sm:px-6 transition-all inline-block">
-                            Explore
-                        </a>
-                    </div>
-                </div>
             </aside>
             
             <!-- Products Grid -->
@@ -554,8 +547,8 @@ function buildCategoryPageUrl($pageNum) {
                             <div class="quick-add-btn absolute bottom-0 left-0 right-0 p-2 sm:p-4 bg-white/90 backdrop-blur">
                                 <?php if(!$isOutOfStock): ?>
                                 <a href="category.php?cid=<?php echo $cid; ?>&action=add&id=<?php echo $product['id']; ?><?php echo !empty($priceFilter) ? '&price=' . $priceFilter : ''; ?>" 
-                                   class="block w-full py-2 sm:py-3 bg-stone-900 text-white text-[10px] sm:text-xs tracking-widest uppercase hover:bg-primary transition-colors text-center">
-                                    Quick Add
+                                   class="quick-add-link block w-full py-2 sm:py-3 bg-stone-900 text-white text-[10px] sm:text-xs tracking-widest uppercase hover:bg-primary transition-colors text-center">
+                                    <span class="quick-add-text">Quick Add</span>
                                 </a>
                                 <?php else: ?>
                                 <button disabled class="w-full py-2 sm:py-3 bg-stone-400 text-white text-[10px] sm:text-xs tracking-widest uppercase cursor-not-allowed text-center">
@@ -596,12 +589,12 @@ function buildCategoryPageUrl($pageNum) {
                             <?php endif; ?>
                         </p>
                         <?php if(!empty($priceFilter)): ?>
-                        <a href="category.php?cid=<?php echo $cid; ?>" class="inline-block py-3 px-8 text-white text-xs tracking-widest uppercase transition-colors" style="background-color: #800020;">
-                            Clear Filters
+                        <a href="category.php?cid=<?php echo $cid; ?>" class="clear-filters-btn inline-block py-3 px-8 text-white text-xs tracking-widest uppercase transition-colors" style="background-color: #800020;">
+                            <span class="btn-text">Clear Filters</span>
                         </a>
                         <?php else: ?>
-                        <a href="all-category.php" class="inline-block py-3 px-8 text-white text-xs tracking-widest uppercase transition-colors" style="background-color: #800020;">
-                            Browse All Collections
+                        <a href="all-category.php" class="clear-filters-btn inline-block py-3 px-8 text-white text-xs tracking-widest uppercase transition-colors" style="background-color: #800020;">
+                            <span class="btn-text">Browse All Collections</span>
                         </a>
                         <?php endif; ?>
                     </div>

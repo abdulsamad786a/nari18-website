@@ -381,20 +381,6 @@ if(isset($_POST['shipupdate'])) {
         #page-content .bg-white {
             background-color: #ffffff !important;
         }
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #800020;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #600018;
-        }
         /* Quantity buttons animation */
         .qty-btn:active {
             transform: scale(0.95);
@@ -517,6 +503,15 @@ if(isset($_POST['shipupdate'])) {
         .modal-btn-confirm:hover {
             background: #600018;
         }
+        .modal-btn-confirm:hover .btn-text {
+            color: #D4AF37 !important;
+        }
+        .empty-cart-continue-btn:hover .btn-text {
+            color: #D4AF37 !important;
+        }
+        .cart-address-btn:hover .btn-text {
+            color: #D4AF37 !important;
+        }
         
         /* Notification Modal Styles */
         .notification-modal .modal-icon {
@@ -573,7 +568,19 @@ if(isset($_POST['shipupdate'])) {
 <!-- Main Content -->
 <div id="page-content" style="background: #F9F7F2;">
 <main class="max-w-7xl mx-auto px-6 py-12">
-    <h1 class="text-4xl font-display mb-12 text-center lg:text-left" style="font-family: 'Playfair Display', serif;">Your Shopping Cart</h1>
+    <h1 class="text-4xl font-display mb-12 text-center" style="font-family: 'Playfair Display', serif;">Your Shopping Cart</h1>
+    
+    <?php if(empty($_SESSION['cart'])){ ?>
+    <!-- Empty Cart Message - Full Width Centered -->
+    <div class="flex flex-col items-center justify-center text-center py-20 w-full">
+        <span class="material-symbols-outlined text-8xl text-stone-300 dark:text-stone-600 mb-6 block">shopping_cart</span>
+        <h3 class="text-2xl font-display mb-4">Your cart is empty</h3>
+        <p class="text-stone-500 mb-8">Add some beautiful pieces to your cart to see them here.</p>
+        <a href="index.php" class="empty-cart-continue-btn inline-block bg-primary text-white px-8 py-3 text-[11px] font-bold uppercase tracking-[0.2em] transition-colors" style="background-color: #800020;">
+            <span class="btn-text">Continue Shopping</span>
+        </a>
+    </div>
+    <?php } else { ?>
     
     <form method="post" id="cartForm">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -712,8 +719,8 @@ if(isset($_POST['shipupdate'])) {
                             <label class="block text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-1">Pincode</label>
                             <input class="w-full input-elegant text-sm py-2 px-0" type="text" name="billingpincode" id="billingpincode" placeholder="Pincode" value="<?php echo $row['billingPincode'];?>" />
                         </div>
-                        <button type="submit" name="update" class="bg-primary text-white dark:bg-transparent dark:text-secondary dark:border dark:border-secondary px-8 py-3 text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-stone-900 dark:hover:bg-secondary dark:hover:text-black transition-colors w-full">
-                            Update Billing Address
+                        <button type="submit" name="update" class="cart-address-btn bg-primary text-white dark:bg-transparent dark:text-secondary dark:border dark:border-secondary px-8 py-3 text-[11px] font-bold uppercase tracking-[0.2em] transition-colors w-full" style="background-color: #800020;">
+                            <span class="btn-text">Update Billing Address</span>
                         </button>
                         <label class="flex items-center space-x-3 cursor-pointer group">
                             <input type="checkbox" id="copyAddress" onclick="copyBillingToShipping()" class="custom-checkbox" style="width: 18px; height: 18px; accent-color: #800020; cursor: pointer;" />
@@ -748,8 +755,8 @@ if(isset($_POST['shipupdate'])) {
                             <label class="block text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-1">Pincode</label>
                             <input class="w-full input-elegant text-sm py-2 px-0" type="text" name="shippingpincode" id="shippingpincode" placeholder="Pincode" value="<?php echo $row['shippingPincode'];?>" />
                         </div>
-                        <button type="submit" name="shipupdate" class="bg-primary text-white dark:bg-transparent dark:text-secondary dark:border dark:border-secondary px-8 py-3 text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-stone-900 dark:hover:bg-secondary dark:hover:text-black transition-colors w-full">
-                            Update Shipping Address
+                        <button type="submit" name="shipupdate" class="cart-address-btn bg-primary text-white dark:bg-transparent dark:text-secondary dark:border dark:border-secondary px-8 py-3 text-[11px] font-bold uppercase tracking-[0.2em] transition-colors w-full" style="background-color: #800020;">
+                            <span class="btn-text">Update Shipping Address</span>
                         </button>
                     </div>
                 </div>
@@ -757,15 +764,6 @@ if(isset($_POST['shipupdate'])) {
             <?php } ?>
             
             <?php } else { ?>
-            <!-- Empty Cart Message -->
-            <div class="text-center py-20">
-                <span class="material-symbols-outlined text-8xl text-stone-300 dark:text-stone-600 mb-6 block">shopping_cart</span>
-                <h3 class="text-2xl font-display mb-4">Your cart is empty</h3>
-                <p class="text-stone-500 mb-8">Add some beautiful pieces to your cart to see them here.</p>
-                <a href="index.php" class="inline-block bg-primary text-white px-8 py-3 text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-stone-900 transition-colors">
-                    Continue Shopping
-                </a>
-            </div>
             <?php } ?>
         </div>
         
@@ -830,6 +828,7 @@ if(isset($_POST['shipupdate'])) {
         <?php } ?>
     </div>
     </form>
+    <?php } ?>
 </main>
 </div><!-- End page-content -->
 
@@ -1011,7 +1010,7 @@ function copyBillingToShipping() {
         <p class="modal-desc">Are you sure you want to remove this item from your cart? This action cannot be undone.</p>
         <div class="modal-buttons">
             <button type="button" class="modal-btn modal-btn-cancel" onclick="closeRemoveModal()">Cancel</button>
-            <button type="button" id="confirmRemoveBtn" class="modal-btn modal-btn-confirm">Remove</button>
+            <button type="button" id="confirmRemoveBtn" class="modal-btn modal-btn-confirm"><span class="btn-text">Remove</span></button>
         </div>
     </div>
 </div>
@@ -1034,7 +1033,7 @@ function copyBillingToShipping() {
         <h3 class="modal-title" id="notificationTitle">Success!</h3>
         <p class="modal-desc" id="notificationDesc">Your action has been completed successfully.</p>
         <div class="modal-buttons">
-            <button type="button" class="modal-btn modal-btn-confirm" onclick="closeNotificationModal()">OK</button>
+            <button type="button" class="modal-btn modal-btn-confirm" onclick="closeNotificationModal()"><span class="btn-text">OK</span></button>
         </div>
     </div>
 </div>

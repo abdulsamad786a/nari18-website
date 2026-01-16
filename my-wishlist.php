@@ -28,12 +28,13 @@ if(isset($_GET['action']) && $_GET['action']=="add"){
 		if(mysqli_num_rows($query_p)!=0){
 			$row_p=mysqli_fetch_array($query_p);
 			$_SESSION['cart'][$row_p['id']]=array("quantity" => 1, "price" => $row_p['productPrice']);	
-header('location:my-wishlist.php');
-}
+		}
 		else{
 			$message="Product ID is invalid";
 		}
 	}
+	header('location:my-wishlist.php');
+	exit();
 }
 
 // Get wishlist count and items
@@ -44,6 +45,33 @@ $num=mysqli_num_rows($ret);
 <?php include 'header.php'?>
 <!-- Tailwind CSS for Wishlist Page -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&amp;family=Inter:wght@300;400;500;600&amp;family=Cinzel:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Icons for Wishlist Page -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+<style>
+    /* Force Material Icons to render properly on wishlist page */
+    .material-symbols-outlined,
+    .material-icons-outlined,
+    .material-icons {
+        font-family: 'Material Symbols Outlined', 'Material Icons Outlined', 'Material Icons' !important;
+        font-weight: normal !important;
+        font-style: normal !important;
+        font-size: 24px !important;
+        line-height: 1 !important;
+        letter-spacing: normal !important;
+        text-transform: none !important;
+        display: inline-block !important;
+        white-space: nowrap !important;
+        word-wrap: normal !important;
+        direction: ltr !important;
+        -webkit-font-feature-settings: 'liga' !important;
+        -webkit-font-smoothing: antialiased !important;
+        text-rendering: optimizeLegibility !important;
+        -moz-osx-font-smoothing: grayscale !important;
+        font-feature-settings: 'liga' !important;
+    }
+</style>
 <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
 <script>
       tailwind.config = {
@@ -206,6 +234,9 @@ $num=mysqli_num_rows($ret);
         .modal-btn-confirm:hover {
             background: #8b1525;
         }
+        .modal-btn-confirm:hover .btn-text {
+            color: #D4AF37 !important;
+        }
         
         /* Notification Modal Styles */
         .notification-modal .modal-icon {
@@ -221,6 +252,9 @@ $num=mysqli_num_rows($ret);
         }
         .notification-modal .modal-btn-confirm:hover {
             background: #8b1525;
+        }
+        .notification-modal .modal-btn-confirm:hover .btn-text {
+            color: #D4AF37 !important;
         }
     </style>
 <main style="background: #fdfbf7; min-height: 100vh;">
@@ -351,7 +385,7 @@ Out of Stock
         <p class="modal-desc">Are you sure you want to remove this item from your wishlist? This action cannot be undone.</p>
         <div class="modal-buttons">
             <button type="button" class="modal-btn modal-btn-cancel" onclick="closeRemoveModal()">Cancel</button>
-            <a id="confirmRemoveBtn" href="#" class="modal-btn modal-btn-confirm" style="text-decoration: none;">Remove</a>
+            <a id="confirmRemoveBtn" href="#" class="modal-btn modal-btn-confirm" style="text-decoration: none;"><span class="btn-text" style="color: #fff; transition: color 0.3s;">Remove</span></a>
         </div>
     </div>
 </div>
@@ -374,7 +408,7 @@ Out of Stock
         <h3 class="modal-title" id="notificationTitle">Success!</h3>
         <p class="modal-desc" id="notificationDesc">Your action has been completed successfully.</p>
         <div class="modal-buttons">
-            <button type="button" class="modal-btn modal-btn-confirm" onclick="closeNotificationModal()">OK</button>
+            <button type="button" class="modal-btn modal-btn-confirm" onclick="closeNotificationModal()"><span class="btn-text" style="color: #fff; transition: color 0.3s;">OK</span></button>
         </div>
     </div>
 </div>
