@@ -1845,7 +1845,7 @@
     <section class="store-location-section">
         <div class="container">
             <div class="store-location-header">
-                <h2>Store Locations</h2>
+                <h2>Store Location</h2>
                 <div class="store-location-divider"></div>
                 <p class="store-location-description">
                     Step in, explore, and experience our collection at a store near you. Immerse yourself in the

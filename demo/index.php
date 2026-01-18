@@ -8,8 +8,10 @@
             <div class="slide">
                 <div class="slideshow-wrap">
                     <picture>
-                        <source media="(max-width:767px)" srcset="assets/images/slideshow/banner-nari18.jpg" width="1150" height="800">
-                        <img class="blur-up lazyload" src="assets/images/slideshow/banner-nari18.jpg" alt="slideshow" title="" width="1920" height="795" />
+                        <source media="(max-width:767px)" srcset="assets/images/slideshow/banner-nari18.jpg"
+                            width="1150" height="800">
+                        <img class="blur-up lazyload" src="assets/images/slideshow/banner-nari18.jpg" alt="slideshow"
+                            title="" width="1920" height="795" />
                     </picture>
                     <!-- <div class="container">
                         <div class="slideshow-content slideshow-overlay middle-left">
@@ -31,8 +33,10 @@
             <div class="slide">
                 <div class="slideshow-wrap">
                     <picture>
-                        <source media="(max-width:767px)" srcset="assets/images/slideshow/banner-nari18.jpg" width="1150" height="800">
-                        <img class="blur-up lazyload" src="assets/images/slideshow/banner-nari18.jpg" alt="slideshow" title="" width="1920" height="795" />
+                        <source media="(max-width:767px)" srcset="assets/images/slideshow/banner-nari18.jpg"
+                            width="1150" height="800">
+                        <img class="blur-up lazyload" src="assets/images/slideshow/banner-nari18.jpg" alt="slideshow"
+                            title="" width="1920" height="795" />
                     </picture>
                     <!-- <div class="container">
                         <div class="slideshow-content slideshow-overlay middle-right">
@@ -137,7 +141,7 @@
         <div class="container">
             <div class="tabs-listing">
                 <div class="section-header">
-                   
+
                     <h2>Latest Collection</h2>
                 </div>
                 <br>
@@ -148,22 +152,30 @@
                     <?php
                     $ret = mysqli_query($con, "select * from products limit 10");
                     while ($row = mysqli_fetch_array($ret)) {
-                    ?>
+                        ?>
                         <div class="product-item zoomscal-hov">
                             <div class="product-box" style="border: 1px solid #097596; border-radius:10px">
                                 <!-- Product Image -->
                                 <div class="product-image">
-                                    <a href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>" class="product-img rounded-3">
-                                        <img class="blur-up lazyload" data-src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>" src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>" alt="Product" title="<?php echo htmlentities($row['productName']); ?>" width="365" height="150" />
+                                    <a href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>"
+                                        class="product-img rounded-3">
+                                        <img class="blur-up lazyload"
+                                            data-src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>"
+                                            src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>"
+                                            alt="Product" title="<?php echo htmlentities($row['productName']); ?>"
+                                            width="365" height="150" />
                                     </a>
                                 </div>
                                 <!-- Product Details -->
                                 <div class="product-details text-center pt-2">
                                     <div class="product-name">
-                                        <a href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>"><?php echo htmlentities($row['productName']); ?></a>
+                                        <a
+                                            href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>"><?php echo htmlentities($row['productName']); ?></a>
                                     </div>
                                     <div class="product-price">
-                                        <span class="price">RS: <?php echo htmlentities($row['productPrice']); ?>.00 &nbsp; <del class="old-price"> RS: <?php echo htmlentities($row['productPriceBeforeDiscount']); ?>.00</del></span>
+                                        <span class="price">RS: <?php echo htmlentities($row['productPrice']); ?>.00 &nbsp;
+                                            <del class="old-price"> RS:
+                                                <?php echo htmlentities($row['productPriceBeforeDiscount']); ?>.00</del></span>
                                     </div>
                                     <!-- <div class="view-collection mt-md-2">
                                     <?php if ($row['productAvailability'] == 'In Stock') { ?>
@@ -215,27 +227,27 @@
                     </div>
                 </section> -->
     <!--End Popular Categories-->
-<div class="fabric-marquee">
-  <div class="fabric-track">
-    <span>SILK</span>
-    <span>ORGANZA</span>
-    <span>TISSUE</span>
-    <span>MUSLINS</span>
-    <span>COTTON SUITS</span>
-    <span>LINEN SUITS</span>
-    <span>GEORGETTE COLLECTION</span>
-    <span>CHANDERI COLLECTION</span>
-    <span>MUSLIN SUITS</span>
-    <span>PARTY WEAR SUITS</span>
-    <span>HANDPRINTED SUITS</span>
-    <span>COORDS</span>
-    <span>SILK</span>
-    <span>ORGANZA</span>
-    <span>TISSUE</span>
-   
-   
-  </div>
-</div>
+    <div class="fabric-marquee">
+        <div class="fabric-track">
+            <span>SILK</span>
+            <span>ORGANZA</span>
+            <span>TISSUE</span>
+            <span>MUSLINS</span>
+            <span>COTTON SUITS</span>
+            <span>LINEN SUITS</span>
+            <span>GEORGETTE COLLECTION</span>
+            <span>CHANDERI COLLECTION</span>
+            <span>MUSLIN SUITS</span>
+            <span>PARTY WEAR SUITS</span>
+            <span>HANDPRINTED SUITS</span>
+            <span>COORDS</span>
+            <span>SILK</span>
+            <span>ORGANZA</span>
+            <span>TISSUE</span>
+
+
+        </div>
+    </div>
     <!--Products With Tabs-->
     <section class="section product-slider tab-slider-product popular-collection">
         <div class="container">
@@ -247,24 +259,34 @@
                 <br>
 
                 <div class="tab-content" id="productTabsContent">
-                    <div class="tab-pane show active" id="bestsellers" role="tabpanel" aria-labelledby="bestsellers-tab">
+                    <div class="tab-pane show active" id="bestsellers" role="tabpanel"
+                        aria-labelledby="bestsellers-tab">
                         <!--Product Grid-->
                         <div class="grid-products grid-view-items">
-                            <div class="row col-row product-options row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2">
+                            <div
+                                class="row col-row product-options row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2">
 
                                 <?php
                                 $ret = mysqli_query($con, "select * from products limit 20");
                                 while ($row = mysqli_fetch_array($ret)) {
 
-                                ?>
+                                    ?>
                                     <div class="item col-item">
                                         <div class="product-box">
                                             <!-- Start Product Image -->
                                             <div class="product-image">
                                                 <!-- Start Product Image -->
-                                                <a href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>" class="product-img rounded-3">
+                                                <a href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>"
+                                                    class="product-img rounded-3">
                                                     <!-- Image -->
-                                                    <img class="blur-up lazyload" data-src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>" data-echo="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>" src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>" data-echo="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>" alt="Product" title="<?php echo htmlentities($row['productName']); ?>" width="625" height="808" />
+                                                    <img class="blur-up lazyload"
+                                                        data-src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>"
+                                                        data-echo="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>"
+                                                        src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>"
+                                                        data-echo="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>"
+                                                        alt="Product"
+                                                        title="<?php echo htmlentities($row['productName']); ?>" width="625"
+                                                        height="808" />
                                                     <!-- End Image -->
                                                 </a>
                                                 <!-- End Product Image -->
@@ -273,12 +295,16 @@
                                             <div class="product-details text-center">
                                                 <!-- Product Name -->
                                                 <div class="product-name">
-                                                    <a href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>"><?php echo htmlentities($row['productName']); ?></a>
+                                                    <a
+                                                        href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>"><?php echo htmlentities($row['productName']); ?></a>
                                                 </div>
                                                 <!-- End Product Name -->
                                                 <!-- Product Price -->
                                                 <div class="product-price">
-                                                    <span class="price">RS: <?php echo htmlentities($row['productPrice']); ?>.00 &nbsp; <del class="old-price"> RS: <?php echo htmlentities($row['productPriceBeforeDiscount']); ?>.00</del></span>
+                                                    <span class="price">RS:
+                                                        <?php echo htmlentities($row['productPrice']); ?>.00 &nbsp; <del
+                                                            class="old-price"> RS:
+                                                            <?php echo htmlentities($row['productPriceBeforeDiscount']); ?>.00</del></span>
                                                 </div>
                                                 <!-- End Product Price -->
                                                 <!-- <div class="view-collection mt-md-2">
@@ -309,94 +335,101 @@
     <!--End Products With Tabs-->
 
 
-     <!--Products With Tabs-->
     <!--Products With Tabs-->
-<section class="section product-slider tab-slider-product popular-collection">
-    <div class="container">
-        <div class="tabs-listing">
-            <div class="section-header">
-                <h2>Popular Collections</h2>
-            </div>
-            <br>
+    <!--Products With Tabs-->
+    <section class="section product-slider tab-slider-product popular-collection">
+        <div class="container">
+            <div class="tabs-listing">
+                <div class="section-header">
+                    <h2>Popular Collections</h2>
+                </div>
+                <br>
 
-            <div >
-                <div class="tab-pane show active" id="popular" role="tabpanel" aria-labelledby="popular-tab">
-                    <!--Product Grid-->
-                    <div class="grid-products grid-view-items">
-                        <div class="row col-row product-options row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2">
+                <div>
+                    <div class="tab-pane show active" id="popular" role="tabpanel" aria-labelledby="popular-tab">
+                        <!--Product Grid-->
+                        <div class="grid-products grid-view-items">
+                            <div
+                                class="row col-row product-options row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2">
 
-                            <?php
-                            $rets = mysqli_query($con, "select * from products limit 20");
-                            while ($rows = mysqli_fetch_array($rets)) {
-                            ?>
-                                <div class="item col-item">
-                                    <div class="product-box">
-                                        <div class="product-image">
-                                            <a href="product-details.php?pid=<?php echo htmlentities($rows['id']); ?>" class="product-img rounded-3">
-                                                <img class="blur-up lazyload"
-                                                    data-src="admin/productimages/<?php echo htmlentities($rows['id']); ?>/<?php echo htmlentities($rows['productImage1']); ?>"
-                                                    src="admin/productimages/<?php echo htmlentities($rows['id']); ?>/<?php echo htmlentities($rows['productImage1']); ?>"
-                                                    alt="Product"
-                                                    title="<?php echo htmlentities($rows['productName']); ?>"
-                                                    width="625" height="808" />
-                                            </a>
-                                        </div>
-                                        <div class="product-details text-center">
-                                            <div class="product-name">
-                                                <a href="product-details.php?pid=<?php echo htmlentities($rows['id']); ?>"><?php echo htmlentities($rows['productName']); ?></a>
+                                <?php
+                                $rets = mysqli_query($con, "select * from products limit 20");
+                                while ($rows = mysqli_fetch_array($rets)) {
+                                    ?>
+                                    <div class="item col-item">
+                                        <div class="product-box">
+                                            <div class="product-image">
+                                                <a href="product-details.php?pid=<?php echo htmlentities($rows['id']); ?>"
+                                                    class="product-img rounded-3">
+                                                    <img class="blur-up lazyload"
+                                                        data-src="admin/productimages/<?php echo htmlentities($rows['id']); ?>/<?php echo htmlentities($rows['productImage1']); ?>"
+                                                        src="admin/productimages/<?php echo htmlentities($rows['id']); ?>/<?php echo htmlentities($rows['productImage1']); ?>"
+                                                        alt="Product"
+                                                        title="<?php echo htmlentities($rows['productName']); ?>"
+                                                        width="625" height="808" />
+                                                </a>
                                             </div>
-                                            <div class="product-price">
-                                                <span class="price">RS: <?php echo htmlentities($rows['productPrice']); ?>.00 &nbsp; <del class="old-price"> RS: <?php echo htmlentities($rows['productPriceBeforeDiscount']); ?>.00</del></span>
+                                            <div class="product-details text-center">
+                                                <div class="product-name">
+                                                    <a
+                                                        href="product-details.php?pid=<?php echo htmlentities($rows['id']); ?>"><?php echo htmlentities($rows['productName']); ?></a>
+                                                </div>
+                                                <div class="product-price">
+                                                    <span class="price">RS:
+                                                        <?php echo htmlentities($rows['productPrice']); ?>.00 &nbsp; <del
+                                                            class="old-price"> RS:
+                                                            <?php echo htmlentities($rows['productPriceBeforeDiscount']); ?>.00</del></span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            <?php } ?>
+                                <?php } ?>
 
-                        </div>
+                            </div>
 
-                        <div class="view-collection text-center mt-4 mt-md-5">
-                            <a href="all-category.php" class="btn btn-secondary btn-lg">View Collection</a>
+                            <div class="view-collection text-center mt-4 mt-md-5">
+                                <a href="all-category.php" class="btn btn-secondary btn-lg">View Collection</a>
+                            </div>
                         </div>
-                    </div>
-                    <!--End Product Grid-->
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!--End Products With Tabs-->
-<div class="section">
-    <div class="container">
-        <div class="row ">
-            <div class="col-lg-12 ps-4">
-                <h4>Store Locations</h4>
-                <p>
-                Step in, explore, and experience our collection at a store near you.
-                </p>
-            </div>
-            <div class="col-lg-6">
-                <div class="store_div p-4 rounded-3 posistr">
-                    <img src="assets/images/store.jpg" alt="Store Location 1" class="store-image mb-3 rounded-3" width="100%" height="auto">
-                    <div class="overlay">
-                        <h5>Gurugram</h5>
-                        <h3>Nari18</h3>
-                        <p>
-                            Shop no 119-120, First Floor, SS Omnia,<br>
-                            Sector 86, Gurugram, Haryana 122004
-                        </p>
-                        <p>
-                             +91-8826446755 <br>
-                            Info@nari18.com <br>
-                            richa@nari18.com
-                        </p>
-                        <a href="#" class="btn-location">Location</a>
+                        <!--End Product Grid-->
                     </div>
                 </div>
             </div>
         </div>
+    </section>
+    <!--End Products With Tabs-->
+    <div class="section">
+        <div class="container">
+            <div class="row ">
+                <div class="col-lg-12 ps-4">
+                    <h4>Store Location</h4>
+                    <p>
+                        Step in, explore, and experience our collection at a store near you.
+                    </p>
+                </div>
+                <div class="col-lg-6">
+                    <div class="store_div p-4 rounded-3 posistr">
+                        <img src="assets/images/store.jpg" alt="Store Location 1" class="store-image mb-3 rounded-3"
+                            width="100%" height="auto">
+                        <div class="overlay">
+                            <h5>Gurugram</h5>
+                            <h3>Nari18</h3>
+                            <p>
+                                Shop no 119-120, First Floor, SS Omnia,<br>
+                                Sector 86, Gurugram, Haryana 122004
+                            </p>
+                            <p>
+                                +91-8826446755 <br>
+                                Info@nari18.com <br>
+                                richa@nari18.com
+                            </p>
+                            <a href="#" class="btn-location">Location</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
     <!--End Products With Tabs-->
 
     <!--Parallax Banner-->
@@ -406,86 +439,88 @@
             <div class="section-header">
                 <h2 class="fw-bold text-dark">What Our Clients Say</h2>
             </div>
-           <div class="row g-4 mb-2">
-    <!-- Testimonial 1 -->
-    <div class="col-lg-8 col-md-12 mx-auto">
-        <div class=" p-4 h-100  bg-riveiw text-center">
-            <h6 class="mb-3 fw-semibold">Priya</h6>
-            <p class="text-muted">
-                “Nari18 made me feel elegant and confident. The designs are stunning, 
-                comfortable, and unique. I received endless compliments. Truly a memorable
-                experience!” 
-            </p>
-            <div class="text-warning">
-                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                <i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-            </div>
-        </div>
-    </div>
+            <div class="row g-4 mb-2">
+                <!-- Testimonial 1 -->
+                <div class="col-lg-8 col-md-12 mx-auto">
+                    <div class=" p-4 h-100  bg-riveiw text-center">
+                        <h6 class="mb-3 fw-semibold">Priya</h6>
+                        <p class="text-muted">
+                            “Nari18 made me feel elegant and confident. The designs are stunning,
+                            comfortable, and unique. I received endless compliments. Truly a memorable
+                            experience!”
+                        </p>
+                        <div class="text-warning">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Testimonial 2 -->
-    <div class="col-lg-8 col-md-12 mx-auto">
-        <div class=" p-4 h-100  bg-riveiw text-center">
-            <h6 class="mb-3 fw-semibold">Sandali Tiwari</h6>
-            <p class="text-muted">
-                “Beautiful designs and even more beautiful of the boutique. I absolutely 
-                love the unique style and quality of the pieces at Nari18. Very elegant, 
-                yet modern and the attention to detail is impressive.!” 
-            </p>
-            <div class="text-warning">
-                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                <i class="fas fa-star"></i><i class="fas fa-star"></i>
-            </div>
-        </div>
-    </div>
+                <!-- Testimonial 2 -->
+                <div class="col-lg-8 col-md-12 mx-auto">
+                    <div class=" p-4 h-100  bg-riveiw text-center">
+                        <h6 class="mb-3 fw-semibold">Sandali Tiwari</h6>
+                        <p class="text-muted">
+                            “Beautiful designs and even more beautiful of the boutique. I absolutely
+                            love the unique style and quality of the pieces at Nari18. Very elegant,
+                            yet modern and the attention to detail is impressive.!”
+                        </p>
+                        <div class="text-warning">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Testimonial 3 -->
-    <div class="col-lg-8 col-md-12 mx-auto">
-        <div class=" p-4 h-100  bg-riveiw text-center">
-            <h6 class="mb-3 fw-semibold">Tanuja Malik</h6>
-            <p class="text-muted">
-                “I would love to share my experience with Nari 18, Richa. It was an 
-                awesome process of discussing design with Richa always.!” 
-            </p>
-            <div class="text-warning">
-                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                <i class="fas fa-star"></i><i class="fas fa-star"></i>
-            </div>
-        </div>
-    </div>
+                <!-- Testimonial 3 -->
+                <div class="col-lg-8 col-md-12 mx-auto">
+                    <div class=" p-4 h-100  bg-riveiw text-center">
+                        <h6 class="mb-3 fw-semibold">Tanuja Malik</h6>
+                        <p class="text-muted">
+                            “I would love to share my experience with Nari 18, Richa. It was an
+                            awesome process of discussing design with Richa always.!”
+                        </p>
+                        <div class="text-warning">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Testimonial 4 -->
-    <div class="col-lg-8 col-md-12 mx-auto">
-        <div class=" p-4 h-100  bg-riveiw text-center">
-            <h6 class="mb-3 fw-semibold">Rajni Chauhan</h6>
-            <p class="text-muted">
-                “Amazing studio with trendy and high-quality clothing. Excellent 
-                customer service, reasonable prices, and a wide range of stylish options.
-                Highly recommend for fashion lovers! Thank you...@Nari18!” 
-            </p>
-            <div class="text-warning">
-                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                <i class="fas fa-star"></i><i class="fas fa-star"></i>
-            </div>
-        </div>
-    </div>
+                <!-- Testimonial 4 -->
+                <div class="col-lg-8 col-md-12 mx-auto">
+                    <div class=" p-4 h-100  bg-riveiw text-center">
+                        <h6 class="mb-3 fw-semibold">Rajni Chauhan</h6>
+                        <p class="text-muted">
+                            “Amazing studio with trendy and high-quality clothing. Excellent
+                            customer service, reasonable prices, and a wide range of stylish options.
+                            Highly recommend for fashion lovers! Thank you...@Nari18!”
+                        </p>
+                        <div class="text-warning">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
 
-    <!-- Testimonial 5 -->
-    <div class="col-lg-12 col-md-12 mx-auto">
-        <div class=" p-4 h-100  bg-riveiw text-center">
-            <h6 class="mb-3 fw-semibold">Shilpi Goyal</h6>
-            <p class="text-muted">
-                “Richa @ nari18 is very detailed oriented and accommodating till the fit and finish was as per my liking.
-                Was a pleasure getting my outfits done from her.
-                Looking forward to getting many more done during upcoming festival season. Highly recommended!” 
-            </p>
-            <div class="text-warning">
-                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                <i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                <!-- Testimonial 5 -->
+                <div class="col-lg-12 col-md-12 mx-auto">
+                    <div class=" p-4 h-100  bg-riveiw text-center">
+                        <h6 class="mb-3 fw-semibold">Shilpi Goyal</h6>
+                        <p class="text-muted">
+                            “Richa @ nari18 is very detailed oriented and accommodating till the fit and finish was as
+                            per my liking.
+                            Was a pleasure getting my outfits done from her.
+                            Looking forward to getting many more done during upcoming festival season. Highly
+                            recommended!”
+                        </p>
+                        <div class="text-warning">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
 
         </div>
     </div>
@@ -543,7 +578,7 @@
 
 <!-- End Body Container -->
 
- <!-- <div class="card purchase-card">
+<!-- <div class="card purchase-card">
             <div class="card-header purchase-header text-center py-3">
                 <h5 class="card-title mb-0">Latest Purchase</h5>
             </div>
@@ -569,51 +604,51 @@
             </div>
 </div> -->
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const testimonials = document.querySelectorAll(".row.g-4 > div");
-    let index = 0;
+    document.addEventListener("DOMContentLoaded", function () {
+        const testimonials = document.querySelectorAll(".row.g-4 > div");
+        let index = 0;
 
-    function getVisibleCount() {
-      if (window.innerWidth < 768) {
-        return 1; // mobile
-      } else if (window.innerWidth < 992) {
-        return 2; // tablet
-      } else {
-        return 1; // desktop
-      }
-    }
-
-    function showTestimonials(i) {
-      const visibleCount = getVisibleCount();
-      testimonials.forEach((item, idx) => {
-        if (idx >= i && idx < i + visibleCount) {
-          item.style.display = "block";
-        } else {
-          item.style.display = "none";
+        function getVisibleCount() {
+            if (window.innerWidth < 768) {
+                return 1; // mobile
+            } else if (window.innerWidth < 992) {
+                return 2; // tablet
+            } else {
+                return 1; // desktop
+            }
         }
-      });
-    }
 
-    function nextSlide() {
-      const visibleCount = getVisibleCount();
-      index = (index + 1) % testimonials.length;
-      if (index > testimonials.length - visibleCount) {
-        index = 0; // reset when at the end
-      }
-      showTestimonials(index);
-    }
+        function showTestimonials(i) {
+            const visibleCount = getVisibleCount();
+            testimonials.forEach((item, idx) => {
+                if (idx >= i && idx < i + visibleCount) {
+                    item.style.display = "block";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        }
 
-    // Show first set initially
-    showTestimonials(index);
+        function nextSlide() {
+            const visibleCount = getVisibleCount();
+            index = (index + 1) % testimonials.length;
+            if (index > testimonials.length - visibleCount) {
+                index = 0; // reset when at the end
+            }
+            showTestimonials(index);
+        }
 
-    // Auto slide every 5 seconds
-    let sliderInterval = setInterval(nextSlide, 5000);
+        // Show first set initially
+        showTestimonials(index);
 
-    // Recalculate on window resize
-    window.addEventListener("resize", () => {
-      showTestimonials(index);
+        // Auto slide every 5 seconds
+        let sliderInterval = setInterval(nextSlide, 5000);
+
+        // Recalculate on window resize
+        window.addEventListener("resize", () => {
+            showTestimonials(index);
+        });
     });
-  });
 </script>
 
 
