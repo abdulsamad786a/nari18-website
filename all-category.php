@@ -2,19 +2,19 @@
 session_start();
 error_reporting(0);
 include('includes/config.php');
-$cid=intval($_GET['cid']);
+$cid = intval($_GET['cid']);
 
 // Handle add to cart
-if(isset($_GET['action']) && $_GET['action']=="add"){
-	$id=intval($_GET['id']);
-	if(isset($_SESSION['cart'][$id])){
-		$_SESSION['cart'][$id]['quantity']++;
-	}else{
-		$sql_p="SELECT * FROM products WHERE id={$id}";
-		$query_p=mysqli_query($con,$sql_p);
-		if(mysqli_num_rows($query_p)!=0){
-			$row_p=mysqli_fetch_array($query_p);
-			$_SESSION['cart'][$row_p['id']]=array("quantity" => 1, "price" => $row_p['productPrice']);
+if (isset($_GET['action']) && $_GET['action'] == "add") {
+    $id = intval($_GET['id']);
+    if (isset($_SESSION['cart'][$id])) {
+        $_SESSION['cart'][$id]['quantity']++;
+    } else {
+        $sql_p = "SELECT * FROM products WHERE id={$id}";
+        $query_p = mysqli_query($con, $sql_p);
+        if (mysqli_num_rows($query_p) != 0) {
+            $row_p = mysqli_fetch_array($query_p);
+            $_SESSION['cart'][$row_p['id']] = array("quantity" => 1, "price" => $row_p['productPrice']);
             $_SESSION['show_cart_modal'] = true;
             $_SESSION['last_added_product'] = array(
                 'id' => $row_p['id'],
@@ -22,33 +22,33 @@ if(isset($_GET['action']) && $_GET['action']=="add"){
                 'price' => $row_p['productPrice'],
                 'image' => $row_p['productImage1']
             );
-		}else{
-			$message="Product ID is invalid";
-		}
-	}
+        } else {
+            $message = "Product ID is invalid";
+        }
+    }
 }
 
 // Handle Wishlist
-if(isset($_GET['pid']) && $_GET['action']=="wishlist" ){
-    if(strlen($_SESSION['login'])==0) {   
-header('location:login.php');
+if (isset($_GET['pid']) && $_GET['action'] == "wishlist") {
+    if (strlen($_SESSION['login']) == 0) {
+        header('location:login.php');
     } else {
-mysqli_query($con,"insert into wishlist(userId,productId) values('".$_SESSION['id']."','".$_GET['pid']."')");
-$_SESSION['wishlist_notification'] = 'Product added to wishlist successfully!';
-header('location:my-wishlist.php');
-exit();
+        mysqli_query($con, "insert into wishlist(userId,productId) values('" . $_SESSION['id'] . "','" . $_GET['pid'] . "')");
+        $_SESSION['wishlist_notification'] = 'Product added to wishlist successfully!';
+        header('location:my-wishlist.php');
+        exit();
     }
 }
 
 // Pagination setup
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$productsPerPage = 12;
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+$productsPerPage = 6;
 $offset = ($page - 1) * $productsPerPage;
 
 // Get sorting
 $sort = isset($_GET['sort']) ? $_GET['sort'] : 'newest';
 $orderBy = "ORDER BY id DESC"; // Default: newest
-switch($sort) {
+switch ($sort) {
     case 'price_low':
         $orderBy = "ORDER BY productPrice ASC";
         break;
@@ -66,7 +66,7 @@ $categoryFilter = isset($_GET['cat']) ? intval($_GET['cat']) : 0;
 // Price range filter
 $priceFilter = isset($_GET['price']) ? $_GET['price'] : '';
 $priceCondition = "";
-switch($priceFilter) {
+switch ($priceFilter) {
     case 'under5000':
         $priceCondition = "productPrice < 5000";
         break;
@@ -80,15 +80,15 @@ switch($priceFilter) {
 
 // Build WHERE clause
 $conditions = array();
-if($categoryFilter > 0) {
+if ($categoryFilter > 0) {
     $conditions[] = "category = $categoryFilter";
 }
-if(!empty($priceCondition)) {
+if (!empty($priceCondition)) {
     $conditions[] = $priceCondition;
 }
 
 $whereClause = "";
-if(count($conditions) > 0) {
+if (count($conditions) > 0) {
     $whereClause = "WHERE " . implode(" AND ", $conditions);
 }
 
@@ -99,32 +99,37 @@ $totalProducts = $totalRow['total'];
 $totalPages = ceil($totalProducts / $productsPerPage);
 
 // Helper function to build filter URL
-function buildFilterUrl($params = array()) {
+function buildFilterUrl($params = array())
+{
     $currentParams = array();
-    
+
     // Preserve existing parameters
-    if(isset($_GET['cat']) && $_GET['cat'] > 0) $currentParams['cat'] = $_GET['cat'];
-    if(isset($_GET['price']) && !empty($_GET['price'])) $currentParams['price'] = $_GET['price'];
-    if(isset($_GET['sort']) && $_GET['sort'] != 'newest') $currentParams['sort'] = $_GET['sort'];
-    
+    if (isset($_GET['cat']) && $_GET['cat'] > 0)
+        $currentParams['cat'] = $_GET['cat'];
+    if (isset($_GET['price']) && !empty($_GET['price']))
+        $currentParams['price'] = $_GET['price'];
+    if (isset($_GET['sort']) && $_GET['sort'] != 'newest')
+        $currentParams['sort'] = $_GET['sort'];
+
     // Merge with new parameters
-    foreach($params as $key => $value) {
-        if($value === null || $value === '' || $value === 0) {
+    foreach ($params as $key => $value) {
+        if ($value === null || $value === '' || $value === 0) {
             unset($currentParams[$key]);
         } else {
             $currentParams[$key] = $value;
         }
     }
-    
+
     // Remove page when filters change
     unset($currentParams['page']);
-    
+
     $queryString = http_build_query($currentParams);
     return 'all-category.php' . ($queryString ? '?' . $queryString : '');
 }
 
 // Helper function to build pagination URL
-function buildPageUrl($pageNum) {
+function buildPageUrl($pageNum)
+{
     $currentParams = $_GET;
     $currentParams['page'] = $pageNum;
     return 'all-category.php?' . http_build_query($currentParams);
@@ -134,7 +139,9 @@ function buildPageUrl($pageNum) {
 <?php include('header.php'); ?>
 
 <!-- Material Icons for Category Page -->
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    rel="stylesheet" />
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 <style>
@@ -188,31 +195,39 @@ function buildPageUrl($pageNum) {
 </script>
 
 <!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet"/>
+<link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+    rel="stylesheet" />
 
 <style>
     .product-card:hover .product-action {
         opacity: 1;
         transform: translateY(0);
     }
+
     .small-caps {
         font-variant: small-caps;
     }
+
     .collection-page {
         background: #F9F7F2;
         min-height: 100vh;
     }
+
     .sidebar-category {
         transition: all 0.2s ease;
     }
+
     .sidebar-category:hover {
         color: #800020;
         padding-left: 4px;
     }
+
     .sidebar-category.active {
         color: #800020;
         font-weight: 500;
     }
+
     /* Custom checkbox/radio styling */
     .filter-radio {
         appearance: none;
@@ -225,10 +240,12 @@ function buildPageUrl($pageNum) {
         transition: all 0.2s ease;
         position: relative;
     }
+
     .filter-radio:checked {
         border-color: #800020;
         background-color: #800020;
     }
+
     .filter-radio:checked::after {
         content: '';
         position: absolute;
@@ -240,9 +257,11 @@ function buildPageUrl($pageNum) {
         background: white;
         border-radius: 50%;
     }
+
     .filter-radio:hover {
         border-color: #800020;
     }
+
     .filter-checkbox {
         appearance: none;
         -webkit-appearance: none;
@@ -254,10 +273,12 @@ function buildPageUrl($pageNum) {
         transition: all 0.2s ease;
         position: relative;
     }
+
     .filter-checkbox:checked {
         border-color: #800020;
         background-color: #800020;
     }
+
     .filter-checkbox:checked::after {
         content: '✓';
         position: absolute;
@@ -268,70 +289,110 @@ function buildPageUrl($pageNum) {
         font-size: 12px;
         font-weight: bold;
     }
+
     .filter-checkbox:hover {
         border-color: #800020;
     }
+
     /* Product grid hover effects */
     .product-card-wrapper {
         transition: transform 0.3s ease;
     }
+
     .product-card-wrapper:hover {
         transform: translateY(-4px);
     }
+
     .quick-add-btn {
         transform: translateY(100%);
         transition: transform 0.3s ease;
     }
+
     .product-card-wrapper:hover .quick-add-btn {
         transform: translateY(0);
     }
+
     .quick-add-link:hover .quick-add-text {
         color: #D4AF37 !important;
     }
+
     .clear-filters-btn:hover .btn-text {
         color: #D4AF37 !important;
     }
+
     .product-image-container img {
         transition: transform 1s ease;
     }
+
     .product-card-wrapper:hover .product-image-container img {
         transform: scale(1.05);
     }
+
     /* Wishlist button */
     .wishlist-btn {
         transition: all 0.3s ease;
     }
+
     .wishlist-btn:hover {
         color: #800020 !important;
         transform: scale(1.1);
     }
+
     .wishlist-btn:hover i {
         color: #800020 !important;
     }
-    /* Pagination */
+
+    /* Pagination - Simple Line Style */
     .pagination-btn {
-        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border: 1px solid #d1d5db !important;
+        background: #fff !important;
+        color: #374151 !important;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 14px;
     }
-    .pagination-btn:hover,
+
+    .pagination-btn:hover {
+        border-color: #800020 !important;
+        background: #fff !important;
+    }
+
+    .pagination-btn:hover span {
+        color: #D4AF37 !important;
+    }
+
     .pagination-btn.active {
-        border-color: #800020;
-        color: #800020;
+        background: #800020 !important;
+        border-color: #800020 !important;
+        color: white !important;
     }
-    .pagination-btn.active {
-        background: #800020;
-        color: white;
+
+    .pagination-btn.active span {
+        color: white !important;
     }
+
     /* Sidebar promotional banner */
     .promo-banner {
         position: relative;
         overflow: hidden;
     }
+
     .promo-banner:hover img {
         transform: scale(1.05);
     }
+
     .promo-banner img {
         transition: transform 0.7s ease;
     }
+
     /* Sort dropdown styling */
     .sort-select {
         background-color: transparent;
@@ -339,10 +400,12 @@ function buildPageUrl($pageNum) {
         cursor: pointer;
         outline: none;
     }
+
     .sort-select:focus {
         outline: none;
         box-shadow: none;
     }
+
     /* Active filters */
     .active-filter {
         display: inline-flex;
@@ -355,9 +418,11 @@ function buildPageUrl($pageNum) {
         color: #374151;
         transition: all 0.2s ease;
     }
+
     .active-filter:hover {
         background: #e5e7eb;
     }
+
     .active-filter .remove-filter {
         width: 16px;
         height: 16px;
@@ -371,9 +436,11 @@ function buildPageUrl($pageNum) {
         cursor: pointer;
         transition: background 0.2s ease;
     }
+
     .active-filter .remove-filter:hover {
         background: #800020;
     }
+
     /* Clear all button */
     .clear-all-btn {
         color: #800020;
@@ -382,26 +449,388 @@ function buildPageUrl($pageNum) {
         cursor: pointer;
         transition: opacity 0.2s ease;
     }
+
     .clear-all-btn:hover {
         opacity: 0.7;
     }
+
     /* Filter section collapse for mobile */
     .filter-section {
         transition: all 0.3s ease;
     }
+
     /* Mobile filter toggle */
     .mobile-filter-btn {
         display: none;
     }
+
     @media (max-width: 1023px) {
         .mobile-filter-btn {
             display: flex;
         }
+
         .filter-sidebar {
             display: none;
         }
+
         .filter-sidebar.show {
             display: block;
+        }
+    }
+
+    /* Modern Product Design Styles (Same as Homepage) */
+    .product-box-modern {
+        background: #fff !important;
+        border: 1px solid #e0e0e0 !important;
+        border-radius: 12px !important;
+        padding: 12px !important;
+        margin-bottom: 20px !important;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100% !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
+
+    .product-box-modern::before {
+        content: '' !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        height: 3px !important;
+        background: linear-gradient(90deg, #800020 0%, #C5A059 100%) !important;
+        transform: scaleX(0) !important;
+        transform-origin: left !important;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .product-box-modern:hover::before {
+        transform: scaleX(1) !important;
+    }
+
+    .product-box-modern:hover {
+        transform: translateY(-8px) !important;
+        box-shadow: 0 12px 24px rgba(128, 0, 32, 0.15), 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+        border-color: #800020 !important;
+    }
+
+    .product-image-modern {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        background: #f8f8f8;
+        margin-bottom: 12px;
+        border-radius: 8px;
+        transition: all 0.4s ease;
+    }
+
+    .product-box-modern:hover .product-image-modern {
+        box-shadow: 0 4px 12px rgba(128, 0, 32, 0.1);
+    }
+
+    .product-img-modern {
+        display: block;
+        width: 100%;
+        height: auto;
+        text-decoration: none;
+    }
+
+    .product-img-modern img {
+        width: 100%;
+        height: auto;
+        display: block;
+        object-fit: cover;
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), filter 0.4s ease;
+        filter: brightness(1);
+    }
+
+    .product-box-modern:hover .product-img-modern img {
+        transform: scale(1.08);
+        filter: brightness(1.05);
+    }
+
+    .product-details-modern {
+        text-align: left;
+        padding: 0;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-name-modern {
+        margin-bottom: 10px;
+        min-height: 40px;
+    }
+
+    .product-name-modern a {
+        font-size: 14px;
+        font-weight: 500;
+        color: #000;
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        line-height: 1.4;
+        display: block;
+        font-family: 'Poppins', sans-serif;
+        transition: color 0.3s ease;
+    }
+
+    .product-name-modern a:hover {
+        color: #800020;
+    }
+
+    .btn-wishlist-modern {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border: 1px solid rgba(128, 0, 32, 0.2);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(8px);
+        color: #800020;
+        border-radius: 50%;
+        text-decoration: none;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        z-index: 10;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    .product-box-modern:hover .btn-wishlist-modern {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .btn-wishlist-modern:hover {
+        background: rgba(255, 255, 255, 0.95);
+        border-color: #800020;
+        color: #800020;
+        transform: scale(1.15);
+        box-shadow: 0 4px 12px rgba(128, 0, 32, 0.15);
+    }
+
+    .btn-wishlist-modern i {
+        font-size: 16px;
+    }
+
+    .btn-quickview-modern {
+        position: absolute;
+        top: 60px;
+        right: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border: 1px solid rgba(128, 0, 32, 0.2);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(8px);
+        color: #800020;
+        border-radius: 50%;
+        text-decoration: none;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        z-index: 10;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    .product-box-modern:hover .btn-quickview-modern {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .btn-quickview-modern:hover {
+        background: rgba(255, 255, 255, 0.95);
+        border-color: #800020;
+        color: #800020;
+        transform: scale(1.15);
+        box-shadow: 0 4px 12px rgba(128, 0, 32, 0.15);
+    }
+
+    .btn-quickview-modern .material-symbols-outlined {
+        font-size: 18px !important;
+    }
+
+    .product-price-modern {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 0;
+    }
+
+    .price-info {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .price-current {
+        font-size: 16px;
+        font-weight: 600;
+        color: #ff0000;
+        font-family: 'Poppins', sans-serif;
+        transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .product-box-modern:hover .price-current {
+        color: #ff0000;
+        transform: scale(1.05);
+    }
+
+    .price-old {
+        font-size: 14px;
+        color: #999;
+        text-decoration: line-through;
+        font-weight: 400;
+        font-family: 'Poppins', sans-serif;
+        transition: opacity 0.3s ease;
+    }
+
+    .product-box-modern:hover .price-old {
+        opacity: 0.7;
+    }
+
+    .btn-cart-modern {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border: 1px solid rgba(128, 0, 32, 0.2);
+        background: #fff;
+        color: #800020;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        flex-shrink: 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-cart-modern:hover {
+        background: #fff;
+        border-color: #800020;
+        color: #800020;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(128, 0, 32, 0.15);
+    }
+
+    .btn-cart-modern i {
+        font-size: 16px;
+        transition: transform 0.3s ease;
+    }
+
+    .btn-cart-modern:hover i {
+        transform: scale(1.1);
+    }
+
+    .btn-cart-modern.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .btn-cart-modern.disabled:hover {
+        background: #fff;
+        border-color: #e0e0e0;
+        color: #333;
+        transform: none;
+    }
+
+    /* Badge styles */
+    .badge-out-of-stock {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: #1c1917;
+        color: white;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 6px 12px;
+        border-radius: 4px;
+        z-index: 5;
+    }
+
+    .badge-sale {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: #800020;
+        color: white;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 6px 12px;
+        border-radius: 4px;
+        z-index: 5;
+    }
+
+    .badge-sale.with-out-of-stock {
+        top: 48px;
+    }
+
+    /* Updated product card wrapper for grid */
+    .product-card-wrapper {
+        transition: transform 0.3s ease;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .product-box-modern {
+            padding: 10px;
+        }
+
+        .product-name-modern a {
+            font-size: 12px;
+        }
+
+        .price-current {
+            font-size: 14px;
+        }
+
+        .price-old {
+            font-size: 12px;
+        }
+
+        .btn-wishlist-modern,
+        .btn-quickview-modern {
+            width: 32px;
+            height: 32px;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .btn-quickview-modern {
+            top: 50px;
+        }
+
+        .btn-cart-modern {
+            width: 32px;
+            height: 32px;
+        }
+
+        .badge-out-of-stock,
+        .badge-sale {
+            font-size: 8px;
+            padding: 4px 8px;
+        }
+
+        .badge-sale.with-out-of-stock {
+            top: 40px;
         }
     }
 </style>
@@ -410,7 +839,8 @@ function buildPageUrl($pageNum) {
 <div class="collection-page">
     <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <!-- Page Header -->
-        <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-stone-200 pb-6 sm:pb-8 mb-8 sm:mb-12">
+        <div
+            class="flex flex-col md:flex-row md:items-end justify-between border-b border-stone-200 pb-6 sm:pb-8 mb-8 sm:mb-12">
             <div>
                 <!-- Breadcrumb -->
                 <nav class="flex text-[10px] uppercase tracking-widest text-stone-500 mb-4">
@@ -418,11 +848,12 @@ function buildPageUrl($pageNum) {
                     <span class="mx-2">/</span>
                     <span class="text-stone-900 font-medium">Collections</span>
                 </nav>
-                
+
                 <!-- Title -->
-                <h2 class="font-display text-3xl sm:text-4xl md:text-5xl text-stone-900" style="font-family: 'Playfair Display', serif;">
-                    <?php 
-                    if($categoryFilter > 0) {
+                <h2 class="font-display text-3xl sm:text-4xl md:text-5xl text-stone-900"
+                    style="font-family: 'Playfair Display', serif;">
+                    <?php
+                    if ($categoryFilter > 0) {
                         $catNameQuery = mysqli_query($con, "SELECT categoryName FROM category WHERE id = $categoryFilter");
                         $catNameRow = mysqli_fetch_array($catNameQuery);
                         echo htmlentities($catNameRow['categoryName']);
@@ -431,305 +862,327 @@ function buildPageUrl($pageNum) {
                     }
                     ?>
                 </h2>
-                <p class="mt-2 text-stone-500 italic text-base sm:text-lg" style="font-family: 'Cormorant Garamond', serif;">
+                <p class="mt-2 text-stone-500 italic text-base sm:text-lg"
+                    style="font-family: 'Cormorant Garamond', serif;">
                     Exquisite hand-crafted pieces for the modern woman.
                 </p>
-                            </div>
-                           
+            </div>
+
             <!-- Products Count & Sort -->
             <div class="mt-4 md:mt-0 flex items-center gap-4">
-                <span class="text-xs uppercase tracking-widest text-stone-500"><?php echo $totalProducts; ?> Products Found</span>
+                <span class="text-xs uppercase tracking-widest text-stone-500"><?php echo $totalProducts; ?> Products
+                    Found</span>
                 <form method="GET" id="sortForm">
-                    <?php if($categoryFilter > 0): ?>
-                    <input type="hidden" name="cat" value="<?php echo $categoryFilter; ?>">
+                    <?php if ($categoryFilter > 0): ?>
+                        <input type="hidden" name="cat" value="<?php echo $categoryFilter; ?>">
                     <?php endif; ?>
-                    <?php if(!empty($priceFilter)): ?>
-                    <input type="hidden" name="price" value="<?php echo $priceFilter; ?>">
+                    <?php if (!empty($priceFilter)): ?>
+                        <input type="hidden" name="price" value="<?php echo $priceFilter; ?>">
                     <?php endif; ?>
-                    <select name="sort" onchange="document.getElementById('sortForm').submit();" class="sort-select bg-transparent border-none text-xs uppercase tracking-widest focus:ring-0 cursor-pointer text-stone-700">
+                    <select name="sort" onchange="document.getElementById('sortForm').submit();"
+                        class="sort-select bg-transparent border-none text-xs uppercase tracking-widest focus:ring-0 cursor-pointer text-stone-700">
                         <option value="newest" <?php echo $sort == 'newest' ? 'selected' : ''; ?>>Sort By: Newest</option>
-                        <option value="price_low" <?php echo $sort == 'price_low' ? 'selected' : ''; ?>>Price: Low to High</option>
-                        <option value="price_high" <?php echo $sort == 'price_high' ? 'selected' : ''; ?>>Price: High to Low</option>
-                        <option value="popularity" <?php echo $sort == 'popularity' ? 'selected' : ''; ?>>Popularity</option>
+                        <option value="price_low" <?php echo $sort == 'price_low' ? 'selected' : ''; ?>>Price: Low to High
+                        </option>
+                        <option value="price_high" <?php echo $sort == 'price_high' ? 'selected' : ''; ?>>Price: High to
+                            Low</option>
+                        <option value="popularity" <?php echo $sort == 'popularity' ? 'selected' : ''; ?>>Popularity
+                        </option>
                     </select>
                 </form>
-                        </div>
-                    </div>
-        
-        <!-- Active Filters Display -->
-        <?php if($categoryFilter > 0 || !empty($priceFilter)): ?>
-        <div class="flex flex-wrap items-center gap-3 mb-6 pb-6 border-b border-stone-200">
-            <span class="text-xs uppercase tracking-widest text-stone-500">Active Filters:</span>
-            
-            <?php if($categoryFilter > 0): 
-                $activeCatQuery = mysqli_query($con, "SELECT categoryName FROM category WHERE id = $categoryFilter");
-                $activeCatRow = mysqli_fetch_array($activeCatQuery);
-            ?>
-            <a href="<?php echo buildFilterUrl(array('cat' => null)); ?>" class="active-filter">
-                <?php echo htmlentities($activeCatRow['categoryName']); ?>
-                <span class="remove-filter">×</span>
-            </a>
-            <?php endif; ?>
-            
-            <?php if(!empty($priceFilter)): 
-                $priceLabels = array(
-                    'under5000' => 'Under ₹5,000',
-                    '5000to10000' => '₹5,000 - ₹10,000',
-                    'above10000' => 'Above ₹10,000'
-                );
-            ?>
-            <a href="<?php echo buildFilterUrl(array('price' => null)); ?>" class="active-filter">
-                <?php echo $priceLabels[$priceFilter]; ?>
-                <span class="remove-filter">×</span>
-            </a>
-            <?php endif; ?>
-            
-            <a href="all-category.php" class="clear-all-btn ml-auto">Clear All</a>
+            </div>
         </div>
+
+        <!-- Active Filters Display -->
+        <?php if ($categoryFilter > 0 || !empty($priceFilter)): ?>
+            <div class="flex flex-wrap items-center gap-3 mb-6 pb-6 border-b border-stone-200">
+                <span class="text-xs uppercase tracking-widest text-stone-500">Active Filters:</span>
+
+                <?php if ($categoryFilter > 0):
+                    $activeCatQuery = mysqli_query($con, "SELECT categoryName FROM category WHERE id = $categoryFilter");
+                    $activeCatRow = mysqli_fetch_array($activeCatQuery);
+                    ?>
+                    <a href="<?php echo buildFilterUrl(array('cat' => null)); ?>" class="active-filter">
+                        <?php echo htmlentities($activeCatRow['categoryName']); ?>
+                        <span class="remove-filter">×</span>
+                    </a>
+                <?php endif; ?>
+
+                <?php if (!empty($priceFilter)):
+                    $priceLabels = array(
+                        'under5000' => 'Under ₹5,000',
+                        '5000to10000' => '₹5,000 - ₹10,000',
+                        'above10000' => 'Above ₹10,000'
+                    );
+                    ?>
+                    <a href="<?php echo buildFilterUrl(array('price' => null)); ?>" class="active-filter">
+                        <?php echo $priceLabels[$priceFilter]; ?>
+                        <span class="remove-filter">×</span>
+                    </a>
+                <?php endif; ?>
+
+                <a href="all-category.php" class="clear-all-btn ml-auto">Clear All</a>
+            </div>
         <?php endif; ?>
-        
+
         <!-- Mobile Filter Toggle Button -->
-        <button onclick="toggleFilters()" class="mobile-filter-btn lg:hidden w-full mb-6 py-3 px-4 border border-stone-300 flex items-center justify-center gap-2 text-sm uppercase tracking-widest">
+        <button onclick="toggleFilters()"
+            class="mobile-filter-btn lg:hidden w-full mb-6 py-3 px-4 border border-stone-300 flex items-center justify-center gap-2 text-sm uppercase tracking-widest">
             <i class="icon anm anm-sliders-hr"></i>
             Filter & Sort
         </button>
-        
+
         <!-- Main Content Grid -->
         <div class="flex flex-col lg:flex-row gap-8 lg:gap-16">
-            
+
             <!-- Sidebar -->
             <aside id="filterSidebar" class="filter-sidebar w-full lg:w-1/5 space-y-8 sm:space-y-10 lg:block">
-                
+
                 <!-- Categories -->
                 <div class="filter-section">
-                    <h3 class="text-lg sm:text-xl mb-4 sm:mb-6 border-b border-stone-200 pb-2" style="font-family: 'Cormorant Garamond', serif;">Category</h3>
+                    <h3 class="text-lg sm:text-xl mb-4 sm:mb-6 border-b border-stone-200 pb-2"
+                        style="font-family: 'Cormorant Garamond', serif;">Category</h3>
                     <ul class="space-y-3">
                         <li class="flex items-center justify-between text-sm group cursor-pointer">
-                            <a href="<?php echo buildFilterUrl(array('cat' => null)); ?>" class="sidebar-category <?php echo $categoryFilter == 0 ? 'active' : ''; ?> group-hover:text-primary transition-colors">
+                            <a href="<?php echo buildFilterUrl(array('cat' => null)); ?>"
+                                class="sidebar-category <?php echo $categoryFilter == 0 ? 'active' : ''; ?> group-hover:text-primary transition-colors">
                                 All Products
                             </a>
-                            <span class="text-xs text-stone-400"><?php 
-                                $allCountQuery = mysqli_query($con, "SELECT COUNT(*) as cnt FROM products");
-                                $allCountRow = mysqli_fetch_array($allCountQuery);
-                                echo $allCountRow['cnt'];
+                            <span class="text-xs text-stone-400"><?php
+                            $allCountQuery = mysqli_query($con, "SELECT COUNT(*) as cnt FROM products");
+                            $allCountRow = mysqli_fetch_array($allCountQuery);
+                            echo $allCountRow['cnt'];
                             ?></span>
                         </li>
                         <?php
                         $catQuery = mysqli_query($con, "SELECT * FROM category");
-                        while($catRow = mysqli_fetch_array($catQuery)) {
+                        while ($catRow = mysqli_fetch_array($catQuery)) {
                             $catCount = mysqli_query($con, "SELECT COUNT(*) as cnt FROM products WHERE category = " . $catRow['id']);
                             $countRow = mysqli_fetch_array($catCount);
-                        ?>
-                        <li class="flex items-center justify-between text-sm group cursor-pointer">
-                            <a href="<?php echo buildFilterUrl(array('cat' => $catRow['id'])); ?>" 
-                               class="sidebar-category <?php echo $categoryFilter == $catRow['id'] ? 'active' : ''; ?> group-hover:text-primary transition-colors">
-                                <?php echo htmlentities($catRow['categoryName']); ?>
-                            </a>
-                            <span class="text-xs" style="<?php echo $categoryFilter == $catRow['id'] ? 'color: #800020;' : 'color: #a8a29e;'; ?>"><?php echo $countRow['cnt']; ?></span>
-                        </li>
+                            ?>
+                            <li class="flex items-center justify-between text-sm group cursor-pointer">
+                                <a href="<?php echo buildFilterUrl(array('cat' => $catRow['id'])); ?>"
+                                    class="sidebar-category <?php echo $categoryFilter == $catRow['id'] ? 'active' : ''; ?> group-hover:text-primary transition-colors">
+                                    <?php echo htmlentities($catRow['categoryName']); ?>
+                                </a>
+                                <span class="text-xs"
+                                    style="<?php echo $categoryFilter == $catRow['id'] ? 'color: #800020;' : 'color: #a8a29e;'; ?>"><?php echo $countRow['cnt']; ?></span>
+                            </li>
                         <?php } ?>
-                                        </ul>
-                                    </div>
-                
+                    </ul>
+                </div>
+
                 <!-- Price Range -->
                 <div class="filter-section">
-                    <h3 class="text-lg sm:text-xl mb-4 sm:mb-6 border-b border-stone-200 pb-2" style="font-family: 'Cormorant Garamond', serif;">Price Range</h3>
+                    <h3 class="text-lg sm:text-xl mb-4 sm:mb-6 border-b border-stone-200 pb-2"
+                        style="font-family: 'Cormorant Garamond', serif;">Price Range</h3>
                     <div class="space-y-3">
-                        <a href="<?php echo buildFilterUrl(array('price' => 'under5000')); ?>" class="flex items-center space-x-3 cursor-pointer group">
-                            <span class="filter-radio <?php echo $priceFilter == 'under5000' ? 'checked' : ''; ?>" style="<?php echo $priceFilter == 'under5000' ? 'border-color: #800020; background-color: #800020;' : ''; ?>"></span>
-                            <span class="text-sm group-hover:text-primary transition-colors <?php echo $priceFilter == 'under5000' ? 'text-primary font-medium' : ''; ?>">Under ₹5,000</span>
-                            <span class="text-xs text-stone-400 ml-auto"><?php 
-                                $priceCount1 = mysqli_query($con, "SELECT COUNT(*) as cnt FROM products WHERE productPrice < 5000" . ($categoryFilter > 0 ? " AND category = $categoryFilter" : ""));
-                                $pc1 = mysqli_fetch_array($priceCount1);
-                                echo $pc1['cnt'];
+                        <a href="<?php echo buildFilterUrl(array('price' => 'under5000')); ?>"
+                            class="flex items-center space-x-3 cursor-pointer group">
+                            <span class="filter-radio <?php echo $priceFilter == 'under5000' ? 'checked' : ''; ?>"
+                                style="<?php echo $priceFilter == 'under5000' ? 'border-color: #800020; background-color: #800020;' : ''; ?>"></span>
+                            <span
+                                class="text-sm group-hover:text-primary transition-colors <?php echo $priceFilter == 'under5000' ? 'text-primary font-medium' : ''; ?>">Under
+                                ₹5,000</span>
+                            <span class="text-xs text-stone-400 ml-auto"><?php
+                            $priceCount1 = mysqli_query($con, "SELECT COUNT(*) as cnt FROM products WHERE productPrice < 5000" . ($categoryFilter > 0 ? " AND category = $categoryFilter" : ""));
+                            $pc1 = mysqli_fetch_array($priceCount1);
+                            echo $pc1['cnt'];
                             ?></span>
                         </a>
-                        <a href="<?php echo buildFilterUrl(array('price' => '5000to10000')); ?>" class="flex items-center space-x-3 cursor-pointer group">
-                            <span class="filter-radio <?php echo $priceFilter == '5000to10000' ? 'checked' : ''; ?>" style="<?php echo $priceFilter == '5000to10000' ? 'border-color: #800020; background-color: #800020;' : ''; ?>"></span>
-                            <span class="text-sm group-hover:text-primary transition-colors <?php echo $priceFilter == '5000to10000' ? 'text-primary font-medium' : ''; ?>">₹5,000 - ₹10,000</span>
-                            <span class="text-xs text-stone-400 ml-auto"><?php 
-                                $priceCount2 = mysqli_query($con, "SELECT COUNT(*) as cnt FROM products WHERE productPrice >= 5000 AND productPrice <= 10000" . ($categoryFilter > 0 ? " AND category = $categoryFilter" : ""));
-                                $pc2 = mysqli_fetch_array($priceCount2);
-                                echo $pc2['cnt'];
+                        <a href="<?php echo buildFilterUrl(array('price' => '5000to10000')); ?>"
+                            class="flex items-center space-x-3 cursor-pointer group">
+                            <span class="filter-radio <?php echo $priceFilter == '5000to10000' ? 'checked' : ''; ?>"
+                                style="<?php echo $priceFilter == '5000to10000' ? 'border-color: #800020; background-color: #800020;' : ''; ?>"></span>
+                            <span
+                                class="text-sm group-hover:text-primary transition-colors <?php echo $priceFilter == '5000to10000' ? 'text-primary font-medium' : ''; ?>">₹5,000
+                                - ₹10,000</span>
+                            <span class="text-xs text-stone-400 ml-auto"><?php
+                            $priceCount2 = mysqli_query($con, "SELECT COUNT(*) as cnt FROM products WHERE productPrice >= 5000 AND productPrice <= 10000" . ($categoryFilter > 0 ? " AND category = $categoryFilter" : ""));
+                            $pc2 = mysqli_fetch_array($priceCount2);
+                            echo $pc2['cnt'];
                             ?></span>
                         </a>
-                        <a href="<?php echo buildFilterUrl(array('price' => 'above10000')); ?>" class="flex items-center space-x-3 cursor-pointer group">
-                            <span class="filter-radio <?php echo $priceFilter == 'above10000' ? 'checked' : ''; ?>" style="<?php echo $priceFilter == 'above10000' ? 'border-color: #800020; background-color: #800020;' : ''; ?>"></span>
-                            <span class="text-sm group-hover:text-primary transition-colors <?php echo $priceFilter == 'above10000' ? 'text-primary font-medium' : ''; ?>">Above ₹10,000</span>
-                            <span class="text-xs text-stone-400 ml-auto"><?php 
-                                $priceCount3 = mysqli_query($con, "SELECT COUNT(*) as cnt FROM products WHERE productPrice > 10000" . ($categoryFilter > 0 ? " AND category = $categoryFilter" : ""));
-                                $pc3 = mysqli_fetch_array($priceCount3);
-                                echo $pc3['cnt'];
+                        <a href="<?php echo buildFilterUrl(array('price' => 'above10000')); ?>"
+                            class="flex items-center space-x-3 cursor-pointer group">
+                            <span class="filter-radio <?php echo $priceFilter == 'above10000' ? 'checked' : ''; ?>"
+                                style="<?php echo $priceFilter == 'above10000' ? 'border-color: #800020; background-color: #800020;' : ''; ?>"></span>
+                            <span
+                                class="text-sm group-hover:text-primary transition-colors <?php echo $priceFilter == 'above10000' ? 'text-primary font-medium' : ''; ?>">Above
+                                ₹10,000</span>
+                            <span class="text-xs text-stone-400 ml-auto"><?php
+                            $priceCount3 = mysqli_query($con, "SELECT COUNT(*) as cnt FROM products WHERE productPrice > 10000" . ($categoryFilter > 0 ? " AND category = $categoryFilter" : ""));
+                            $pc3 = mysqli_fetch_array($priceCount3);
+                            echo $pc3['cnt'];
                             ?></span>
                         </a>
-                        
-                        <?php if(!empty($priceFilter)): ?>
-                        <a href="<?php echo buildFilterUrl(array('price' => null)); ?>" class="text-xs text-stone-500 hover:text-primary mt-2 inline-block">
-                            ← Clear price filter
-                        </a>
+
+                        <?php if (!empty($priceFilter)): ?>
+                            <a href="<?php echo buildFilterUrl(array('price' => null)); ?>"
+                                class="text-xs text-stone-500 hover:text-primary mt-2 inline-block">
+                                ← Clear price filter
+                            </a>
                         <?php endif; ?>
-                            </div>
-                        </div>
-                
+                    </div>
+                </div>
+
             </aside>
-            
+
             <!-- Products Grid -->
             <div class="w-full lg:w-4/5">
-                <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-x-8 gap-y-8 sm:gap-y-16">
-                                        <?php
-                    $productQuery = mysqli_query($con, "SELECT * FROM products $whereClause $orderBy LIMIT $offset, $productsPerPage");
-                    $productCount = mysqli_num_rows($productQuery);
-                    
-                    if($productCount > 0) {
-                        while($product = mysqli_fetch_array($productQuery)) {
-                            $isOutOfStock = $product['productAvailability'] != 'In Stock';
-                    ?>
-                    <!-- Product Card -->
-                    <div class="product-card-wrapper group">
-                        <div class="relative aspect-[3/4] mb-4 sm:mb-6 overflow-hidden bg-stone-100 border border-stone-100">
-                            <!-- Product Image -->
-                            <a href="product-details.php?pid=<?php echo $product['id']; ?>" class="product-image-container block w-full h-full">
-                                <img alt="<?php echo htmlentities($product['productName']); ?>" 
-                                     class="w-full h-full object-cover" 
-                                     src="admin/productimages/<?php echo $product['id']; ?>/<?php echo $product['productImage1']; ?>"
-                                     loading="lazy"/>
-                            </a>
-                            
-                            <!-- Wishlist Button -->
-                            <div class="absolute top-2 sm:top-4 right-2 sm:right-4">
-                                <?php if(strlen($_SESSION['login']) > 0) { ?>
-                                <a href="all-category.php?pid=<?php echo $product['id']; ?>&action=wishlist<?php echo $categoryFilter > 0 ? '&cat=' . $categoryFilter : ''; ?><?php echo !empty($priceFilter) ? '&price=' . $priceFilter : ''; ?>" 
-                                   class="wishlist-btn w-8 h-8 sm:w-10 sm:h-10 bg-white/80 backdrop-blur rounded-full flex items-center justify-center shadow-sm transition-all" style="color: #333;">
-                                    <i class="icon anm anm-heart-l" style="font-size: 18px;"></i>
-                                </a>
-                                <?php } else { ?>
-                                <a href="login.php" 
-                                   class="wishlist-btn w-8 h-8 sm:w-10 sm:h-10 bg-white/80 backdrop-blur rounded-full flex items-center justify-center shadow-sm transition-all" style="color: #333;">
-                                    <i class="icon anm anm-heart-l" style="font-size: 18px;"></i>
-                                </a>
-                                                             <?php } ?>
-                                                        </div>
-                            
-                            <!-- Out of Stock Badge -->
-                            <?php if($isOutOfStock): ?>
-                            <div class="absolute top-2 sm:top-4 left-2 sm:left-4">
-                                <span class="bg-stone-800 text-white text-[8px] sm:text-[10px] tracking-widest uppercase py-1 px-2 sm:px-3">
-                                    Out of Stock
-                                </span>
-                            </div>
-                            <?php endif; ?>
-                            
-                            <!-- Sale Badge -->
-                            <?php if($product['productPriceBeforeDiscount'] > $product['productPrice']): 
-                                $discount = round((($product['productPriceBeforeDiscount'] - $product['productPrice']) / $product['productPriceBeforeDiscount']) * 100);
-                            ?>
-                            <div class="absolute top-2 sm:top-4 left-2 sm:left-4 <?php echo $isOutOfStock ? 'top-10 sm:top-14' : ''; ?>">
-                                <span class="bg-primary text-white text-[8px] sm:text-[10px] tracking-widest uppercase py-1 px-2 sm:px-3">
-                                    <?php echo $discount; ?>% Off
-                                </span>
-                                                    </div>
-                            <?php endif; ?>
-                            
-                            <!-- Quick Add Button -->
-                            <div class="quick-add-btn absolute bottom-0 left-0 right-0 p-2 sm:p-4 bg-white/90 backdrop-blur">
-                                <?php if(!$isOutOfStock): ?>
-                                <a href="all-category.php?action=add&id=<?php echo $product['id']; ?><?php echo $categoryFilter > 0 ? '&cat=' . $categoryFilter : ''; ?><?php echo !empty($priceFilter) ? '&price=' . $priceFilter : ''; ?>" 
-                                   class="quick-add-link block w-full py-2 sm:py-3 bg-stone-900 text-white text-[10px] sm:text-xs tracking-widest uppercase hover:bg-primary transition-colors text-center">
-                                    <span class="quick-add-text">Quick Add</span>
-                                </a>
-                                <?php else: ?>
-                                <button disabled class="w-full py-2 sm:py-3 bg-stone-400 text-white text-[10px] sm:text-xs tracking-widest uppercase cursor-not-allowed text-center">
-                                    Out of Stock
-                                </button>
-                                <?php endif; ?>
-                                                </div>
+                <div class="grid-products grid-view-items">
+                    <div
+                        class="row col-row product-options row-cols-xl-4 row-cols-lg-3 row-cols-md-3 row-cols-sm-2 row-cols-2">
+                        <?php
+                        $productQuery = mysqli_query($con, "SELECT * FROM products $whereClause $orderBy LIMIT $offset, $productsPerPage");
+                        $productCount = mysqli_num_rows($productQuery);
+
+                        if ($productCount > 0) {
+                            while ($product = mysqli_fetch_array($productQuery)) {
+                                $isOutOfStock = $product['productAvailability'] != 'In Stock';
+                                ?>
+                                <!-- Product Card - Modern Style (Same as Homepage) -->
+                                <div class="item col-item">
+                                    <div class="product-box-modern">
+                                        <!-- Product Image -->
+                                        <div class="product-image-modern">
+                                            <a href="product-details.php?pid=<?php echo $product['id']; ?>"
+                                                class="product-img-modern">
+                                                <img alt="<?php echo htmlentities($product['productName']); ?>"
+                                                    class="blur-up lazyload"
+                                                    data-src="admin/productimages/<?php echo $product['id']; ?>/<?php echo $product['productImage1']; ?>"
+                                                    src="admin/productimages/<?php echo $product['id']; ?>/<?php echo $product['productImage1']; ?>"
+                                                    loading="lazy" />
+                                            </a>
+                                            <!-- Wishlist Button -->
+                                            <?php if (strlen($_SESSION['login']) > 0) { ?>
+                                                <a href="all-category.php?pid=<?php echo $product['id']; ?>&action=wishlist<?php echo $categoryFilter > 0 ? '&cat=' . $categoryFilter : ''; ?><?php echo !empty($priceFilter) ? '&price=' . $priceFilter : ''; ?>"
+                                                    class="btn-wishlist-modern" title="Add to Wishlist">
+                                                    <i class="icon anm anm-heart-l"></i>
+                                                </a>
+                                            <?php } else { ?>
+                                                <a href="login.php" class="btn-wishlist-modern" title="Add to Wishlist">
+                                                    <i class="icon anm anm-heart-l"></i>
+                                                </a>
+                                            <?php } ?>
+                                            <!-- Quick View Button -->
+                                            <button type="button" class="btn-quickview-modern" title="Quick View"
+                                                onclick="openQuickView(<?php echo $product['id']; ?>)">
+                                                <span class="material-symbols-outlined">visibility</span>
+                                            </button>
+                                        </div>
+                                        <!-- Product Details -->
+                                        <div class="product-details-modern">
+                                            <!-- Product Name -->
+                                            <div class="product-name-modern">
+                                                <a href="product-details.php?pid=<?php echo $product['id']; ?>">
+                                                    <?php echo htmlentities($product['productName']); ?>
+                                                </a>
                                             </div>
-                        
-                        <!-- Product Details -->
-                        <div class="text-center space-y-1 sm:space-y-2">
-                            <h3 class="small-caps text-sm sm:text-lg tracking-wider text-stone-800" style="font-family: 'Cormorant Garamond', serif;">
-                                <a href="product-details.php?pid=<?php echo $product['id']; ?>" class="hover:text-primary transition-colors">
-                                    <?php echo htmlentities($product['productName']); ?>
-                                </a>
-                            </h3>
-                            <div class="flex items-center justify-center gap-2 sm:gap-3 flex-wrap">
-                                <span class="font-medium text-sm sm:text-base" style="color: #800020;">₹ <?php echo number_format($product['productPrice'], 2); ?></span>
-                                <?php if($product['productPriceBeforeDiscount'] > $product['productPrice']): ?>
-                                <span class="text-[10px] sm:text-xs line-through" style="color: #9ca3af;">₹ <?php echo number_format($product['productPriceBeforeDiscount'], 2); ?></span>
-                                <?php endif; ?>
+                                            <!-- Product Price -->
+                                            <div class="product-price-modern">
+                                                <div class="price-info">
+                                                    <span class="price-current">₹
+                                                        <?php echo htmlentities($product['productPrice']); ?></span>
+                                                    <?php if ($product['productPriceBeforeDiscount'] > $product['productPrice']): ?>
+                                                        <span class="price-old">₹
+                                                            <?php echo htmlentities($product['productPriceBeforeDiscount']); ?></span>
+                                                    <?php endif; ?>
+                                                </div>
+                                                <?php if (!$isOutOfStock): ?>
+                                                    <a href="all-category.php?action=add&id=<?php echo $product['id']; ?><?php echo $categoryFilter > 0 ? '&cat=' . $categoryFilter : ''; ?><?php echo !empty($priceFilter) ? '&price=' . $priceFilter : ''; ?>"
+                                                        class="btn-cart-modern" title="Add to Cart">
+                                                        <i class="icon anm anm-cart-l"></i>
+                                                    </a>
+                                                <?php else: ?>
+                                                    <a href="" style="cursor: not-allowed;" onclick="event.preventDefault();"
+                                                        class="btn-cart-modern disabled" title="Out of Stock">
+                                                        <i class="icon anm anm-cart-l"></i>
+                                                    </a>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
                                     </div>
+                                </div>
+                            <?php } ?>
                         </div>
                     </div>
-                    <?php 
-                        }
-                    } else {
-                    ?>
+                <?php } else { ?>
                     <!-- No Products Found -->
-                    <div class="col-span-full text-center py-16">
-                        <i class="icon anm anm-box-l" style="font-size: 60px; color: #d1d5db; display: block; margin-bottom: 16px;"></i>
-                        <h3 class="text-xl text-stone-600 mb-2" style="font-family: 'Playfair Display', serif;">No Products Found</h3>
-                        <p class="text-stone-400 mb-4">Try changing your filters or check back later for new arrivals.</p>
-                        <?php if($categoryFilter > 0 || !empty($priceFilter)): ?>
-                        <a href="all-category.php" class="clear-filters-btn inline-block py-3 px-8 text-white text-xs tracking-widest uppercase transition-colors" style="background-color: #800020;">
-                            <span class="btn-text">Clear All Filters</span>
-                        </a>
+                    <div class="w-full text-center py-16">
+                        <i class="icon anm anm-box-l"
+                            style="font-size: 60px; color: #d1d5db; display: block; margin-bottom: 16px;"></i>
+                        <h3 class="text-xl text-stone-600 mb-2" style="font-family: 'Playfair Display', serif;">No
+                            Products Found</h3>
+                        <p class="text-stone-400 mb-4">Try changing your filters or check back later for new
+                            arrivals.
+                        </p>
+                        <?php if ($categoryFilter > 0 || !empty($priceFilter)): ?>
+                            <a href="all-category.php"
+                                class="clear-filters-btn inline-block py-3 px-8 text-white text-xs tracking-widest uppercase transition-colors"
+                                style="background-color: #800020;">
+                                <span class="btn-text">Clear All Filters</span>
+                            </a>
                         <?php endif; ?>
                     </div>
-                    <?php } ?>
-                </div>
-                
+                <?php } ?>
+
                 <!-- Pagination -->
-                <?php if($totalPages > 1): ?>
-                <div class="mt-12 sm:mt-20 flex items-center justify-center gap-2 sm:gap-4 flex-wrap">
-                    <?php 
-                    // Previous button
-                    if($page > 1): ?>
-                    <a href="<?php echo buildPageUrl($page - 1); ?>" 
-                       class="pagination-btn w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center border border-stone-300 hover:border-primary hover:text-primary transition-all">
-                        <i class="icon anm anm-angle-left-l"></i>
-                    </a>
-                    <?php endif; ?>
-                    
-                    <?php 
-                    // Page numbers
-                    $startPage = max(1, $page - 2);
-                    $endPage = min($totalPages, $page + 2);
-                    
-                    if($startPage > 1): ?>
-                    <a href="<?php echo buildPageUrl(1); ?>" class="pagination-btn w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center border border-stone-300 text-sm sm:text-base">1</a>
-                    <?php if($startPage > 2): ?>
-                    <span class="text-stone-400">...</span>
-                    <?php endif; ?>
-                    <?php endif; ?>
-                    
-                    <?php for($i = $startPage; $i <= $endPage; $i++): ?>
-                    <a href="<?php echo buildPageUrl($i); ?>" 
-                       class="pagination-btn w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center border border-stone-300 text-sm sm:text-base <?php echo $i == $page ? 'active' : ''; ?> hover:border-primary hover:text-primary transition-all">
-                        <?php echo $i; ?>
-                    </a>
-                    <?php endfor; ?>
-                    
-                    <?php if($endPage < $totalPages): ?>
-                    <?php if($endPage < $totalPages - 1): ?>
-                    <span class="text-stone-400">...</span>
-                    <?php endif; ?>
-                    <a href="<?php echo buildPageUrl($totalPages); ?>" class="pagination-btn w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center border border-stone-300 text-sm sm:text-base"><?php echo $totalPages; ?></a>
-                    <?php endif; ?>
-                    
-                    <?php 
-                    // Next button
-                    if($page < $totalPages): ?>
-                    <a href="<?php echo buildPageUrl($page + 1); ?>" 
-                       class="pagination-btn w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center border border-stone-300 hover:border-primary hover:text-primary transition-all">
-                        <i class="icon anm anm-angle-right-l"></i>
-                    </a>
-                    <?php endif; ?>
-                </div>
-                
-                <!-- Page info -->
-                <div class="text-center mt-4 text-xs text-stone-400">
-                    Showing <?php echo $offset + 1; ?> - <?php echo min($offset + $productsPerPage, $totalProducts); ?> of <?php echo $totalProducts; ?> products
-                </div>
+                <?php if ($totalPages > 1): ?>
+                    <div class="mt-12 sm:mt-20 flex items-center justify-center gap-2 sm:gap-4 flex-wrap">
+                        <?php
+                        // Previous button
+                        if ($page > 1): ?>
+                            <a href="<?php echo buildPageUrl($page - 1); ?>" class="pagination-btn">
+                                <i class="icon anm anm-angle-left-l"></i>
+                            </a>
+                        <?php endif; ?>
+
+                        <?php
+                        // Page numbers
+                        $startPage = max(1, $page - 2);
+                        $endPage = min($totalPages, $page + 2);
+
+                        if ($startPage > 1): ?>
+                            <a href="<?php echo buildPageUrl(1); ?>" class="pagination-btn">
+                                <span>1</span>
+                            </a>
+                            <?php if ($startPage > 2): ?>
+                                <span class="text-stone-400">...</span>
+                            <?php endif; ?>
+                        <?php endif; ?>
+
+                        <?php for ($i = $startPage; $i <= $endPage; $i++): ?>
+                            <a href="<?php echo buildPageUrl($i); ?>"
+                                class="pagination-btn <?php echo $i == $page ? 'active' : ''; ?>">
+                                <span><?php echo $i; ?></span>
+                            </a>
+                        <?php endfor; ?>
+
+                        <?php if ($endPage < $totalPages): ?>
+                            <?php if ($endPage < $totalPages - 1): ?>
+                                <span class="text-stone-400">...</span>
+                            <?php endif; ?>
+                            <a href="<?php echo buildPageUrl($totalPages); ?>" class="pagination-btn">
+                                <span><?php echo $totalPages; ?></span>
+                            </a>
+                        <?php endif; ?>
+
+                        <?php
+                        // Next button
+                        if ($page < $totalPages): ?>
+                            <a href="<?php echo buildPageUrl($page + 1); ?>" class="pagination-btn">
+                                <i class="icon anm anm-angle-right-l"></i>
+                            </a>
+                        <?php endif; ?>
+                    </div>
+
+                    <!-- Page info -->
+                    <div class="text-center mt-4 text-xs text-stone-400">
+                        Showing <?php echo $offset + 1; ?> -
+                        <?php echo min($offset + $productsPerPage, $totalProducts); ?>
+                        of <?php echo $totalProducts; ?> products
+                    </div>
                 <?php endif; ?>
             </div>
         </div>
@@ -737,11 +1190,11 @@ function buildPageUrl($pageNum) {
 </div>
 
 <script>
-// Mobile filter toggle
-function toggleFilters() {
-    const sidebar = document.getElementById('filterSidebar');
-    sidebar.classList.toggle('show');
-}
+    // Mobile filter toggle
+    function toggleFilters() {
+        const sidebar = document.getElementById('filterSidebar');
+        sidebar.classList.toggle('show');
+    }
 </script>
 
 <?php include 'footer.php'; ?>

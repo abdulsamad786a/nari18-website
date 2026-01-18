@@ -7,11 +7,12 @@
         <div class="hero-background">
             <picture>
                 <source media="(max-width:767px)" srcset="assets/images/slideshow/naribanner_1.png">
-                <img class="hero-image" src="assets/images/slideshow/naribanner_1.png" alt="Stunning model in premium ethnic wear" />
+                <img class="hero-image" src="assets/images/slideshow/naribanner_1.png"
+                    alt="Stunning model in premium ethnic wear" />
             </picture>
             <div class="hero-overlay"></div>
         </div>
-        
+
         <div class="hero-content">
             <div class="container">
                 <div class="hero-text-wrapper">
@@ -19,15 +20,16 @@
                         <span class="byline-text">BY RICHA SINGH</span>
                         <div class="byline-divider"></div>
                     </div>
-                    
+
                     <h1 class="hero-heading">
                         Because every woman deserves to feel <span class="hero-special">special</span> everyday
                     </h1>
-                    
+
                     <p class="hero-description">
-                        Curated unstitched luxury that breathes heritage. Discover the art of premium Indian ethnic wear designed for the modern connoisseur.
+                        Curated unstitched luxury that breathes heritage. Discover the art of premium Indian ethnic wear
+                        designed for the modern connoisseur.
                     </p>
-                    
+
                     <div class="hero-buttons">
                         <a class="btn-shop-now" href="all-category.php">SHOP NOW</a>
                         <a class="btn-explore" href="all-category.php">EXPLORE LOOKBOOK</a>
@@ -35,8 +37,9 @@
                 </div>
             </div>
         </div>
-        
-        <a href="#page-content" class="hero-scroll-indicator" onclick="event.preventDefault(); document.querySelector('#page-content').scrollIntoView({behavior: 'smooth'});">
+
+        <a href="#page-content" class="hero-scroll-indicator"
+            onclick="event.preventDefault(); document.querySelector('#page-content').scrollIntoView({behavior: 'smooth'});">
             <span class="scroll-text">DISCOVER MORE</span>
             <div class="scroll-line">
                 <div class="scroll-animation"></div>
@@ -45,8 +48,12 @@
     </section>
     <!--End Hero Section-->
 
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet">
     <style>
         /* Hero Section Styles */
         .hero-section {
@@ -131,9 +138,10 @@
         }
 
         .hero-heading .hero-special {
-            font-style: italic;
             color: #D4AF37;
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'Cormorant Garamond', serif !important;
+            font-weight: 500;
+            font-style: normal;
         }
 
         .hero-description {
@@ -240,9 +248,11 @@
                 transform: translateY(0);
                 opacity: 0;
             }
+
             50% {
                 opacity: 1;
             }
+
             100% {
                 transform: translateY(240px);
                 opacity: 0;
@@ -432,7 +442,7 @@
             color: #C5A059 !important;
             border-color: #800020 !important;
         }
-        
+
         html body .btn-elegant:hover,
         body .btn-elegant:hover,
         a.btn-elegant:hover {
@@ -453,52 +463,67 @@
                 <div class="section-header-elegant">
                     <h2>New Arrivals</h2>
                     <div class="divider"></div>
-                    <p class="description">Discover our latest collection of handcrafted ethnic masterpieces, curated for the modern woman.</p>
+                    <p class="description">Discover our latest collection of handcrafted ethnic masterpieces, curated
+                        for the modern woman.</p>
                 </div>
 
                 <!-- Start Product Slider -->
                 <div class="product-slider-5items gp15 arwOut5 hov-arrow">
                     <!-- Fetch Product Data -->
                     <?php
-                    $ret = mysqli_query($con, "select * from products limit 10");
+                    $ret = mysqli_query($con, "select * from products ORDER BY id DESC limit 10");
                     while ($row = mysqli_fetch_array($ret)) {
-                    ?>
-                        <div class="product-item zoomscal-hov">
-                            <div class="product-box-modern">
-                                <!-- Product Image -->
-                                <div class="product-image-modern">
-                                    <a href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>" class="product-img-modern">
-                                        <img class="blur-up lazyload" data-src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>" src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>" alt="Product" title="<?php echo htmlentities($row['productName']); ?>" />
-                                    </a>
-                                    <a href="category.php?pid=<?php echo htmlentities($row['id']) ?>&&action=wishlist" class="btn-wishlist-modern" title="Add to Wishlist">
-                                        <i class="icon anm anm-heart-l"></i>
-                                    </a>
-                                </div>
-                                <!-- Product Details -->
-                                <div class="product-details-modern">
-                                    <div class="product-name-modern">
-                                        <a href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>"><?php echo htmlentities($row['productName']); ?></a>
+                        ?>
+                            <div class="product-item zoomscal-hov">
+                                <div class="product-box-modern">
+                                    <!-- Product Image -->
+                                    <div class="product-image-modern">
+                                        <a href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>"
+                                            class="product-img-modern">
+                                            <img class="blur-up lazyload"
+                                                data-src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>"
+                                                src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>"
+                                                alt="Product" title="<?php echo htmlentities($row['productName']); ?>" />
+                                        </a>
+                                        <a href="category.php?pid=<?php echo htmlentities($row['id']) ?>&&action=wishlist"
+                                            class="btn-wishlist-modern" title="Add to Wishlist">
+                                            <i class="icon anm anm-heart-l"></i>
+                                        </a>
+                                        <button type="button" class="btn-quickview-modern" title="Quick View"
+                                            onclick="openQuickView(<?php echo $row['id']; ?>)">
+                                            <span class="material-symbols-outlined">visibility</span>
+                                        </button>
                                     </div>
-                                    <div class="product-price-modern">
-                                        <div class="price-info">
-                                            <span class="price-current">₹ <?php echo htmlentities($row['productPrice']); ?></span>
-                                            <?php if ($row['productPriceBeforeDiscount'] > $row['productPrice']) { ?>
-                                                <span class="price-old">₹ <?php echo htmlentities($row['productPriceBeforeDiscount']); ?></span>
+                                    <!-- Product Details -->
+                                    <div class="product-details-modern">
+                                        <div class="product-name-modern">
+                                            <a
+                                                href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>"><?php echo htmlentities($row['productName']); ?></a>
+                                        </div>
+                                        <div class="product-price-modern">
+                                            <div class="price-info">
+                                                <span class="price-current">₹
+                                                    <?php echo htmlentities($row['productPrice']); ?></span>
+                                                <?php if ($row['productPriceBeforeDiscount'] > $row['productPrice']) { ?>
+                                                        <span class="price-old">₹
+                                                            <?php echo htmlentities($row['productPriceBeforeDiscount']); ?></span>
+                                                <?php } ?>
+                                            </div>
+                                            <?php if ($row['productAvailability'] == 'In Stock') { ?>
+                                                    <a href="index.php?page=product&action=add&id=<?php echo $row['id']; ?>"
+                                                        class="btn-cart-modern" title="Add to Cart">
+                                                        <i class="icon anm anm-cart-l"></i>
+                                                    </a>
+                                            <?php } else { ?>
+                                                    <a href="" style="cursor: not-allowed;" onclick="event.preventDefault();"
+                                                        class="btn-cart-modern disabled" title="Out of Stock">
+                                                        <i class="icon anm anm-cart-l"></i>
+                                                    </a>
                                             <?php } ?>
                                         </div>
-                                        <?php if ($row['productAvailability'] == 'In Stock') { ?>
-                                            <a href="index.php?page=product&action=add&id=<?php echo $row['id']; ?>" class="btn-cart-modern" title="Add to Cart">
-                                                <i class="icon anm anm-cart-l"></i>
-                                            </a>
-                                        <?php } else { ?>
-                                            <a href="" style="cursor: not-allowed;" onclick="event.preventDefault();" class="btn-cart-modern disabled" title="Out of Stock">
-                                                <i class="icon anm anm-cart-l"></i>
-                                            </a>
-                                        <?php } ?>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                     <?php } ?>
                 </div>
                 <!-- End Product Slider -->
@@ -563,60 +588,80 @@
                 <div class="section-header-elegant">
                     <h2>Best Sellers</h2>
                     <div class="divider"></div>
-                    <p class="description">Explore our most beloved pieces, handpicked by our discerning clientele for their timeless elegance and exceptional quality.</p>
+                    <p class="description">Explore our most beloved pieces, handpicked by our discerning clientele for
+                        their timeless elegance and exceptional quality.</p>
                 </div>
 
                 <div class="tab-content" id="productTabsContent">
-                    <div class="tab-pane show active" id="bestsellers" role="tabpanel" aria-labelledby="bestsellers-tab">
+                    <div class="tab-pane show active" id="bestsellers" role="tabpanel"
+                        aria-labelledby="bestsellers-tab">
                         <!--Product Grid-->
                         <div class="grid-products grid-view-items">
-                            <div class="row col-row product-options row-cols-xl-5 row-cols-lg-5 row-cols-md-3 row-cols-sm-3 row-cols-2">
+                            <div
+                                class="row col-row product-options row-cols-xl-5 row-cols-lg-5 row-cols-md-3 row-cols-sm-3 row-cols-2">
 
                                 <?php
-                                $ret = mysqli_query($con, "select * from products limit 20");
+                                $ret = mysqli_query($con, "select * from products ORDER BY id DESC limit 10");
                                 while ($row = mysqli_fetch_array($ret)) {
-                                ?>
-                                    <div class="item col-item">
-                                        <div class="product-box-modern">
-                                            <!-- Start Product Image -->
-                                            <div class="product-image-modern">
-                                                <a href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>" class="product-img-modern">
-                                                    <img class="blur-up lazyload" data-src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>" data-echo="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>" src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>" alt="Product" title="<?php echo htmlentities($row['productName']); ?>" />
-                                                </a>
-                                                <a href="category.php?pid=<?php echo htmlentities($row['id']) ?>&&action=wishlist" class="btn-wishlist-modern" title="Add to Wishlist">
-                                                    <i class="icon anm anm-heart-l"></i>
-                                                </a>
-                                            </div>
-                                            <!-- Start Product Details -->
-                                            <div class="product-details-modern">
-                                                <!-- Product Name -->
-                                                <div class="product-name-modern">
-                                                    <a href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>"><?php echo htmlentities($row['productName']); ?></a>
+                                    ?>
+                                        <div class="item col-item">
+                                            <div class="product-box-modern">
+                                                <!-- Start Product Image -->
+                                                <div class="product-image-modern">
+                                                    <a href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>"
+                                                        class="product-img-modern">
+                                                        <img class="blur-up lazyload"
+                                                            data-src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>"
+                                                            data-echo="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>"
+                                                            src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>"
+                                                            alt="Product"
+                                                            title="<?php echo htmlentities($row['productName']); ?>" />
+                                                    </a>
+                                                    <a href="category.php?pid=<?php echo htmlentities($row['id']) ?>&&action=wishlist"
+                                                        class="btn-wishlist-modern" title="Add to Wishlist">
+                                                        <i class="icon anm anm-heart-l"></i>
+                                                    </a>
+                                                    <button type="button" class="btn-quickview-modern" title="Quick View"
+                                                        onclick="openQuickView(<?php echo $row['id']; ?>)">
+                                                        <span class="material-symbols-outlined">visibility</span>
+                                                    </button>
                                                 </div>
-                                                <!-- End Product Name -->
-                                                <!-- Product Price -->
-                                                <div class="product-price-modern">
-                                                    <div class="price-info">
-                                                        <span class="price-current">₹ <?php echo htmlentities($row['productPrice']); ?></span>
-                                                        <?php if ($row['productPriceBeforeDiscount'] > $row['productPrice']) { ?>
-                                                            <span class="price-old">₹ <?php echo htmlentities($row['productPriceBeforeDiscount']); ?></span>
+                                                <!-- Start Product Details -->
+                                                <div class="product-details-modern">
+                                                    <!-- Product Name -->
+                                                    <div class="product-name-modern">
+                                                        <a
+                                                            href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>"><?php echo htmlentities($row['productName']); ?></a>
+                                                    </div>
+                                                    <!-- End Product Name -->
+                                                    <!-- Product Price -->
+                                                    <div class="product-price-modern">
+                                                        <div class="price-info">
+                                                            <span class="price-current">₹
+                                                                <?php echo htmlentities($row['productPrice']); ?></span>
+                                                            <?php if ($row['productPriceBeforeDiscount'] > $row['productPrice']) { ?>
+                                                                    <span class="price-old">₹
+                                                                        <?php echo htmlentities($row['productPriceBeforeDiscount']); ?></span>
+                                                            <?php } ?>
+                                                        </div>
+                                                        <?php if ($row['productAvailability'] == 'In Stock') { ?>
+                                                                <a href="index.php?page=product&action=add&id=<?php echo $row['id']; ?>"
+                                                                    class="btn-cart-modern" title="Add to Cart">
+                                                                    <i class="icon anm anm-cart-l"></i>
+                                                                </a>
+                                                        <?php } else { ?>
+                                                                <a href="" style="cursor: not-allowed;"
+                                                                    onclick="event.preventDefault();" class="btn-cart-modern disabled"
+                                                                    title="Out of Stock">
+                                                                    <i class="icon anm anm-cart-l"></i>
+                                                                </a>
                                                         <?php } ?>
                                                     </div>
-                                                    <?php if ($row['productAvailability'] == 'In Stock') { ?>
-                                                        <a href="index.php?page=product&action=add&id=<?php echo $row['id']; ?>" class="btn-cart-modern" title="Add to Cart">
-                                                            <i class="icon anm anm-cart-l"></i>
-                                                        </a>
-                                                    <?php } else { ?>
-                                                        <a href="" style="cursor: not-allowed;" onclick="event.preventDefault();" class="btn-cart-modern disabled" title="Out of Stock">
-                                                            <i class="icon anm anm-cart-l"></i>
-                                                        </a>
-                                                    <?php } ?>
+                                                    <!-- End Product Price -->
                                                 </div>
-                                                <!-- End Product Price -->
+                                                <!-- End product details -->
                                             </div>
-                                            <!-- End product details -->
                                         </div>
-                                    </div>
                                 <?php } ?>
 
                             </div>
@@ -642,57 +687,71 @@
                 <div class="section-header-elegant">
                     <h2>Shop by Categories</h2>
                     <div class="divider"></div>
-                    <p class="description">Browse through our carefully curated collections, each designed to celebrate the rich heritage of Indian craftsmanship.</p>
+                    <p class="description">Browse through our carefully curated collections, each designed to celebrate
+                        the rich heritage of Indian craftsmanship.</p>
                 </div>
 
                 <div>
                     <div class="tab-pane show active" id="popular" role="tabpanel" aria-labelledby="popular-tab">
                         <!--Product Grid-->
                         <div class="grid-products grid-view-items">
-                            <div class="row col-row product-options row-cols-xl-5 row-cols-lg-5 row-cols-md-3 row-cols-sm-3 row-cols-2">
+                            <div
+                                class="row col-row product-options row-cols-xl-5 row-cols-lg-5 row-cols-md-3 row-cols-sm-3 row-cols-2">
 
                                 <?php
-                                $rets = mysqli_query($con, "select * from products limit 20");
+                                $rets = mysqli_query($con, "select * from products ORDER BY id DESC limit 10");
                                 while ($rows = mysqli_fetch_array($rets)) {
-                                ?>
-                                    <div class="item col-item">
-                                        <div class="product-box-modern">
-                                            <div class="product-image-modern">
-                                                <a href="product-details.php?pid=<?php echo htmlentities($rows['id']); ?>" class="product-img-modern">
-                                                    <img class="blur-up lazyload"
-                                                        data-src="admin/productimages/<?php echo htmlentities($rows['id']); ?>/<?php echo htmlentities($rows['productImage1']); ?>"
-                                                        src="admin/productimages/<?php echo htmlentities($rows['id']); ?>/<?php echo htmlentities($rows['productImage1']); ?>"
-                                                        alt="Product"
-                                                        title="<?php echo htmlentities($rows['productName']); ?>" />
-                                                </a>
-                                                <a href="category.php?pid=<?php echo htmlentities($rows['id']) ?>&&action=wishlist" class="btn-wishlist-modern" title="Add to Wishlist">
-                                                    <i class="icon anm anm-heart-l"></i>
-                                                </a>
-                                            </div>
-                                            <div class="product-details-modern">
-                                                <div class="product-name-modern">
-                                                    <a href="product-details.php?pid=<?php echo htmlentities($rows['id']); ?>"><?php echo htmlentities($rows['productName']); ?></a>
-                                                </div>
-                                                <div class="product-price-modern">
-                                                    <div class="price-info">
-                                                        <span class="price-current">₹ <?php echo htmlentities($rows['productPrice']); ?></span>
-                                                        <?php if ($rows['productPriceBeforeDiscount'] > $rows['productPrice']) { ?>
-                                                            <span class="price-old">₹ <?php echo htmlentities($rows['productPriceBeforeDiscount']); ?></span>
-                                                        <?php } ?>
+                                    ?>
+                                            <div class="item col-item">
+                                                <div class="product-box-modern">
+                                                    <div class="product-image-modern">
+                                                        <a href="product-details.php?pid=<?php echo htmlentities($rows['id']); ?>"
+                                                            class="product-img-modern">
+                                                            <img class="blur-up lazyload"
+                                                                data-src="admin/productimages/<?php echo htmlentities($rows['id']); ?>/<?php echo htmlentities($rows['productImage1']); ?>"
+                                                                src="admin/productimages/<?php echo htmlentities($rows['id']); ?>/<?php echo htmlentities($rows['productImage1']); ?>"
+                                                                alt="Product"
+                                                                title="<?php echo htmlentities($rows['productName']); ?>" />
+                                                        </a>
+                                                        <a href="category.php?pid=<?php echo htmlentities($rows['id']) ?>&&action=wishlist"
+                                                            class="btn-wishlist-modern" title="Add to Wishlist">
+                                                            <i class="icon anm anm-heart-l"></i>
+                                                        </a>
+                                                        <button type="button" class="btn-quickview-modern" title="Quick View"
+                                                            onclick="openQuickView(<?php echo $rows['id']; ?>)">
+                                                            <span class="material-symbols-outlined">visibility</span>
+                                                        </button>
                                                     </div>
-                                                    <?php if ($rows['productAvailability'] == 'In Stock') { ?>
-                                                        <a href="index.php?page=product&action=add&id=<?php echo $rows['id']; ?>" class="btn-cart-modern" title="Add to Cart">
-                                                            <i class="icon anm anm-cart-l"></i>
-                                                        </a>
-                                                    <?php } else { ?>
-                                                        <a href="" style="cursor: not-allowed;" onclick="event.preventDefault();" class="btn-cart-modern disabled" title="Out of Stock">
-                                                            <i class="icon anm anm-cart-l"></i>
-                                                        </a>
-                                                    <?php } ?>
+                                                    <div class="product-details-modern">
+                                                        <div class="product-name-modern">
+                                                            <a
+                                                                href="product-details.php?pid=<?php echo htmlentities($rows['id']); ?>"><?php echo htmlentities($rows['productName']); ?></a>
+                                                        </div>
+                                                        <div class="product-price-modern">
+                                                            <div class="price-info">
+                                                                <span class="price-current">₹
+                                                                    <?php echo htmlentities($rows['productPrice']); ?></span>
+                                                                <?php if ($rows['productPriceBeforeDiscount'] > $rows['productPrice']) { ?>
+                                                                            <span class="price-old">₹
+                                                                                <?php echo htmlentities($rows['productPriceBeforeDiscount']); ?></span>
+                                                                <?php } ?>
+                                                            </div>
+                                                            <?php if ($rows['productAvailability'] == 'In Stock') { ?>
+                                                                        <a href="index.php?page=product&action=add&id=<?php echo $rows['id']; ?>"
+                                                                            class="btn-cart-modern" title="Add to Cart">
+                                                                            <i class="icon anm anm-cart-l"></i>
+                                                                        </a>
+                                                            <?php } else { ?>
+                                                                        <a href="" style="cursor: not-allowed;"
+                                                                            onclick="event.preventDefault();" class="btn-cart-modern disabled"
+                                                                            title="Out of Stock">
+                                                                            <i class="icon anm anm-cart-l"></i>
+                                                                        </a>
+                                                            <?php } ?>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
                                 <?php } ?>
 
                             </div>
@@ -709,14 +768,15 @@
     </section>
 
     <!-- Features Section -->
-    <?php include 'footer-features.php'; ?>
+
 
     <section class="section video-slider">
         <div class="container">
             <div class="section-header-elegant">
                 <h2>Shop Latest Collection</h2>
                 <div class="divider"></div>
-                <p class="description">Explore our newest curated pieces, showcasing the finest in contemporary ethnic fashion and timeless elegance.</p>
+                <p class="description">Explore our newest curated pieces, showcasing the finest in contemporary ethnic
+                    fashion and timeless elegance.</p>
             </div>
             <div class="grid-videos grid-view-items">
                 <div class="row col-row row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-2">
@@ -724,15 +784,10 @@
                     <!-- Video Item 1 - BLACK CRAPE SUIT SET -->
                     <div class="item col-item">
                         <div class="video-box">
-                            <div
-                                class="video-wrapper"
-                                data-video="assets/1.mp4"
-                                data-title="BLACK CRAPE SUIT SET"
+                            <div class="video-wrapper" data-video="assets/1.mp4" data-title="BLACK CRAPE SUIT SET"
                                 data-price="Rs. 4,350.00"
                                 data-description="Experience the ethereal charm of traditional work on premium crape fabric. A perfect companion for the modern woman who values elegance and sophistication."
-                                data-thumbnail="assets/1.mp4"
-                                data-product-id="1"
-                                data-fabric-top="Premium Black Crape"
+                                data-thumbnail="assets/1.mp4" data-product-id="1" data-fabric-top="Premium Black Crape"
                                 data-fabric-bottom="Matching Crape Base"
                                 data-fabric-dupatta="Crape with Net Fabric accents"
                                 data-work="Intricate handcrafted work on shirt daaman"
@@ -747,16 +802,11 @@
                     <!-- Video Item 2 - VIBRANT MAGENTA SILK SUIT SET -->
                     <div class="item col-item">
                         <div class="video-box">
-                            <div
-                                class="video-wrapper"
-                                data-video="assets/2.mp4"
-                                data-title="VIBRANT MAGENTA SILK SUIT SET"
-                                data-price="Rs. 5,200.00"
+                            <div class="video-wrapper" data-video="assets/2.mp4"
+                                data-title="VIBRANT MAGENTA SILK SUIT SET" data-price="Rs. 5,200.00"
                                 data-description="Discover the vibrant elegance of premium silk with exquisite craftsmanship. A statement piece that celebrates color and tradition."
-                                data-thumbnail="assets/2.mp4"
-                                data-product-id="2"
-                                data-fabric-top="Premium Vibrant Magenta Silk"
-                                data-fabric-bottom="Matching Silk Base"
+                                data-thumbnail="assets/2.mp4" data-product-id="2"
+                                data-fabric-top="Premium Vibrant Magenta Silk" data-fabric-bottom="Matching Silk Base"
                                 data-fabric-dupatta="Silk with Embroidered accents"
                                 data-work="Intricate embroidery work on shirt daaman"
                                 data-work-extra="Hand-finished detailing on dupatta">
@@ -770,16 +820,12 @@
                     <!-- Video Item 3 - Dusty Rose handcrafted embroidery Imported Silk Suit -->
                     <div class="item col-item">
                         <div class="video-box">
-                            <div
-                                class="video-wrapper"
-                                data-video="assets/3.mp4"
+                            <div class="video-wrapper" data-video="assets/3.mp4"
                                 data-title="Dusty Rose Handcrafted Embroidery Imported Silk Suit"
                                 data-price="Rs. 6,500.00"
                                 data-description="Witness the artistry of handcrafted embroidery on imported silk. A timeless piece that showcases traditional craftsmanship at its finest."
-                                data-thumbnail="assets/3.mp4"
-                                data-product-id="3"
-                                data-fabric-top="Imported Dusty Rose Silk"
-                                data-fabric-bottom="Matching Silk Base"
+                                data-thumbnail="assets/3.mp4" data-product-id="3"
+                                data-fabric-top="Imported Dusty Rose Silk" data-fabric-bottom="Matching Silk Base"
                                 data-fabric-dupatta="Silk with Handcrafted Embroidery"
                                 data-work="Intricate handcrafted embroidery work"
                                 data-work-extra="Premium imported silk with traditional motifs">
@@ -793,15 +839,10 @@
                     <!-- Video Item 4 - PREMIUM CHIFFON SUIT SET -->
                     <div class="item col-item">
                         <div class="video-box">
-                            <div
-                                class="video-wrapper"
-                                data-video="assets/4.mp4"
-                                data-title="PREMIUM CHIFFON SUIT SET"
+                            <div class="video-wrapper" data-video="assets/4.mp4" data-title="PREMIUM CHIFFON SUIT SET"
                                 data-price="Rs. 4,800.00"
                                 data-description="Embrace the flow and grace of premium chiffon. A delicate and elegant ensemble perfect for special occasions."
-                                data-thumbnail="assets/4.mp4"
-                                data-product-id="4"
-                                data-fabric-top="Premium Chiffon"
+                                data-thumbnail="assets/4.mp4" data-product-id="4" data-fabric-top="Premium Chiffon"
                                 data-fabric-bottom="Matching Chiffon Base"
                                 data-fabric-dupatta="Chiffon with Embellished accents"
                                 data-work="Delicate embellished work on shirt daaman"
@@ -824,7 +865,7 @@
             <button class="video-modal-close-mobile">
                 <span class="material-symbols-outlined">close</span>
             </button>
-            
+
             <div class="video-modal-body">
                 <!-- Left: Video -->
                 <div class="modal-video-left">
@@ -864,7 +905,7 @@
                     <button class="video-modal-close-desktop">
                         <span class="material-symbols-outlined">close</span>
                     </button>
-                    
+
                     <div class="modal-content-scroll">
                         <div class="product-header">
                             <div class="product-thumbnail">
@@ -875,10 +916,10 @@
                                 <p id="modalPrice" class="modal-price"></p>
                             </div>
                         </div>
-                        
+
                         <div class="product-details-section">
                             <p id="modalDescription" class="modal-description"></p>
-                            
+
                             <div class="detail-section">
                                 <h3 class="detail-heading">Fabric Details</h3>
                                 <ul class="detail-list">
@@ -896,7 +937,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            
+
                             <div class="detail-section">
                                 <h3 class="detail-heading">Exquisite Work</h3>
                                 <ul class="detail-list">
@@ -910,14 +951,15 @@
                                     </li>
                                 </ul>
                             </div>
-                            
+
                             <div class="detail-section">
                                 <h3 class="detail-heading">Inclusions</h3>
-                                <p class="inclusions-text">Unstitched Suit Set: Includes Shirt, Bottom & Dupatta fabric. Design allows for personalized neckline styling.</p>
+                                <p class="inclusions-text">Unstitched Suit Set: Includes Shirt, Bottom & Dupatta fabric.
+                                    Design allows for personalized neckline styling.</p>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="modal-actions">
                         <a href="#" class="btn-add-to-cart">
                             <span class="btn-text">Add to Cart</span>
@@ -953,7 +995,7 @@
         .video-slider {
             padding: 80px 0 40px;
         }
-        
+
         .video-slider .section-header-elegant {
             margin-bottom: 48px;
         }
@@ -1049,7 +1091,7 @@
             flex-direction: column;
             justify-content: space-between;
             padding: 24px;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.6) 100%);
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, transparent 30%, transparent 70%, rgba(0, 0, 0, 0.6) 100%);
             pointer-events: none;
         }
 
@@ -1078,8 +1120,15 @@
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
         }
 
         .video-overlay-bottom {
@@ -1433,6 +1482,7 @@
                 transform: scale(0.95);
                 opacity: 0;
             }
+
             to {
                 transform: scale(1);
                 opacity: 1;
@@ -1444,6 +1494,7 @@
             .video-modal-close-mobile {
                 display: none !important;
             }
+
             .video-modal-close-desktop {
                 display: flex !important;
             }
@@ -1453,6 +1504,7 @@
             .video-modal-close-desktop {
                 display: none !important;
             }
+
             .video-modal-close-mobile {
                 display: flex !important;
             }
@@ -1508,7 +1560,7 @@
     </style>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const videoWrappers = document.querySelectorAll(".video-wrapper");
             const modal = document.getElementById("videoModal");
             const modalVideo = document.getElementById("modalVideo");
@@ -1537,8 +1589,8 @@
                 video.src = videoSrc;
                 video.crossOrigin = 'anonymous';
                 video.currentTime = 1; // Get frame at 1 second
-                
-                video.addEventListener('loadeddata', function() {
+
+                video.addEventListener('loadeddata', function () {
                     const canvas = document.createElement('canvas');
                     canvas.width = video.videoWidth;
                     canvas.height = video.videoHeight;
@@ -1546,8 +1598,8 @@
                     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
                     callback(canvas.toDataURL('image/jpeg'));
                 });
-                
-                video.addEventListener('error', function() {
+
+                video.addEventListener('error', function () {
                     // Fallback: use video as poster
                     callback(videoSrc);
                 });
@@ -1555,7 +1607,7 @@
 
             // Open modal with product data
             videoWrappers.forEach((wrapper) => {
-                wrapper.addEventListener("click", function() {
+                wrapper.addEventListener("click", function () {
                     const videoSrc = this.getAttribute("data-video");
                     const title = this.getAttribute("data-title");
                     const price = this.getAttribute("data-price");
@@ -1573,10 +1625,10 @@
                     modalTitle.textContent = title || "Product Title";
                     modalPrice.textContent = price || "Rs. 0.00";
                     modalDescription.textContent = desc || "Product description goes here.";
-                    
+
                     // Create thumbnail from video
                     if (thumbnail && thumbnail.endsWith('.mp4')) {
-                        createThumbnailFromVideo(videoSrc, function(thumbnailData) {
+                        createThumbnailFromVideo(videoSrc, function (thumbnailData) {
                             modalThumbnail.src = thumbnailData;
                             modalThumbnail.style.display = "block";
                         });
@@ -1588,7 +1640,7 @@
                         modalThumbnail.src = videoSrc;
                         modalThumbnail.style.display = "block";
                     }
-                    
+
                     fabricTop.textContent = top || "";
                     fabricBottom.textContent = bottom || "";
                     fabricDupatta.textContent = dupatta || "";
@@ -1621,7 +1673,7 @@
             }
 
             // Close on background click
-            modal.addEventListener("click", function(e) {
+            modal.addEventListener("click", function (e) {
                 if (e.target === modal) {
                     closeModal();
                 }
@@ -1629,7 +1681,7 @@
 
             // Play/Pause functionality
             if (playPauseBtn) {
-                playPauseBtn.addEventListener("click", function(e) {
+                playPauseBtn.addEventListener("click", function (e) {
                     e.stopPropagation();
                     if (isPlaying) {
                         modalVideo.pause();
@@ -1644,7 +1696,7 @@
 
             // Volume toggle functionality
             if (volumeBtn) {
-                volumeBtn.addEventListener("click", function(e) {
+                volumeBtn.addEventListener("click", function (e) {
                     e.stopPropagation();
                     isMuted = !isMuted;
                     modalVideo.muted = isMuted;
@@ -1673,7 +1725,7 @@
             }
 
             // Update video progress (simplified - shows 1/3 progress)
-            modalVideo.addEventListener("timeupdate", function() {
+            modalVideo.addEventListener("timeupdate", function () {
                 const progress = (modalVideo.currentTime / modalVideo.duration) * 100;
                 const progressBar = document.querySelector(".video-progress-bar");
                 if (progressBar) {
@@ -1682,12 +1734,12 @@
             });
 
             // Handle video play/pause events
-            modalVideo.addEventListener("play", function() {
+            modalVideo.addEventListener("play", function () {
                 isPlaying = true;
                 updatePlayPauseIcon();
             });
 
-            modalVideo.addEventListener("pause", function() {
+            modalVideo.addEventListener("pause", function () {
                 isPlaying = false;
                 updatePlayPauseIcon();
             });
@@ -1696,14 +1748,14 @@
             if (addToCartBtn) {
                 const btnText = addToCartBtn.querySelector('.btn-text');
                 const btnIcon = addToCartBtn.querySelector('i');
-                
-                addToCartBtn.addEventListener('mouseenter', function() {
+
+                addToCartBtn.addEventListener('mouseenter', function () {
                     if (btnText) btnText.style.setProperty('color', '#C5A059', 'important');
                     if (btnIcon) btnIcon.style.setProperty('color', '#C5A059', 'important');
                     this.style.setProperty('color', '#C5A059', 'important');
                 });
-                
-                addToCartBtn.addEventListener('mouseleave', function() {
+
+                addToCartBtn.addEventListener('mouseleave', function () {
                     if (btnText) btnText.style.setProperty('color', '#ffffff', 'important');
                     if (btnIcon) btnIcon.style.setProperty('color', '#ffffff', 'important');
                     this.style.setProperty('color', '#ffffff', 'important');
@@ -1712,36 +1764,36 @@
 
             // Add to Cart functionality
             if (addToCartBtn) {
-                addToCartBtn.addEventListener("click", function(e) {
+                addToCartBtn.addEventListener("click", function (e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    
+
                     if (!currentProductId) {
                         alert("Product information not available. Please contact us for this item.");
                         return;
                     }
-                    
+
                     // Create add to cart URL
                     const addToCartUrl = `index.php?page=product&action=add&id=${currentProductId}`;
-                    
+
                     // Fetch to add to cart
                     fetch(addToCartUrl)
-                        .then(function(response) {
+                        .then(function (response) {
                             return response.text();
                         })
-                        .then(function(data) {
+                        .then(function (data) {
                             // Show success message
                             alert("Product added to cart successfully!");
-                            
+
                             // Update cart count if function exists
                             if (window.updateCartCount) {
                                 window.updateCartCount();
                             }
-                            
+
                             // Optionally close modal or keep it open
                             // closeModal();
                         })
-                        .catch(function(error) {
+                        .catch(function (error) {
                             console.error("Error adding to cart:", error);
                             alert("There was an error adding the product to cart. Please try again.");
                         });
@@ -1750,22 +1802,22 @@
 
             // Wishlist functionality
             if (wishlistBtn) {
-                wishlistBtn.addEventListener("click", function(e) {
+                wishlistBtn.addEventListener("click", function (e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    
+
                     if (!currentProductId) {
                         alert("Product information not available. Please contact us for this item.");
                         return;
                     }
-                    
+
                     // Check if user is logged in (you may need to adjust this based on your session handling)
                     // For now, redirect to wishlist page
                     const wishlistUrl = `category.php?pid=${currentProductId}&&action=wishlist`;
-                    
+
                     // Try to add to wishlist
                     fetch(wishlistUrl)
-                        .then(function(response) {
+                        .then(function (response) {
                             if (response.redirected) {
                                 // If redirected to login, open in new window
                                 window.location.href = response.url;
@@ -1773,12 +1825,12 @@
                                 return response.text();
                             }
                         })
-                        .then(function(data) {
+                        .then(function (data) {
                             if (data) {
                                 alert("Product added to wishlist successfully!");
                             }
                         })
-                        .catch(function(error) {
+                        .catch(function (error) {
                             // If fetch fails, redirect to wishlist page
                             window.location.href = wishlistUrl;
                         });
@@ -1796,10 +1848,11 @@
                 <h2>Store Locations</h2>
                 <div class="store-location-divider"></div>
                 <p class="store-location-description">
-                    Step in, explore, and experience our collection at a store near you. Immerse yourself in the heritage of premium ethnic wear.
+                    Step in, explore, and experience our collection at a store near you. Immerse yourself in the
+                    heritage of premium ethnic wear.
                 </p>
             </div>
-            
+
             <div class="store-location-card">
                 <div class="store-location-image">
                     <img src="assets/images/store.jpg" alt="Elegant ethnic wear display in boutique" />
@@ -1809,12 +1862,12 @@
                         <p class="badge-city">Gurugram</p>
                     </div>
                 </div>
-                
+
                 <div class="store-location-content">
                     <span class="store-country">India</span>
                     <h3>Nari18</h3>
                     <p class="store-subtitle">by Richa Singh</p>
-                    
+
                     <div class="store-details">
                         <div class="store-detail-item">
                             <span class="material-icons-outlined">location_on</span>
@@ -1823,12 +1876,12 @@
                                 <p>Sector 86, Gurugram, Haryana 122004</p>
                             </div>
                         </div>
-                        
+
                         <div class="store-detail-item">
                             <span class="material-icons-outlined">phone</span>
                             <a href="tel:+918826446755" class="store-detail-text">+91 8826446755</a>
                         </div>
-                        
+
                         <div class="store-detail-item">
                             <span class="material-icons-outlined">mail_outline</span>
                             <div class="store-detail-text">
@@ -1837,7 +1890,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="store-actions">
                         <a href="https://maps.app.goo.gl/gZq1RZfPYDikAFe88" target="_blank" class="btn-get-directions">
                             Get Directions
@@ -1845,7 +1898,7 @@
                         </a>
                         <a href="about.php" class="btn-view-info">View More Info</a>
                     </div>
-                    
+
                     <div class="store-hours">
                         <div class="store-hours-content">
                             <span>Open Daily</span>
@@ -1854,7 +1907,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="store-tags">
                 <div class="store-tag">PREMIUM CRAFT</div>
                 <div class="store-tag">EST. 2018</div>
@@ -1864,6 +1917,9 @@
         </div>
     </section>
     <!--End Store Location Section-->
+
+    <!-- Features Section -->
+    <?php include 'footer-features.php'; ?>
 
     <style>
         /* Store Location Section Styles */
@@ -2064,7 +2120,7 @@
             margin-left: 8px;
             color: #ffffff !important;
         }
-        
+
         .btn-get-directions:hover .material-icons-outlined {
             color: #C5A059 !important;
         }
@@ -2197,11 +2253,11 @@
             font-variant: normal;
             text-rendering: optimizeLegibility;
         }
-        
+
         .store-detail-item .material-icons-outlined {
             font-family: 'Material Icons Outlined', 'Material Icons' !important;
         }
-        
+
         .btn-get-directions .material-icons-outlined {
             font-family: 'Material Icons Outlined', 'Material Icons' !important;
         }
@@ -2216,12 +2272,13 @@
                 <h1 class="testimonials-title">What Our Clients Say</h1>
                 <div class="testimonials-divider"></div>
             </header>
-            
+
             <div class="testimonials-carousel-perspective">
                 <!-- Left Card (Hidden on mobile) -->
                 <div class="testimonial-card-left" id="leftCard">
                     <p class="testimonial-quote-text">
-                        "Nari18 made me feel so confident. The fabric is comfortable and the designs are endless. Truly a memorable experience with Richa Singh."
+                        "Nari18 made me feel so confident. The fabric is comfortable and the designs are endless. Truly
+                        a memorable experience with Richa Singh."
                     </p>
                     <div class="testimonial-stars">
                         <span class="material-icons-outlined">star</span>
@@ -2235,14 +2292,16 @@
                         <span class="testimonial-author-role">Loyal Customer</span>
                     </div>
                 </div>
-                
+
                 <!-- Center Card (Active) -->
                 <div class="testimonial-card-center" id="centerCard">
                     <div class="testimonial-quote-icon">
                         <span class="material-icons-outlined">format_quote</span>
                     </div>
                     <p class="testimonial-quote-main">
-                        "Beautiful designs and even more beautiful boutique. I absolutely love the unique style and quality of the pieces at Nari18. Very elegant, yet modern and the attention to detail is impressive!"
+                        "Beautiful designs and even more beautiful boutique. I absolutely love the unique style and
+                        quality of the pieces at Nari18. Very elegant, yet modern and the attention to detail is
+                        impressive!"
                     </p>
                     <div class="testimonial-stars-main">
                         <span class="material-icons-outlined">star</span>
@@ -2256,11 +2315,12 @@
                         <span class="testimonial-author-role-main">Fashion Enthusiast</span>
                     </div>
                 </div>
-                
+
                 <!-- Right Card (Hidden on mobile) -->
                 <div class="testimonial-card-right" id="rightCard">
                     <p class="testimonial-quote-text">
-                        "The studio offers trendy and high-end fashion options. Excellent customer service with Richa Singh. Highly recommend for fashion lovers!"
+                        "The studio offers trendy and high-end fashion options. Excellent customer service with Richa
+                        Singh. Highly recommend for fashion lovers!"
                     </p>
                     <div class="testimonial-stars">
                         <span class="material-icons-outlined">star</span>
@@ -2275,7 +2335,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="testimonials-dots" id="testimonialsDots">
                 <!-- Dots will be generated by JavaScript -->
             </div>
@@ -2470,6 +2530,7 @@
             opacity: 1;
             transform: translateY(0);
         }
+
         to {
             opacity: 0;
             transform: translateY(-15px);
@@ -2481,6 +2542,7 @@
             opacity: 0;
             transform: translateY(15px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);
@@ -2641,6 +2703,7 @@
 
     /* Responsive */
     @media (max-width: 1024px) {
+
         .testimonial-card-left,
         .testimonial-card-right {
             display: none;
@@ -2684,7 +2747,7 @@
     }
 </style>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         const testimonials = [
             {
                 quote: "Nari18 made me feel so confident. The fabric is comfortable and the designs are endless. Truly a memorable experience with Richa Singh.",
@@ -2711,7 +2774,7 @@
                 stars: 5
             },
             {
-                quote: "Richa @ nari18 is very detailed oriented and accommodating till the fit and finish was as per my liking. Was a pleasure getting my outfits done from her. Highly recommended!",
+                quote: "Richa @Nari18 is very detailed oriented and accommodating till the fit and finish was as per my liking. Was a pleasure getting my outfits done from her. Highly recommended!",
                 author: "Shilpi Goyal",
                 role: "Premium Customer",
                 stars: 5
@@ -2735,7 +2798,7 @@
                         dot.classList.add('active');
                     }
                     dot.setAttribute('data-index', index);
-                    dot.addEventListener('click', function() {
+                    dot.addEventListener('click', function () {
                         currentIndex = parseInt(this.getAttribute('data-index'));
                         updateTestimonials();
                         updateDots();
@@ -2759,24 +2822,24 @@
 
         function animateTextUpdate(element, newText) {
             if (!element) return;
-            
+
             // Remove any existing animation classes
             element.classList.remove('testimonial-text-fade-in', 'testimonial-text-fade-out');
-            
+
             // Add fade out
             element.classList.add('testimonial-text-fade-out');
-            
+
             // After fade out completes, update text and fade in
             setTimeout(() => {
                 element.textContent = newText;
                 element.classList.remove('testimonial-text-fade-out');
-                
+
                 // Force reflow to restart animation
                 void element.offsetWidth;
-                
+
                 // Add fade in
                 element.classList.add('testimonial-text-fade-in');
-                
+
                 // Clean up after animation
                 setTimeout(() => {
                     element.classList.remove('testimonial-text-fade-in');
@@ -2786,31 +2849,31 @@
 
         function animateStarsUpdate(starsContainer) {
             if (!starsContainer) return;
-            
+
             // Remove any existing animation classes
             starsContainer.classList.remove('testimonial-stars-fade-in', 'testimonial-stars-fade-out', 'testimonial-stars-main-fade-in', 'testimonial-stars-main-fade-out');
-            
+
             // Add fade out
             if (starsContainer.classList.contains('testimonial-stars-main')) {
                 starsContainer.classList.add('testimonial-stars-main-fade-out');
             } else {
                 starsContainer.classList.add('testimonial-stars-fade-out');
             }
-            
+
             // After fade out completes, fade in
             setTimeout(() => {
                 starsContainer.classList.remove('testimonial-stars-fade-out', 'testimonial-stars-main-fade-out');
-                
+
                 // Force reflow to restart animation
                 void starsContainer.offsetWidth;
-                
+
                 // Add fade in
                 if (starsContainer.classList.contains('testimonial-stars-main')) {
                     starsContainer.classList.add('testimonial-stars-main-fade-in');
                 } else {
                     starsContainer.classList.add('testimonial-stars-fade-in');
                 }
-                
+
                 // Clean up after animation
                 setTimeout(() => {
                     starsContainer.classList.remove('testimonial-stars-fade-in', 'testimonial-stars-main-fade-in');
@@ -2831,7 +2894,7 @@
                 const leftName = leftCard.querySelector('.testimonial-author-name');
                 const leftRole = leftCard.querySelector('.testimonial-author-role');
                 const leftStars = leftCard.querySelector('.testimonial-stars');
-                
+
                 if (leftQuote) animateTextUpdate(leftQuote, `"${prev.quote}"`);
                 if (leftName) animateTextUpdate(leftName, prev.author);
                 if (leftRole) animateTextUpdate(leftRole, prev.role);
@@ -2844,7 +2907,7 @@
                 const centerName = centerCard.querySelector('.testimonial-author-name-main');
                 const centerRole = centerCard.querySelector('.testimonial-author-role-main');
                 const centerStars = centerCard.querySelector('.testimonial-stars-main');
-                
+
                 if (centerQuote) animateTextUpdate(centerQuote, `"${current.quote}"`);
                 if (centerName) animateTextUpdate(centerName, current.author);
                 if (centerRole) animateTextUpdate(centerRole, current.role);
@@ -2857,7 +2920,7 @@
                 const rightName = rightCard.querySelector('.testimonial-author-name');
                 const rightRole = rightCard.querySelector('.testimonial-author-role');
                 const rightStars = rightCard.querySelector('.testimonial-stars');
-                
+
                 if (rightQuote) animateTextUpdate(rightQuote, `"${next.quote}"`);
                 if (rightName) animateTextUpdate(rightName, next.author);
                 if (rightRole) animateTextUpdate(rightRole, next.role);
@@ -2883,18 +2946,19 @@
 
 <style>
     /* Prevent horizontal scrollbar globally */
-    html, body {
+    html,
+    body {
         overflow-x: hidden !important;
         width: 100% !important;
         max-width: 100% !important;
     }
-    
+
     .page-wrapper {
         overflow-x: hidden !important;
         width: 100% !important;
         max-width: 100% !important;
     }
-    
+
     /* Modern Product Design Styles with Card Outline */
     .product-box-modern {
         background: #fff;
@@ -2909,7 +2973,7 @@
         position: relative;
         overflow: hidden;
     }
-    
+
     .product-box-modern::before {
         content: '';
         position: absolute;
@@ -2922,7 +2986,7 @@
         transform-origin: left;
         transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    
+
     .product-box-modern:hover::before {
         transform: scaleX(1);
     }
@@ -2936,7 +3000,7 @@
         width: 100% !important;
         max-width: 100% !important;
     }
-    
+
     .product-slider-5items .slick-list {
         padding-top: 0 !important;
         padding-bottom: 0 !important;
@@ -2945,14 +3009,14 @@
         margin: 0 !important;
         width: 100% !important;
     }
-    
+
     .product-slider-5items .slick-track {
         padding-top: 0 !important;
         margin-top: 0 !important;
         display: flex !important;
         align-items: stretch !important;
     }
-    
+
     /* Add margin to product items to prevent top clipping */
     .product-item.zoomscal-hov {
         margin-top: 8px;
@@ -2963,7 +3027,7 @@
         width: 100% !important;
         max-width: 100% !important;
     }
-    
+
     /* Ensure product boxes don't get cut off */
     .product-item.zoomscal-hov .product-box-modern {
         margin-top: 0;
@@ -2972,7 +3036,7 @@
         max-width: 100% !important;
         box-sizing: border-box !important;
     }
-    
+
     /* Prevent horizontal overflow on parent containers */
     .section.product-slider,
     .section.product-slider .container,
@@ -2981,7 +3045,7 @@
         width: 100% !important;
         max-width: 100% !important;
     }
-    
+
     .product-box-modern:hover {
         transform: translateY(-8px);
         box-shadow: 0 12px 24px rgba(128, 0, 32, 0.15), 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -2998,7 +3062,7 @@
         border-radius: 8px;
         transition: all 0.4s ease;
     }
-    
+
     .product-box-modern:hover .product-image-modern {
         box-shadow: 0 4px 12px rgba(128, 0, 32, 0.1);
     }
@@ -3077,7 +3141,7 @@
         opacity: 0;
         transform: scale(0.8);
     }
-    
+
     .product-box-modern:hover .btn-wishlist-modern {
         opacity: 1;
         transform: scale(1);
@@ -3117,7 +3181,7 @@
         font-family: 'Poppins', sans-serif;
         transition: color 0.3s ease, transform 0.3s ease;
     }
-    
+
     .product-box-modern:hover .price-current {
         color: #ff0000;
         transform: scale(1.05);
@@ -3131,7 +3195,7 @@
         font-family: 'Poppins', sans-serif;
         transition: opacity 0.3s ease;
     }
-    
+
     .product-box-modern:hover .price-old {
         opacity: 0.7;
     }
@@ -3160,11 +3224,11 @@
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(128, 0, 32, 0.15);
     }
-    
+
     .btn-cart-modern i {
         transition: transform 0.3s ease;
     }
-    
+
     .btn-cart-modern:hover i {
         transform: scale(1.1);
     }

@@ -5,12 +5,12 @@ include('includes/config.php');
 
 header('Content-Type: application/json');
 
-if(isset($_GET['id'])) {
+if (isset($_GET['id'])) {
     $id = intval($_GET['id']);
-    $sql = "SELECT id, productName, productPrice, productImage1 FROM products WHERE id = {$id}";
+    $sql = "SELECT id, category, subCategory, productName, productPrice, productPriceBeforeDiscount, productDescription, productImage1, productImage2, productImage3, productAvailability, shippingCharge FROM products WHERE id = {$id}";
     $query = mysqli_query($con, $sql);
-    
-    if(mysqli_num_rows($query) > 0) {
+
+    if (mysqli_num_rows($query) > 0) {
         $row = mysqli_fetch_array($query);
         echo json_encode(array(
             'success' => true,
@@ -18,7 +18,14 @@ if(isset($_GET['id'])) {
                 'id' => $row['id'],
                 'name' => $row['productName'],
                 'price' => $row['productPrice'],
-                'image' => $row['productImage1']
+                'priceBefore' => $row['productPriceBeforeDiscount'],
+                'description' => $row['productDescription'],
+                'image' => $row['productImage1'],
+                'images' => array_filter([$row['productImage1'], $row['productImage2'], $row['productImage3']]),
+                'availability' => $row['productAvailability'],
+                'shipping' => $row['shippingCharge'],
+                'category' => $row['category'],
+                'subCategory' => $row['subCategory']
             )
         ));
     } else {
@@ -28,4 +35,3 @@ if(isset($_GET['id'])) {
     echo json_encode(array('success' => false, 'message' => 'Product ID required'));
 }
 ?>
-
