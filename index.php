@@ -474,56 +474,56 @@
                     $ret = mysqli_query($con, "select * from products ORDER BY id DESC limit 10");
                     while ($row = mysqli_fetch_array($ret)) {
                         ?>
-                            <div class="product-item zoomscal-hov">
-                                <div class="product-box-modern">
-                                    <!-- Product Image -->
-                                    <div class="product-image-modern">
-                                        <a href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>"
-                                            class="product-img-modern">
-                                            <img class="blur-up lazyload"
-                                                data-src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>"
-                                                src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>"
-                                                alt="Product" title="<?php echo htmlentities($row['productName']); ?>" />
-                                        </a>
-                                        <a href="category.php?pid=<?php echo htmlentities($row['id']) ?>&&action=wishlist"
-                                            class="btn-wishlist-modern" title="Add to Wishlist">
-                                            <i class="icon anm anm-heart-l"></i>
-                                        </a>
-                                        <button type="button" class="btn-quickview-modern" title="Quick View"
-                                            onclick="openQuickView(<?php echo $row['id']; ?>)">
-                                            <span class="material-symbols-outlined">visibility</span>
-                                        </button>
+                        <div class="product-item zoomscal-hov">
+                            <div class="product-box-modern">
+                                <!-- Product Image -->
+                                <div class="product-image-modern">
+                                    <a href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>"
+                                        class="product-img-modern">
+                                        <img class="blur-up lazyload"
+                                            data-src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>"
+                                            src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>"
+                                            alt="Product" title="<?php echo htmlentities($row['productName']); ?>" />
+                                    </a>
+                                    <a href="category.php?pid=<?php echo htmlentities($row['id']) ?>&&action=wishlist"
+                                        class="btn-wishlist-modern" title="Add to Wishlist">
+                                        <i class="icon anm anm-heart-l"></i>
+                                    </a>
+                                    <button type="button" class="btn-quickview-modern" title="Quick View"
+                                        onclick="openQuickView(<?php echo $row['id']; ?>)">
+                                        <span class="material-symbols-outlined">visibility</span>
+                                    </button>
+                                </div>
+                                <!-- Product Details -->
+                                <div class="product-details-modern">
+                                    <div class="product-name-modern">
+                                        <a
+                                            href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>"><?php echo htmlentities($row['productName']); ?></a>
                                     </div>
-                                    <!-- Product Details -->
-                                    <div class="product-details-modern">
-                                        <div class="product-name-modern">
-                                            <a
-                                                href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>"><?php echo htmlentities($row['productName']); ?></a>
-                                        </div>
-                                        <div class="product-price-modern">
-                                            <div class="price-info">
-                                                <span class="price-current">₹
-                                                    <?php echo htmlentities($row['productPrice']); ?></span>
-                                                <?php if ($row['productPriceBeforeDiscount'] > $row['productPrice']) { ?>
-                                                        <span class="price-old">₹
-                                                            <?php echo htmlentities($row['productPriceBeforeDiscount']); ?></span>
-                                                <?php } ?>
-                                            </div>
-                                            <?php if ($row['productAvailability'] == 'In Stock') { ?>
-                                                    <a href="index.php?page=product&action=add&id=<?php echo $row['id']; ?>"
-                                                        class="btn-cart-modern" title="Add to Cart">
-                                                        <i class="icon anm anm-cart-l"></i>
-                                                    </a>
-                                            <?php } else { ?>
-                                                    <a href="" style="cursor: not-allowed;" onclick="event.preventDefault();"
-                                                        class="btn-cart-modern disabled" title="Out of Stock">
-                                                        <i class="icon anm anm-cart-l"></i>
-                                                    </a>
+                                    <div class="product-price-modern">
+                                        <div class="price-info">
+                                            <span class="price-current">₹
+                                                <?php echo htmlentities($row['productPrice']); ?></span>
+                                            <?php if ($row['productPriceBeforeDiscount'] > $row['productPrice']) { ?>
+                                                <span class="price-old">₹
+                                                    <?php echo htmlentities($row['productPriceBeforeDiscount']); ?></span>
                                             <?php } ?>
                                         </div>
+                                        <?php if ($row['productAvailability'] == 'In Stock') { ?>
+                                            <a href="index.php?page=product&action=add&id=<?php echo $row['id']; ?>"
+                                                class="btn-cart-modern" title="Add to Cart">
+                                                <i class="icon anm anm-cart-l"></i>
+                                            </a>
+                                        <?php } else { ?>
+                                            <a href="" style="cursor: not-allowed;" onclick="event.preventDefault();"
+                                                class="btn-cart-modern disabled" title="Out of Stock">
+                                                <i class="icon anm anm-cart-l"></i>
+                                            </a>
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     <?php } ?>
                 </div>
                 <!-- End Product Slider -->
@@ -604,64 +604,64 @@
                                 $ret = mysqli_query($con, "select * from products ORDER BY id DESC limit 10");
                                 while ($row = mysqli_fetch_array($ret)) {
                                     ?>
-                                        <div class="item col-item">
-                                            <div class="product-box-modern">
-                                                <!-- Start Product Image -->
-                                                <div class="product-image-modern">
-                                                    <a href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>"
-                                                        class="product-img-modern">
-                                                        <img class="blur-up lazyload"
-                                                            data-src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>"
-                                                            data-echo="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>"
-                                                            src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>"
-                                                            alt="Product"
-                                                            title="<?php echo htmlentities($row['productName']); ?>" />
-                                                    </a>
-                                                    <a href="category.php?pid=<?php echo htmlentities($row['id']) ?>&&action=wishlist"
-                                                        class="btn-wishlist-modern" title="Add to Wishlist">
-                                                        <i class="icon anm anm-heart-l"></i>
-                                                    </a>
-                                                    <button type="button" class="btn-quickview-modern" title="Quick View"
-                                                        onclick="openQuickView(<?php echo $row['id']; ?>)">
-                                                        <span class="material-symbols-outlined">visibility</span>
-                                                    </button>
+                                    <div class="item col-item">
+                                        <div class="product-box-modern">
+                                            <!-- Start Product Image -->
+                                            <div class="product-image-modern">
+                                                <a href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>"
+                                                    class="product-img-modern">
+                                                    <img class="blur-up lazyload"
+                                                        data-src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>"
+                                                        data-echo="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>"
+                                                        src="admin/productimages/<?php echo htmlentities($row['id']); ?>/<?php echo htmlentities($row['productImage1']); ?>"
+                                                        alt="Product"
+                                                        title="<?php echo htmlentities($row['productName']); ?>" />
+                                                </a>
+                                                <a href="category.php?pid=<?php echo htmlentities($row['id']) ?>&&action=wishlist"
+                                                    class="btn-wishlist-modern" title="Add to Wishlist">
+                                                    <i class="icon anm anm-heart-l"></i>
+                                                </a>
+                                                <button type="button" class="btn-quickview-modern" title="Quick View"
+                                                    onclick="openQuickView(<?php echo $row['id']; ?>)">
+                                                    <span class="material-symbols-outlined">visibility</span>
+                                                </button>
+                                            </div>
+                                            <!-- Start Product Details -->
+                                            <div class="product-details-modern">
+                                                <!-- Product Name -->
+                                                <div class="product-name-modern">
+                                                    <a
+                                                        href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>"><?php echo htmlentities($row['productName']); ?></a>
                                                 </div>
-                                                <!-- Start Product Details -->
-                                                <div class="product-details-modern">
-                                                    <!-- Product Name -->
-                                                    <div class="product-name-modern">
-                                                        <a
-                                                            href="product-details.php?pid=<?php echo htmlentities($row['id']); ?>"><?php echo htmlentities($row['productName']); ?></a>
-                                                    </div>
-                                                    <!-- End Product Name -->
-                                                    <!-- Product Price -->
-                                                    <div class="product-price-modern">
-                                                        <div class="price-info">
-                                                            <span class="price-current">₹
-                                                                <?php echo htmlentities($row['productPrice']); ?></span>
-                                                            <?php if ($row['productPriceBeforeDiscount'] > $row['productPrice']) { ?>
-                                                                    <span class="price-old">₹
-                                                                        <?php echo htmlentities($row['productPriceBeforeDiscount']); ?></span>
-                                                            <?php } ?>
-                                                        </div>
-                                                        <?php if ($row['productAvailability'] == 'In Stock') { ?>
-                                                                <a href="index.php?page=product&action=add&id=<?php echo $row['id']; ?>"
-                                                                    class="btn-cart-modern" title="Add to Cart">
-                                                                    <i class="icon anm anm-cart-l"></i>
-                                                                </a>
-                                                        <?php } else { ?>
-                                                                <a href="" style="cursor: not-allowed;"
-                                                                    onclick="event.preventDefault();" class="btn-cart-modern disabled"
-                                                                    title="Out of Stock">
-                                                                    <i class="icon anm anm-cart-l"></i>
-                                                                </a>
+                                                <!-- End Product Name -->
+                                                <!-- Product Price -->
+                                                <div class="product-price-modern">
+                                                    <div class="price-info">
+                                                        <span class="price-current">₹
+                                                            <?php echo htmlentities($row['productPrice']); ?></span>
+                                                        <?php if ($row['productPriceBeforeDiscount'] > $row['productPrice']) { ?>
+                                                            <span class="price-old">₹
+                                                                <?php echo htmlentities($row['productPriceBeforeDiscount']); ?></span>
                                                         <?php } ?>
                                                     </div>
-                                                    <!-- End Product Price -->
+                                                    <?php if ($row['productAvailability'] == 'In Stock') { ?>
+                                                        <a href="index.php?page=product&action=add&id=<?php echo $row['id']; ?>"
+                                                            class="btn-cart-modern" title="Add to Cart">
+                                                            <i class="icon anm anm-cart-l"></i>
+                                                        </a>
+                                                    <?php } else { ?>
+                                                        <a href="" style="cursor: not-allowed;"
+                                                            onclick="event.preventDefault();" class="btn-cart-modern disabled"
+                                                            title="Out of Stock">
+                                                            <i class="icon anm anm-cart-l"></i>
+                                                        </a>
+                                                    <?php } ?>
                                                 </div>
-                                                <!-- End product details -->
+                                                <!-- End Product Price -->
                                             </div>
+                                            <!-- End product details -->
                                         </div>
+                                    </div>
                                 <?php } ?>
 
                             </div>
@@ -702,56 +702,56 @@
                                 $rets = mysqli_query($con, "select * from products ORDER BY id DESC limit 10");
                                 while ($rows = mysqli_fetch_array($rets)) {
                                     ?>
-                                            <div class="item col-item">
-                                                <div class="product-box-modern">
-                                                    <div class="product-image-modern">
-                                                        <a href="product-details.php?pid=<?php echo htmlentities($rows['id']); ?>"
-                                                            class="product-img-modern">
-                                                            <img class="blur-up lazyload"
-                                                                data-src="admin/productimages/<?php echo htmlentities($rows['id']); ?>/<?php echo htmlentities($rows['productImage1']); ?>"
-                                                                src="admin/productimages/<?php echo htmlentities($rows['id']); ?>/<?php echo htmlentities($rows['productImage1']); ?>"
-                                                                alt="Product"
-                                                                title="<?php echo htmlentities($rows['productName']); ?>" />
-                                                        </a>
-                                                        <a href="category.php?pid=<?php echo htmlentities($rows['id']) ?>&&action=wishlist"
-                                                            class="btn-wishlist-modern" title="Add to Wishlist">
-                                                            <i class="icon anm anm-heart-l"></i>
-                                                        </a>
-                                                        <button type="button" class="btn-quickview-modern" title="Quick View"
-                                                            onclick="openQuickView(<?php echo $rows['id']; ?>)">
-                                                            <span class="material-symbols-outlined">visibility</span>
-                                                        </button>
+                                    <div class="item col-item">
+                                        <div class="product-box-modern">
+                                            <div class="product-image-modern">
+                                                <a href="product-details.php?pid=<?php echo htmlentities($rows['id']); ?>"
+                                                    class="product-img-modern">
+                                                    <img class="blur-up lazyload"
+                                                        data-src="admin/productimages/<?php echo htmlentities($rows['id']); ?>/<?php echo htmlentities($rows['productImage1']); ?>"
+                                                        src="admin/productimages/<?php echo htmlentities($rows['id']); ?>/<?php echo htmlentities($rows['productImage1']); ?>"
+                                                        alt="Product"
+                                                        title="<?php echo htmlentities($rows['productName']); ?>" />
+                                                </a>
+                                                <a href="category.php?pid=<?php echo htmlentities($rows['id']) ?>&&action=wishlist"
+                                                    class="btn-wishlist-modern" title="Add to Wishlist">
+                                                    <i class="icon anm anm-heart-l"></i>
+                                                </a>
+                                                <button type="button" class="btn-quickview-modern" title="Quick View"
+                                                    onclick="openQuickView(<?php echo $rows['id']; ?>)">
+                                                    <span class="material-symbols-outlined">visibility</span>
+                                                </button>
+                                            </div>
+                                            <div class="product-details-modern">
+                                                <div class="product-name-modern">
+                                                    <a
+                                                        href="product-details.php?pid=<?php echo htmlentities($rows['id']); ?>"><?php echo htmlentities($rows['productName']); ?></a>
+                                                </div>
+                                                <div class="product-price-modern">
+                                                    <div class="price-info">
+                                                        <span class="price-current">₹
+                                                            <?php echo htmlentities($rows['productPrice']); ?></span>
+                                                        <?php if ($rows['productPriceBeforeDiscount'] > $rows['productPrice']) { ?>
+                                                            <span class="price-old">₹
+                                                                <?php echo htmlentities($rows['productPriceBeforeDiscount']); ?></span>
+                                                        <?php } ?>
                                                     </div>
-                                                    <div class="product-details-modern">
-                                                        <div class="product-name-modern">
-                                                            <a
-                                                                href="product-details.php?pid=<?php echo htmlentities($rows['id']); ?>"><?php echo htmlentities($rows['productName']); ?></a>
-                                                        </div>
-                                                        <div class="product-price-modern">
-                                                            <div class="price-info">
-                                                                <span class="price-current">₹
-                                                                    <?php echo htmlentities($rows['productPrice']); ?></span>
-                                                                <?php if ($rows['productPriceBeforeDiscount'] > $rows['productPrice']) { ?>
-                                                                            <span class="price-old">₹
-                                                                                <?php echo htmlentities($rows['productPriceBeforeDiscount']); ?></span>
-                                                                <?php } ?>
-                                                            </div>
-                                                            <?php if ($rows['productAvailability'] == 'In Stock') { ?>
-                                                                        <a href="index.php?page=product&action=add&id=<?php echo $rows['id']; ?>"
-                                                                            class="btn-cart-modern" title="Add to Cart">
-                                                                            <i class="icon anm anm-cart-l"></i>
-                                                                        </a>
-                                                            <?php } else { ?>
-                                                                        <a href="" style="cursor: not-allowed;"
-                                                                            onclick="event.preventDefault();" class="btn-cart-modern disabled"
-                                                                            title="Out of Stock">
-                                                                            <i class="icon anm anm-cart-l"></i>
-                                                                        </a>
-                                                            <?php } ?>
-                                                        </div>
-                                                    </div>
+                                                    <?php if ($rows['productAvailability'] == 'In Stock') { ?>
+                                                        <a href="index.php?page=product&action=add&id=<?php echo $rows['id']; ?>"
+                                                            class="btn-cart-modern" title="Add to Cart">
+                                                            <i class="icon anm anm-cart-l"></i>
+                                                        </a>
+                                                    <?php } else { ?>
+                                                        <a href="" style="cursor: not-allowed;"
+                                                            onclick="event.preventDefault();" class="btn-cart-modern disabled"
+                                                            title="Out of Stock">
+                                                            <i class="icon anm anm-cart-l"></i>
+                                                        </a>
+                                                    <?php } ?>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
                                 <?php } ?>
 
                             </div>
@@ -787,7 +787,7 @@
                             <div class="video-wrapper" data-video="assets/1.mp4" data-title="BLACK CRAPE SUIT SET"
                                 data-price="Rs. 4,350.00"
                                 data-description="Experience the ethereal charm of traditional work on premium crape fabric. A perfect companion for the modern woman who values elegance and sophistication."
-                                data-thumbnail="assets/1.mp4" data-product-id="1" data-fabric-top="Premium Black Crape"
+                                data-thumbnail="assets/1.mp4" data-product-id="11" data-fabric-top="Premium Black Crape"
                                 data-fabric-bottom="Matching Crape Base"
                                 data-fabric-dupatta="Crape with Net Fabric accents"
                                 data-work="Intricate handcrafted work on shirt daaman"
@@ -805,7 +805,7 @@
                             <div class="video-wrapper" data-video="assets/2.mp4"
                                 data-title="VIBRANT MAGENTA SILK SUIT SET" data-price="Rs. 5,200.00"
                                 data-description="Discover the vibrant elegance of premium silk with exquisite craftsmanship. A statement piece that celebrates color and tradition."
-                                data-thumbnail="assets/2.mp4" data-product-id="2"
+                                data-thumbnail="assets/2.mp4" data-product-id="14"
                                 data-fabric-top="Premium Vibrant Magenta Silk" data-fabric-bottom="Matching Silk Base"
                                 data-fabric-dupatta="Silk with Embroidered accents"
                                 data-work="Intricate embroidery work on shirt daaman"
@@ -824,7 +824,7 @@
                                 data-title="Dusty Rose Handcrafted Embroidery Imported Silk Suit"
                                 data-price="Rs. 6,500.00"
                                 data-description="Witness the artistry of handcrafted embroidery on imported silk. A timeless piece that showcases traditional craftsmanship at its finest."
-                                data-thumbnail="assets/3.mp4" data-product-id="3"
+                                data-thumbnail="assets/3.mp4" data-product-id="15"
                                 data-fabric-top="Imported Dusty Rose Silk" data-fabric-bottom="Matching Silk Base"
                                 data-fabric-dupatta="Silk with Handcrafted Embroidery"
                                 data-work="Intricate handcrafted embroidery work"
@@ -842,7 +842,7 @@
                             <div class="video-wrapper" data-video="assets/4.mp4" data-title="PREMIUM CHIFFON SUIT SET"
                                 data-price="Rs. 4,800.00"
                                 data-description="Embrace the flow and grace of premium chiffon. A delicate and elegant ensemble perfect for special occasions."
-                                data-thumbnail="assets/4.mp4" data-product-id="4" data-fabric-top="Premium Chiffon"
+                                data-thumbnail="assets/4.mp4" data-product-id="17" data-fabric-top="Premium Chiffon"
                                 data-fabric-bottom="Matching Chiffon Base"
                                 data-fabric-dupatta="Chiffon with Embellished accents"
                                 data-work="Delicate embellished work on shirt daaman"

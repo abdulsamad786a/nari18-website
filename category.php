@@ -33,8 +33,21 @@ if (isset($_GET['pid']) && $_GET['action'] == "wishlist") {
     if (strlen($_SESSION['login']) == 0) {
         header('location:login.php');
     } else {
-        mysqli_query($con, "insert into wishlist(userId,productId) values('" . $_SESSION['id'] . "','" . $_GET['pid'] . "')");
-        $_SESSION['wishlist_notification'] = 'Product added to wishlist successfully!';
+        $pid = intval($_GET['pid']);
+        // Check if product exists in database
+        $productCheck = mysqli_query($con, "SELECT id FROM products WHERE id = '$pid'");
+        if (mysqli_num_rows($productCheck) > 0) {
+            // Check if already in wishlist
+            $wishlistCheck = mysqli_query($con, "SELECT id FROM wishlist WHERE userId='" . $_SESSION['id'] . "' AND productId='$pid'");
+            if (mysqli_num_rows($wishlistCheck) == 0) {
+                mysqli_query($con, "insert into wishlist(userId,productId) values('" . $_SESSION['id'] . "','$pid')");
+                $_SESSION['wishlist_notification'] = 'Product added to wishlist successfully!';
+            } else {
+                $_SESSION['wishlist_notification'] = 'Product is already in your wishlist!';
+            }
+        } else {
+            $_SESSION['wishlist_error'] = 'Product not found. Please try again with a valid product.';
+        }
         header('location:my-wishlist.php');
         exit();
     }
