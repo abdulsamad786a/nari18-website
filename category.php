@@ -409,6 +409,357 @@ function buildCategoryPageUrl($pageNum)
             display: block;
         }
     }
+
+    /* Modern Product Design Styles (Same as Homepage) */
+    .product-box-modern {
+        background: #fff !important;
+        border: 1px solid #e0e0e0 !important;
+        border-radius: 12px !important;
+        padding: 12px !important;
+        margin-bottom: 20px !important;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100% !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
+
+    .product-box-modern::before {
+        content: '' !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        height: 3px !important;
+        background: linear-gradient(90deg, #800020 0%, #C5A059 100%) !important;
+        transform: scaleX(0) !important;
+        transform-origin: left !important;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .product-box-modern:hover::before {
+        transform: scaleX(1) !important;
+    }
+
+    .product-box-modern:hover {
+        transform: translateY(-8px) !important;
+        box-shadow: 0 12px 24px rgba(128, 0, 32, 0.15), 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+        border-color: #800020 !important;
+    }
+
+    .product-image-modern {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        background: #f8f8f8;
+        margin-bottom: 12px;
+        border-radius: 8px;
+        transition: all 0.4s ease;
+    }
+
+    .product-box-modern:hover .product-image-modern {
+        box-shadow: 0 4px 12px rgba(128, 0, 32, 0.1);
+    }
+
+    .product-img-modern {
+        display: block;
+        width: 100%;
+        height: auto;
+        text-decoration: none;
+    }
+
+    .product-img-modern img {
+        width: 100%;
+        height: auto;
+        display: block;
+        object-fit: cover;
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), filter 0.4s ease;
+        filter: brightness(1);
+    }
+
+    .product-box-modern:hover .product-img-modern img {
+        transform: scale(1.08);
+        filter: brightness(1.05);
+    }
+
+    .product-details-modern {
+        text-align: left;
+        padding: 0;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-name-modern {
+        margin-bottom: 10px;
+        min-height: 40px;
+    }
+
+    .product-name-modern a {
+        font-size: 14px;
+        font-weight: 500;
+        color: #000;
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        line-height: 1.4;
+        display: block;
+        font-family: 'Poppins', sans-serif;
+        transition: color 0.3s ease;
+    }
+
+    .product-name-modern a:hover {
+        color: #800020;
+    }
+
+    .btn-wishlist-modern {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border: 1px solid rgba(128, 0, 32, 0.2);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(8px);
+        color: #800020;
+        border-radius: 50%;
+        text-decoration: none;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        z-index: 10;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    .product-box-modern:hover .btn-wishlist-modern {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .btn-wishlist-modern:hover {
+        background: rgba(255, 255, 255, 0.95);
+        border-color: #800020;
+        color: #800020;
+        transform: scale(1.15);
+        box-shadow: 0 4px 12px rgba(128, 0, 32, 0.15);
+    }
+
+    .btn-wishlist-modern i {
+        font-size: 16px;
+    }
+
+    .btn-quickview-modern {
+        position: absolute;
+        top: 60px;
+        right: 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border: 1px solid rgba(128, 0, 32, 0.2);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(8px);
+        color: #800020;
+        border-radius: 50%;
+        text-decoration: none;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        z-index: 10;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    .product-box-modern:hover .btn-quickview-modern {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .btn-quickview-modern:hover {
+        background: rgba(255, 255, 255, 0.95);
+        border-color: #800020;
+        color: #800020;
+        transform: scale(1.15);
+        box-shadow: 0 4px 12px rgba(128, 0, 32, 0.15);
+    }
+
+    .btn-quickview-modern .material-symbols-outlined {
+        font-size: 18px !important;
+    }
+
+    .product-price-modern {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 0;
+    }
+
+    .price-info {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .price-current {
+        font-size: 16px;
+        font-weight: 600;
+        color: #ff0000;
+        font-family: 'Poppins', sans-serif;
+        transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .product-box-modern:hover .price-current {
+        color: #ff0000;
+        transform: scale(1.05);
+    }
+
+    .price-old {
+        font-size: 14px;
+        color: #999;
+        text-decoration: line-through;
+        font-weight: 400;
+        font-family: 'Poppins', sans-serif;
+        transition: opacity 0.3s ease;
+    }
+
+    .product-box-modern:hover .price-old {
+        opacity: 0.7;
+    }
+
+    .btn-cart-modern {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border: 1px solid rgba(128, 0, 32, 0.2);
+        background: #fff;
+        color: #800020;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        flex-shrink: 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-cart-modern:hover {
+        background: #fff;
+        border-color: #800020;
+        color: #800020;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(128, 0, 32, 0.15);
+    }
+
+    .btn-cart-modern i {
+        font-size: 16px;
+        transition: transform 0.3s ease;
+    }
+
+    .btn-cart-modern:hover i {
+        transform: scale(1.1);
+    }
+
+    .btn-cart-modern.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .btn-cart-modern.disabled:hover {
+        background: #fff;
+        border-color: #e0e0e0;
+        color: #333;
+        transform: none;
+    }
+
+    /* Badge styles */
+    .badge-out-of-stock {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: #1c1917;
+        color: white;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 6px 12px;
+        border-radius: 4px;
+        z-index: 5;
+    }
+
+    .badge-sale {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: #800020;
+        color: white;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 6px 12px;
+        border-radius: 4px;
+        z-index: 5;
+    }
+
+    .badge-sale.with-out-of-stock {
+        top: 48px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .product-box-modern {
+            padding: 10px !important;
+        }
+
+        .product-name-modern a {
+            font-size: 12px;
+        }
+
+        .price-current {
+            font-size: 14px;
+        }
+
+        .price-old {
+            font-size: 12px;
+        }
+
+        .btn-wishlist-modern,
+        .btn-quickview-modern {
+            width: 32px;
+            height: 32px;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .btn-quickview-modern {
+            top: 50px;
+        }
+
+        .btn-cart-modern {
+            width: 32px;
+            height: 32px;
+        }
+
+        .badge-out-of-stock,
+        .badge-sale {
+            font-size: 8px;
+            padding: 4px 8px;
+        }
+
+        .badge-sale.with-out-of-stock {
+            top: 40px;
+        }
+    }
 </style>
 
 <!-- Collection Page Content -->
@@ -600,96 +951,59 @@ function buildCategoryPageUrl($pageNum)
                         while ($product = mysqli_fetch_array($productQuery)) {
                             $isOutOfStock = $product['productAvailability'] != 'In Stock';
                             ?>
-                            <!-- Product Card -->
-                            <div class="product-card-wrapper group">
-                                <div
-                                    class="relative aspect-[3/4] mb-4 sm:mb-6 overflow-hidden bg-stone-100 border border-stone-100">
-                                    <!-- Product Image -->
-                                    <a href="product-details.php?pid=<?php echo $product['id']; ?>"
-                                        class="product-image-container block w-full h-full">
-                                        <img alt="<?php echo htmlentities($product['productName']); ?>"
-                                            class="w-full h-full object-cover"
+                            <!-- Product Card - Modern Style -->
+                            <div class="product-box-modern">
+                                <!-- Product Image -->
+                                <div class="product-image-modern">
+                                    <a href="product-details.php?pid=<?php echo $product['id']; ?>" class="product-img-modern">
+                                        <img alt="<?php echo htmlentities($product['productName']); ?>" class="blur-up lazyload"
+                                            data-src="admin/productimages/<?php echo $product['id']; ?>/<?php echo $product['productImage1']; ?>"
                                             src="admin/productimages/<?php echo $product['id']; ?>/<?php echo $product['productImage1']; ?>"
                                             loading="lazy" />
                                     </a>
-
                                     <!-- Wishlist Button -->
-                                    <div class="absolute top-2 sm:top-4 right-2 sm:right-4">
-                                        <?php if (strlen($_SESSION['login']) > 0) { ?>
-                                            <a href="category.php?cid=<?php echo $cid; ?>&pid=<?php echo $product['id']; ?>&action=wishlist<?php echo !empty($priceFilter) ? '&price=' . $priceFilter : ''; ?>"
-                                                class="wishlist-btn w-8 h-8 sm:w-10 sm:h-10 bg-white/80 backdrop-blur rounded-full flex items-center justify-center shadow-sm transition-all"
-                                                style="color: #333;">
-                                                <i class="icon anm anm-heart-l" style="font-size: 18px;"></i>
-                                            </a>
-                                        <?php } else { ?>
-                                            <a href="login.php"
-                                                class="wishlist-btn w-8 h-8 sm:w-10 sm:h-10 bg-white/80 backdrop-blur rounded-full flex items-center justify-center shadow-sm transition-all"
-                                                style="color: #333;">
-                                                <i class="icon anm anm-heart-l" style="font-size: 18px;"></i>
-                                            </a>
-                                        <?php } ?>
-                                        <button type="button" class="btn-quickview-modern" title="Quick View"
-                                            onclick="openQuickView(<?php echo $product['id']; ?>)">
-                                            <span class="material-symbols-outlined">visibility</span>
-                                        </button>
-                                    </div>
-
-                                    <!-- Out of Stock Badge -->
-                                    <?php if ($isOutOfStock): ?>
-                                        <div class="absolute top-2 sm:top-4 left-2 sm:left-4">
-                                            <span
-                                                class="bg-stone-800 text-white text-[8px] sm:text-[10px] tracking-widest uppercase py-1 px-2 sm:px-3">
-                                                Out of Stock
-                                            </span>
-                                        </div>
-                                    <?php endif; ?>
-
-                                    <!-- Sale Badge -->
-                                    <?php if ($product['productPriceBeforeDiscount'] > $product['productPrice']):
-                                        $discount = round((($product['productPriceBeforeDiscount'] - $product['productPrice']) / $product['productPriceBeforeDiscount']) * 100);
-                                        ?>
-                                        <div
-                                            class="absolute top-2 sm:top-4 left-2 sm:left-4 <?php echo $isOutOfStock ? 'top-10 sm:top-14' : ''; ?>">
-                                            <span
-                                                class="text-white text-[8px] sm:text-[10px] tracking-widest uppercase py-1 px-2 sm:px-3"
-                                                style="background-color: #800020;">
-                                                <?php echo $discount; ?>% Off
-                                            </span>
-                                        </div>
-                                    <?php endif; ?>
-
-                                    <!-- Quick Add Button -->
-                                    <div
-                                        class="quick-add-btn absolute bottom-0 left-0 right-0 p-2 sm:p-4 bg-white/90 backdrop-blur">
-                                        <?php if (!$isOutOfStock): ?>
-                                            <a href="category.php?cid=<?php echo $cid; ?>&action=add&id=<?php echo $product['id']; ?><?php echo !empty($priceFilter) ? '&price=' . $priceFilter : ''; ?>"
-                                                class="quick-add-link block w-full py-2 sm:py-3 bg-stone-900 text-white text-[10px] sm:text-xs tracking-widest uppercase hover:bg-primary transition-colors text-center">
-                                                <span class="quick-add-text">Quick Add</span>
-                                            </a>
-                                        <?php else: ?>
-                                            <button disabled
-                                                class="w-full py-2 sm:py-3 bg-stone-400 text-white text-[10px] sm:text-xs tracking-widest uppercase cursor-not-allowed text-center">
-                                                Out of Stock
-                                            </button>
-                                        <?php endif; ?>
-                                    </div>
+                                    <?php if (strlen($_SESSION['login']) > 0) { ?>
+                                        <a href="category.php?pid=<?php echo $product['id']; ?>&action=wishlist&cid=<?php echo $cid; ?><?php echo !empty($priceFilter) ? '&price=' . $priceFilter : ''; ?>"
+                                            class="btn-wishlist-modern" title="Add to Wishlist">
+                                            <i class="icon anm anm-heart-l"></i>
+                                        </a>
+                                    <?php } else { ?>
+                                        <a href="login.php" class="btn-wishlist-modern" title="Add to Wishlist">
+                                            <i class="icon anm anm-heart-l"></i>
+                                        </a>
+                                    <?php } ?>
+                                    <!-- Quick View Button -->
+                                    <button type="button" class="btn-quickview-modern" title="Quick View"
+                                        onclick="openQuickView(<?php echo $product['id']; ?>)">
+                                        <span class="material-symbols-outlined">visibility</span>
+                                    </button>
                                 </div>
-
                                 <!-- Product Details -->
-                                <div class="text-center space-y-1 sm:space-y-2">
-                                    <h3 class="small-caps text-sm sm:text-lg tracking-wider text-stone-800"
-                                        style="font-family: 'Cormorant Garamond', serif;">
-                                        <a href="product-details.php?pid=<?php echo $product['id']; ?>"
-                                            class="hover:text-primary transition-colors">
+                                <div class="product-details-modern">
+                                    <div class="product-name-modern">
+                                        <a href="product-details.php?pid=<?php echo $product['id']; ?>">
                                             <?php echo htmlentities($product['productName']); ?>
                                         </a>
-                                    </h3>
-                                    <div class="flex items-center justify-center gap-2 sm:gap-3 flex-wrap">
-                                        <span class="font-medium text-sm sm:text-base" style="color: #800020;">₹
-                                            <?php echo number_format($product['productPrice'], 2); ?></span>
-                                        <?php if ($product['productPriceBeforeDiscount'] > $product['productPrice']): ?>
-                                            <span class="text-[10px] sm:text-xs line-through" style="color: #9ca3af;">₹
-                                                <?php echo number_format($product['productPriceBeforeDiscount'], 2); ?></span>
+                                    </div>
+                                    <div class="product-price-modern">
+                                        <div class="price-info">
+                                            <span class="price-current">₹
+                                                <?php echo htmlentities($product['productPrice']); ?></span>
+                                            <?php if ($product['productPriceBeforeDiscount'] > $product['productPrice']): ?>
+                                                <span class="price-old">₹
+                                                    <?php echo htmlentities($product['productPriceBeforeDiscount']); ?></span>
+                                            <?php endif; ?>
+                                        </div>
+                                        <?php if (!$isOutOfStock): ?>
+                                            <a href="category.php?cid=<?php echo $cid; ?>&action=add&id=<?php echo $product['id']; ?><?php echo !empty($priceFilter) ? '&price=' . $priceFilter : ''; ?>"
+                                                class="btn-cart-modern" title="Add to Cart">
+                                                <i class="icon anm anm-cart-l"></i>
+                                            </a>
+                                        <?php else: ?>
+                                            <a href="" style="cursor: not-allowed;" onclick="event.preventDefault();"
+                                                class="btn-cart-modern disabled" title="Out of Stock">
+                                                <i class="icon anm anm-cart-l"></i>
+                                            </a>
                                         <?php endif; ?>
                                     </div>
                                 </div>
