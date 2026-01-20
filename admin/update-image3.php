@@ -7,7 +7,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 	$pid = intval($_GET['id']);// product id
 	if (isset($_POST['submit'])) {
 		$productname = $_POST['productName'];
-		$productimage3 = $_FILES["productimage3"]["name"];
+		$productimage3 = strtolower($_FILES["productimage3"]["name"]);
 
 		// Create the directory if it doesn't exist
 		$targetDir = "productimages/$pid/";
@@ -79,7 +79,8 @@ if (strlen($_SESSION['alogin']) == 0) {
 										<div class="alert alert-success">
 											<button type="button" class="close" data-dismiss="alert">×</button>
 											<strong>Well done!</strong>
-											<?php echo htmlentities($_SESSION['msg']); ?>		<?php echo htmlentities($_SESSION['msg'] = ""); ?>
+											<?php echo htmlentities($_SESSION['msg']); ?>
+											<?php echo htmlentities($_SESSION['msg'] = ""); ?>
 										</div>
 									<?php } ?>
 

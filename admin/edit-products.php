@@ -16,25 +16,25 @@ if (strlen($_SESSION['alogin']) == 0) {
 		$productscharge = $_POST['productShippingcharge'];
 		$productavailability = $_POST['productAvailability'];
 		$productvideo = $_POST['productVideo'];
-		
+
 		// YouTube URL validation and processing
 		$youtube_id = '';
-		if(!empty($productvideo)) {
+		if (!empty($productvideo)) {
 			// Extract YouTube video ID from various URL formats
 			if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $productvideo, $match)) {
 				$youtube_id = $match[1];
 				$productvideo = $youtube_id; // Store only the video ID
 			} else {
-				$_SESSION['error']="Invalid YouTube URL format!";
-				header('location:edit-product.php?id='.$pid.'&error=1');
+				$_SESSION['error'] = "Invalid YouTube URL format!";
+				header('location:edit-product.php?id=' . $pid . '&error=1');
 				exit();
 			}
 		}
-		
+
 		$sql = mysqli_query($con, "update products set category='$category',subCategory='$subcat',productName='$productname',productCompany='$productcompany',productPrice='$productprice',productDescription='$productdescription',shippingCharge='$productscharge',productAvailability='$productavailability',productPriceBeforeDiscount='$productpricebd',productVideo='$productvideo' where id='$pid' ");
 		$_SESSION['msg'] = "Product Updated Successfully !!";
 	}
-?>
+	?>
 	<!DOCTYPE html>
 	<html lang="en">
 
@@ -54,7 +54,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 				height: 100px;
 			}
 		</style>
-		<script src="http://js.nicedit.com/nicEdit-latest.js" type="text/javascript"></script>
+		<script src="nicEdit.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			bkLib.onDomLoaded(nicEditors.allTextAreas);
 		</script>
@@ -65,7 +65,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 					type: "POST",
 					url: "get_subcat.php",
 					data: 'cat_id=' + val,
-					success: function(data) {
+					success: function (data) {
 						$("#subcategory").html(data);
 					}
 				});
@@ -75,20 +75,20 @@ if (strlen($_SESSION['alogin']) == 0) {
 				$("#search-box").val(val);
 				$("#suggesstion-box").hide();
 			}
-			
+
 			// YouTube URL validation function
 			function validateYouTubeURL() {
 				var url = document.getElementById('productVideo').value;
 				var preview = document.getElementById('video-preview');
-				
-				if(url.trim() === '') {
+
+				if (url.trim() === '') {
 					preview.innerHTML = '';
 					return;
 				}
-				
+
 				var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
 				var match = url.match(regExp);
-				
+
 				if (match && match[2].length == 11) {
 					var videoId = match[2];
 					preview.innerHTML = '<div style="margin-top: 10px;"><iframe width="300" height="200" src="https://www.youtube.com/embed/' + videoId + '" frameborder="0" allowfullscreen></iframe></div>';
@@ -149,7 +149,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 
 
 
-										?>
+											?>
 
 
 											<div class="control-group">
@@ -165,12 +165,12 @@ if (strlen($_SESSION['alogin']) == 0) {
 															if ($row['catname'] == $rw['categoryName']) {
 																continue;
 															} else {
-														?>
+																?>
 
 																<option value="<?php echo $rw['id']; ?>">
 																	<?php echo $rw['categoryName']; ?>
 																</option>
-														<?php }
+															<?php }
 														} ?>
 													</select>
 												</div>
@@ -232,8 +232,8 @@ if (strlen($_SESSION['alogin']) == 0) {
 												<div class="controls">
 													<textarea name="productDescription" placeholder="Enter Product Description"
 														rows="6" class="span8 tip">
-<?php echo htmlentities($row['productDescription']); ?>
-</textarea>
+				<?php echo htmlentities($row['productDescription']); ?>
+				</textarea>
 												</div>
 											</div>
 
@@ -252,7 +252,8 @@ if (strlen($_SESSION['alogin']) == 0) {
 												<div class="controls">
 													<select name="productAvailability" id="productAvailability"
 														class="span8 tip" required>
-														<option value="<?php echo htmlentities($row['productAvailability']); ?>">
+														<option
+															value="<?php echo htmlentities($row['productAvailability']); ?>">
 															<?php echo htmlentities($row['productAvailability']); ?>
 														</option>
 														<option value="In Stock">In Stock</option>
@@ -265,20 +266,18 @@ if (strlen($_SESSION['alogin']) == 0) {
 											<div class="control-group">
 												<label class="control-label" for="basicinput">Product Video (YouTube)</label>
 												<div class="controls">
-													<?php 
+													<?php
 													// Get current video value and format it for display
 													$currentVideo = $row['productVideo'];
 													$displayVideo = $currentVideo;
-													if(!empty($currentVideo) && !preg_match('/^https?:\/\//', $currentVideo)) {
+													if (!empty($currentVideo) && !preg_match('/^https?:\/\//', $currentVideo)) {
 														$displayVideo = 'https://www.youtube.com/watch?v=' . $currentVideo;
 													}
 													?>
-													<input type="url" name="productVideo" id="productVideo" 
-														placeholder="Enter YouTube Video URL (Optional)" 
-														value="<?php echo htmlentities($displayVideo); ?>"
-														class="span8 tip" 
-														onchange="validateYouTubeURL()"
-														onkeyup="validateYouTubeURL()">
+													<input type="url" name="productVideo" id="productVideo"
+														placeholder="Enter YouTube Video URL (Optional)"
+														value="<?php echo htmlentities($displayVideo); ?>" class="span8 tip"
+														onchange="validateYouTubeURL()" onkeyup="validateYouTubeURL()">
 													<span class="help-block">
 														Supported formats:<br>
 														• https://www.youtube.com/watch?v=VIDEO_ID<br>
@@ -286,14 +285,14 @@ if (strlen($_SESSION['alogin']) == 0) {
 														• https://www.youtube.com/embed/VIDEO_ID
 													</span>
 													<div id="video-preview">
-														<?php 
+														<?php
 														// Show preview if video exists
-														if(!empty($currentVideo)) {
+														if (!empty($currentVideo)) {
 															$videoId = $currentVideo;
 															if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $currentVideo, $match)) {
 																$videoId = $match[1];
 															}
-															echo '<div style="margin-top: 10px;"><iframe width="300" height="200" src="https://www.youtube.com/embed/'.$videoId.'" frameborder="0" allowfullscreen></iframe></div>';
+															echo '<div style="margin-top: 10px;"><iframe width="300" height="200" src="https://www.youtube.com/embed/' . $videoId . '" frameborder="0" allowfullscreen></iframe></div>';
 														}
 														?>
 													</div>
@@ -304,8 +303,12 @@ if (strlen($_SESSION['alogin']) == 0) {
 												<label class="control-label" for="basicinput">Product Image1</label>
 												<div class="controls">
 													<img src="productimages/<?php echo htmlentities($pid); ?>/<?php echo htmlentities($row['productImage1']); ?>"
-														width="200" height="100"> <a
-														href="update-image1.php?id=<?php echo $row['id']; ?>">Change Image</a>
+														width="200" height="100">
+													<a href="update-image1.php?id=<?php echo $row['id']; ?>">Change Image</a> |
+													<a href="remove-image.php?id=<?php echo $row['id']; ?>&img=productImage1"
+														onClick="return confirm('Are you sure you want to remove this image?')">Remove
+														Image</a>
+
 												</div>
 											</div>
 
@@ -314,8 +317,12 @@ if (strlen($_SESSION['alogin']) == 0) {
 												<label class="control-label" for="basicinput">Product Image2</label>
 												<div class="controls">
 													<img src="productimages/<?php echo htmlentities($pid); ?>/<?php echo htmlentities($row['productImage2']); ?>"
-														width="200" height="100"> <a
-														href="update-image2.php?id=<?php echo $row['id']; ?>">Change Image</a>
+														width="200" height="100">
+													<a href="update-image2.php?id=<?php echo $row['id']; ?>">Change Image</a> |
+													<a href="remove-image.php?id=<?php echo $row['id']; ?>&img=productImage2"
+														onClick="return confirm('Are you sure you want to remove this image?')">Remove
+														Image</a>
+
 												</div>
 											</div>
 
@@ -325,8 +332,12 @@ if (strlen($_SESSION['alogin']) == 0) {
 												<label class="control-label" for="basicinput">Product Image3</label>
 												<div class="controls">
 													<img src="productimages/<?php echo htmlentities($pid); ?>/<?php echo htmlentities($row['productImage3']); ?>"
-														width="200" height="100"> <a
-														href="update-image3.php?id=<?php echo $row['id']; ?>">Change Image</a>
+														width="200" height="100">
+													<a href="update-image3.php?id=<?php echo $row['id']; ?>">Change Image</a> |
+													<a href="remove-image.php?id=<?php echo $row['id']; ?>&img=productImage3"
+														onClick="return confirm('Are you sure you want to remove this image?')">Remove
+														Image</a>
+
 												</div>
 											</div>
 										<?php } ?>
@@ -357,7 +368,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 		<script src="scripts/flot/jquery.flot.js" type="text/javascript"></script>
 		<script src="scripts/datatables/jquery.dataTables.js"></script>
 		<script>
-			$(document).ready(function() {
+			$(document).ready(function () {
 				$('.datatable-1').dataTable();
 				$('.dataTables_paginate').addClass("btn-group datatable-pagination");
 				$('.dataTables_paginate > a').wrapInner('<span />');

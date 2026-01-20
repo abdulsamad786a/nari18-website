@@ -34,6 +34,44 @@ if (isset($_GET['pid']) && $_GET['action'] == "wishlist") {
     }
 }
 
+
+// Social Proof Simulation Logic
+if (!isset($_SESSION['social_proof'])) {
+    $_SESSION['social_proof'] = array();
+}
+
+$current_time = time();
+$viewers_count = 0;
+
+// Viewers Logic (Session based, updates every 5 mins)
+if (isset($_SESSION['social_proof'][$pid]) && ($current_time - $_SESSION['social_proof'][$pid]['timestamp'] < 300)) {
+    $viewers_count = $_SESSION['social_proof'][$pid]['count'];
+} else {
+    // Generate a number based on PID to ensure it's different for different products initially, 
+    // but add some randomness so it's not STATIC for the same product forever.
+    // Actually, just pure random is fine, but let's widen the range and maybe salt it for initial "feel".
+    // We'll just use a pure random number but with a wider range to avoid collisions.
+    $viewers_count = rand(12, 35);
+
+    $_SESSION['social_proof'][$pid] = array(
+        'count' => $viewers_count,
+        'timestamp' => $current_time
+    );
+}
+
+// Sales Logic (Deterministic based on Date + PID)
+// We use crc32 to scramble the seed so sequential PIDs (1, 2, 3) get vastly different seeds
+$today_str = date('Ymd');
+$seed = crc32($pid . $today_str . 'salt');
+srand($seed);
+
+$sold_24h = rand(10, 50); // Randomized stable number for the day
+$sold_12h = round($sold_24h * ((rand(50, 70)) / 100)); // 50-70% of 24h
+$sold_18h = round($sold_24h * ((rand(70, 85)) / 100)); // 70-85% of 24h
+
+srand(); // Reset seed to random for other calls
+
+
 ?>
 <?php include 'header.php'; ?>
 
@@ -328,6 +366,8 @@ $breadcrumb = mysqli_fetch_array($breadcrumb_query);
                         <?php endif; ?>
                     </div>
 
+
+
                     <!-- Product Options -->
                     <div class="py-6 sm:py-8 space-y-6 sm:space-y-8">
                         <!-- Quantity & Add to Cart -->
@@ -381,221 +421,262 @@ $breadcrumb = mysqli_fetch_array($breadcrumb_query);
                                 </a>
                             </div>
                         </div>
+
+                        <!-- Social Proof Banners -->
+                        <div class="mt-4 space-y-2">
+                            <!-- Active Viewers -->
+                            <div
+                                class="flex items-center gap-2 text-sm text-stone-700 bg-stone-50 px-3 py-2 rounded">
+                                <span class="material-symbols-outlined text-stone-500"
+                                    style="font-size: 18px;">visibility</span>
+                                <span><strong><span id="viewers-count"><?php echo $viewers_count; ?></span> people</strong> are viewing this right
+                                    now</span>
+                            </div>
+
+                            <!-- Recent Sales -->
+                            <div
+                                class="flex items-center gap-2 text-sm text-stone-700 bg-stone-50 px-3 py-2 rounded">
+                                <span class="material-symbols-outlined text-red-500"
+                                    style="font-size: 18px;">local_fire_department</span>
+                                <span><strong><?php echo $sold_24h; ?> sold</strong> in the last 24 hours</span>
+                            </div>
+                        </div>
                     </div>
+                    
+                    <!-- Live Viewer Update Script -->
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const viewerSpan = document.getElementById('viewers-count');
+                            let currentCount = parseInt(viewerSpan.innerText);
+                            
+                            setInterval(() => {
+                                // Fluctuate by -2 to +2
+                                const change = Math.floor(Math.random() * 5) - 2; 
+                                currentCount += change;
+                                
+                                // Keep within reasonable bounds (e.g., minimum 5)
+                                if (currentCount < 5) currentCount = 5;
+                                if (currentCount > 50) currentCount = 50;
+                                
+                                viewerSpan.innerText = currentCount;
+                            }, 2000); // 2 seconds update
+                        });
+                    </script>
+                </div>
 
-                    <!-- Accordion Section (Details & Care) -->
-                    <div class="border-t border-stone-200 pt-6 sm:pt-8">
-                        <!-- Accordion Card Container -->
-                        <div class="bg-white rounded-xl border border-stone-200 overflow-hidden shadow-sm">
-                            <!-- Description Accordion -->
-                            <div class="accordion-item border-b border-stone-100">
-                                <div class="accordion-header px-5 py-4 flex items-center justify-between cursor-pointer hover:bg-stone-50 transition-colors"
-                                    onclick="toggleAccordion(this)">
-                                    <div class="flex items-center gap-4">
-                                        <svg class="w-5 h-5 text-stone-400" fill="none" stroke="currentColor"
-                                            stroke-width="1.5" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z">
-                                            </path>
-                                        </svg>
-                                        <span class="text-sm font-medium text-stone-700">Description</span>
-                                    </div>
-                                    <span class="accordion-icon text-xl text-stone-400 font-light">+</span>
+                <!-- Accordion Section (Details & Care) -->
+                <div class="border-t border-stone-200 pt-6 sm:pt-8">
+                    <!-- Accordion Card Container -->
+                    <div class="bg-white rounded-xl border border-stone-200 overflow-hidden shadow-sm">
+                        <!-- Description Accordion -->
+                        <div class="accordion-item border-b border-stone-100">
+                            <div class="accordion-header px-5 py-4 flex items-center justify-between cursor-pointer hover:bg-stone-50 transition-colors"
+                                onclick="toggleAccordion(this)">
+                                <div class="flex items-center gap-4">
+                                    <svg class="w-5 h-5 text-stone-400" fill="none" stroke="currentColor"
+                                        stroke-width="1.5" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z">
+                                        </path>
+                                    </svg>
+                                    <span class="text-sm font-medium text-stone-700">Description</span>
                                 </div>
-                                <div class="accordion-content">
-                                    <div class="px-5 pb-5 pl-14 text-sm text-stone-600 leading-relaxed">
-                                        <?php echo $row['productDescription']; ?>
-                                    </div>
-                                </div>
+                                <span class="accordion-icon text-xl text-stone-400 font-light">+</span>
                             </div>
-
-                            <!-- Free Shipping Accordion -->
-                            <div class="accordion-item border-b border-stone-100">
-                                <div class="accordion-header px-5 py-4 flex items-center justify-between cursor-pointer hover:bg-stone-50 transition-colors"
-                                    onclick="toggleAccordion(this)">
-                                    <div class="flex items-center gap-4">
-                                        <svg class="w-5 h-5 text-stone-400" fill="none" stroke="currentColor"
-                                            stroke-width="1.5" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12">
-                                            </path>
-                                        </svg>
-                                        <span class="text-sm font-medium text-stone-700">Free Shipping</span>
-                                    </div>
-                                    <span class="accordion-icon text-xl text-stone-400 font-light">+</span>
+                            <div class="accordion-content">
+                                <div class="px-5 pb-5 pl-14 text-sm text-stone-600 leading-relaxed">
+                                    <?php echo $row['productDescription']; ?>
                                 </div>
-                                <div class="accordion-content">
-                                    <div class="px-5 pb-5 pl-14 text-sm text-stone-600 leading-relaxed">
-                                        <p class="mb-2">
-                                            <?php if ($row['shippingCharge'] == 0): ?>
-                                                <strong class="text-green-600">✓ Free shipping</strong> on this product!
-                                            <?php else: ?>
-                                                Shipping charge: <strong>Rs. <?php echo $row['shippingCharge']; ?></strong>
-                                            <?php endif; ?>
-                                        </p>
-                                        <ul class="list-disc pl-4 space-y-1">
-                                            <li>Estimated delivery: 5-7 business days</li>
-                                            <li>Free shipping on orders above ₹5000</li>
-                                            <li>Express delivery available at checkout</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Care Guide Accordion -->
-                            <div class="accordion-item border-b border-stone-100">
-                                <div class="accordion-header px-5 py-4 flex items-center justify-between cursor-pointer hover:bg-stone-50 transition-colors"
-                                    onclick="toggleAccordion(this)">
-                                    <div class="flex items-center gap-4">
-                                        <svg class="w-5 h-5 text-stone-400" fill="none" stroke="currentColor"
-                                            stroke-width="1.5" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 15.5m14.8-.2l-.312.077a3.001 3.001 0 01-2.593-.377l-.89-.534a2.251 2.251 0 00-2.006-.136l-.905.362a2.252 2.252 0 01-1.69 0l-.905-.362a2.251 2.251 0 00-2.006.136l-.89.534a3.001 3.001 0 01-2.593.377L5 15.5m0 0v2.25A2.25 2.25 0 007.25 20h9.5A2.25 2.25 0 0019 17.75V15.5">
-                                            </path>
-                                        </svg>
-                                        <span class="text-sm font-medium text-stone-700">Care Guide</span>
-                                    </div>
-                                    <span class="accordion-icon text-xl text-stone-400 font-light">+</span>
-                                </div>
-                                <div class="accordion-content">
-                                    <div class="px-5 pb-5 pl-14 text-sm text-stone-600 leading-relaxed">
-                                        <ul class="list-disc pl-4 space-y-1">
-                                            <li>Dry clean recommended for best results</li>
-                                            <li>Store in a cool, dry place</li>
-                                            <li>Iron on low heat with protective cloth</li>
-                                            <li>Avoid direct sunlight when drying</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Secure Payment (static - no accordion) -->
-                            <div class="px-5 py-4 flex items-center gap-4">
-                                <svg class="w-5 h-5 text-stone-400" fill="none" stroke="currentColor" stroke-width="1.5"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z">
-                                    </path>
-                                </svg>
-                                <span class="text-sm font-medium text-stone-700">Secure payment</span>
                             </div>
                         </div>
 
-                        <!-- Trust Badges -->
-                        <div class="bg-stone-50 px-3 py-3 mt-6 rounded-lg border border-stone-100">
-                            <div
-                                class="flex items-center justify-between text-[9px] sm:text-[10px] uppercase tracking-wider font-medium text-stone-500">
-                                <div class="flex items-center gap-1">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        <!-- Free Shipping Accordion -->
+                        <div class="accordion-item border-b border-stone-100">
+                            <div class="accordion-header px-5 py-4 flex items-center justify-between cursor-pointer hover:bg-stone-50 transition-colors"
+                                onclick="toggleAccordion(this)">
+                                <div class="flex items-center gap-4">
+                                    <svg class="w-5 h-5 text-stone-400" fill="none" stroke="currentColor"
+                                        stroke-width="1.5" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12">
                                         </path>
                                     </svg>
-                                    <span>Free Shipping</span>
+                                    <span class="text-sm font-medium text-stone-700">Free Shipping</span>
                                 </div>
-                                <div class="flex items-center gap-1">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    <span>7 Days Return</span>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                                        </path>
-                                    </svg>
-                                    <span>Authenticity</span>
+                                <span class="accordion-icon text-xl text-stone-400 font-light">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="px-5 pb-5 pl-14 text-sm text-stone-600 leading-relaxed">
+                                    <p class="mb-2">
+                                        <?php if ($row['shippingCharge'] == 0): ?>
+                                            <strong class="text-green-600">✓ Free shipping</strong> on this product!
+                                        <?php else: ?>
+                                            Shipping charge: <strong>Rs. <?php echo $row['shippingCharge']; ?></strong>
+                                        <?php endif; ?>
+                                    </p>
+                                    <ul class="list-disc pl-4 space-y-1">
+                                        <li>Estimated delivery: 5-7 business days</li>
+                                        <li>Free shipping on orders above ₹5000</li>
+                                        <li>Express delivery available at checkout</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Secure Payment Image -->
-                        <div class="mt-4 w-full">
-                            <img alt="Secure Payment" class="w-full h-auto" src="assets/Secure_Payment.webp" />
+                        <!-- Care Guide Accordion -->
+                        <div class="accordion-item border-b border-stone-100">
+                            <div class="accordion-header px-5 py-4 flex items-center justify-between cursor-pointer hover:bg-stone-50 transition-colors"
+                                onclick="toggleAccordion(this)">
+                                <div class="flex items-center gap-4">
+                                    <svg class="w-5 h-5 text-stone-400" fill="none" stroke="currentColor"
+                                        stroke-width="1.5" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 15.5m14.8-.2l-.312.077a3.001 3.001 0 01-2.593-.377l-.89-.534a2.251 2.251 0 00-2.006-.136l-.905.362a2.252 2.252 0 01-1.69 0l-.905-.362a2.251 2.251 0 00-2.006.136l-.89.534a3.001 3.001 0 01-2.593.377L5 15.5m0 0v2.25A2.25 2.25 0 007.25 20h9.5A2.25 2.25 0 0019 17.75V15.5">
+                                        </path>
+                                    </svg>
+                                    <span class="text-sm font-medium text-stone-700">Care Guide</span>
+                                </div>
+                                <span class="accordion-icon text-xl text-stone-400 font-light">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="px-5 pb-5 pl-14 text-sm text-stone-600 leading-relaxed">
+                                    <ul class="list-disc pl-4 space-y-1">
+                                        <li>Dry clean recommended for best results</li>
+                                        <li>Store in a cool, dry place</li>
+                                        <li>Iron on low heat with protective cloth</li>
+                                        <li>Avoid direct sunlight when drying</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
+
+                        <!-- Secure Payment (static - no accordion) -->
+                        <div class="px-5 py-4 flex items-center gap-4">
+                            <svg class="w-5 h-5 text-stone-400" fill="none" stroke="currentColor" stroke-width="1.5"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z">
+                                </path>
+                            </svg>
+                            <span class="text-sm font-medium text-stone-700">Secure payment</span>
+                        </div>
+                    </div>
+
+                    <!-- Trust Badges -->
+                    <div class="bg-stone-50 px-3 py-3 mt-6 rounded-lg border border-stone-100">
+                        <div
+                            class="flex items-center justify-between text-[9px] sm:text-[10px] uppercase tracking-wider font-medium text-stone-500">
+                            <div class="flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12">
+                                    </path>
+                                </svg>
+                                <span>Free Shipping</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span>7 Days Return</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                                    </path>
+                                </svg>
+                                <span>Authenticity</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Secure Payment Image -->
+                    <div class="mt-4 w-full">
+                        <img alt="Secure Payment" class="w-full h-auto" src="assets/Secure_Payment.webp" />
                     </div>
                 </div>
             </div>
         </div>
+</div>
 
-        <!-- Related Products Section -->
-        <section class="mt-20 sm:mt-32">
-            <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 gap-4">
-                <div class="space-y-2">
-                    <span class="text-[10px] uppercase tracking-[0.3em] font-semibold" style="color: #800020;">Curated
-                        for you</span>
-                    <h3 class="font-display text-3xl sm:text-4xl font-semibold text-stone-900">Related Products</h3>
-                </div>
-                <div class="flex gap-4">
-                    <button onclick="scrollRelated('left')"
-                        class="w-10 h-10 rounded-full border border-stone-300 flex items-center justify-center hover:bg-stone-100 transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                        </svg>
-                    </button>
-                    <button onclick="scrollRelated('right')"
-                        class="w-10 h-10 rounded-full border border-stone-300 flex items-center justify-center hover:bg-stone-100 transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                        </svg>
-                    </button>
-                </div>
-            </div>
+<!-- Related Products Section -->
+<section class="mt-20 sm:mt-32">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 sm:mb-12 gap-4">
+        <div class="space-y-2">
+            <span class="text-[10px] uppercase tracking-[0.3em] font-semibold" style="color: #800020;">Curated
+                for you</span>
+            <h3 class="font-display text-3xl sm:text-4xl font-semibold text-stone-900">Related Products</h3>
+        </div>
+        <div class="flex gap-4">
+            <button onclick="scrollRelated('left')"
+                class="w-10 h-10 rounded-full border border-stone-300 flex items-center justify-center hover:bg-stone-100 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+            </button>
+            <button onclick="scrollRelated('right')"
+                class="w-10 h-10 rounded-full border border-stone-300 flex items-center justify-center hover:bg-stone-100 transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3">
+                    </path>
+                </svg>
+            </button>
+        </div>
+    </div>
 
-            <div id="related-products"
-                class="flex gap-6 sm:gap-8 overflow-x-auto pb-8 sm:pb-12 custom-scrollbar snap-x scroll-smooth">
+    <div id="related-products"
+        class="flex gap-6 sm:gap-8 overflow-x-auto pb-8 sm:pb-12 custom-scrollbar snap-x scroll-smooth">
+        <?php
+        $cid = $row['category'];
+        $subcid = $row['subCategory'];
+        $qry = mysqli_query($con, "select * from products where subCategory='$subcid' and category='$cid' and id!='$pid' limit 8");
+        $num = mysqli_num_rows($qry);
+        if ($num > 0) {
+            while ($relatedRow = mysqli_fetch_array($qry)) {
+                ?>
+                <div class="min-w-[260px] sm:min-w-[300px] snap-start group">
+                    <div class="aspect-[3/4] bg-stone-100 rounded-lg overflow-hidden relative mb-4">
+                        <a href="product-details.php?pid=<?php echo htmlentities($relatedRow['id']); ?>">
+                            <img alt="<?php echo htmlentities($relatedRow['productName']); ?>"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                src="admin/productimages/<?php echo htmlentities($relatedRow['id']); ?>/<?php echo htmlentities($relatedRow['productImage1']); ?>" />
+                        </a>
+                        <button
+                            class="absolute bottom-4 left-4 right-4 bg-white/90 py-3 text-[10px] uppercase tracking-widest font-bold opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all rounded">
+                            <a href="product-details.php?pid=<?php echo htmlentities($relatedRow['id']); ?>">Quick
+                                View</a>
+                        </button>
+                        <a href="product-details.php?pid=<?php echo htmlentities($relatedRow['id']) ?>&&action=wishlist"
+                            class="absolute top-4 right-4 text-stone-800 hover:text-primary transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </a>
+                    </div>
+                    <a href="product-details.php?pid=<?php echo htmlentities($relatedRow['id']); ?>">
+                        <h4
+                            class="text-sm font-medium tracking-tight group-hover:text-primary transition-colors text-stone-900">
+                            <?php echo htmlentities($relatedRow['productName']); ?>
+                        </h4>
+                    </a>
+                    <p class="text-stone-500 text-xs mt-1">Rs.
+                        <?php echo number_format($relatedRow['productPrice']); ?>.00
+                    </p>
+                </div>
                 <?php
-                $cid = $row['category'];
-                $subcid = $row['subCategory'];
-                $qry = mysqli_query($con, "select * from products where subCategory='$subcid' and category='$cid' and id!='$pid' limit 8");
-                $num = mysqli_num_rows($qry);
-                if ($num > 0) {
-                    while ($relatedRow = mysqli_fetch_array($qry)) {
-                        ?>
-                        <div class="min-w-[260px] sm:min-w-[300px] snap-start group">
-                            <div class="aspect-[3/4] bg-stone-100 rounded-lg overflow-hidden relative mb-4">
-                                <a href="product-details.php?pid=<?php echo htmlentities($relatedRow['id']); ?>">
-                                    <img alt="<?php echo htmlentities($relatedRow['productName']); ?>"
-                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                        src="admin/productimages/<?php echo htmlentities($relatedRow['id']); ?>/<?php echo htmlentities($relatedRow['productImage1']); ?>" />
-                                </a>
-                                <button
-                                    class="absolute bottom-4 left-4 right-4 bg-white/90 py-3 text-[10px] uppercase tracking-widest font-bold opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all rounded">
-                                    <a href="product-details.php?pid=<?php echo htmlentities($relatedRow['id']); ?>">Quick
-                                        View</a>
-                                </button>
-                                <a href="product-details.php?pid=<?php echo htmlentities($relatedRow['id']) ?>&&action=wishlist"
-                                    class="absolute top-4 right-4 text-stone-800 hover:text-primary transition-colors">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
-                                        </path>
-                                    </svg>
-                                </a>
-                            </div>
-                            <a href="product-details.php?pid=<?php echo htmlentities($relatedRow['id']); ?>">
-                                <h4
-                                    class="text-sm font-medium tracking-tight group-hover:text-primary transition-colors text-stone-900">
-                                    <?php echo htmlentities($relatedRow['productName']); ?>
-                                </h4>
-                            </a>
-                            <p class="text-stone-500 text-xs mt-1">Rs.
-                                <?php echo number_format($relatedRow['productPrice']); ?>.00
-                            </p>
-                        </div>
-                        <?php
-                    }
-                } else {
-                    ?>
-                    <p class="text-stone-500">No related products found in this category.</p>
-                <?php } ?>
-            </div>
-        </section>
-    </main>
+            }
+        } else {
+            ?>
+            <p class="text-stone-500">No related products found in this category.</p>
+        <?php } ?>
+    </div>
+</section>
+</main>
 </div>
 
 <!-- Video Modal (if product has video) -->

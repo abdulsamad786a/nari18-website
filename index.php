@@ -300,6 +300,19 @@
                 margin-bottom: 24px;
             }
 
+            .hero-scroll-indicator {
+                left: auto;
+                right: 20px;
+                transform: none;
+                align-items: flex-end;
+                /* Align text to right if needed, though column flex centers it */
+            }
+
+            .scroll-text {
+                display: none;
+            }
+
+
             .hero-description {
                 font-size: 16px;
                 margin-bottom: 32px;
@@ -510,10 +523,26 @@
                                             <?php } ?>
                                         </div>
                                         <?php if ($row['productAvailability'] == 'In Stock') { ?>
-                                            <a href="index.php?page=product&action=add&id=<?php echo $row['id']; ?>"
-                                                class="btn-cart-modern" title="Add to Cart">
-                                                <i class="icon anm anm-cart-l"></i>
-                                            </a>
+                                            <?php
+                                            // Check if item is in cart
+                                            $cart_id = $row['id'];
+                                            if (isset($_SESSION['cart'][$cart_id])) {
+                                                $curr_qty = $_SESSION['cart'][$cart_id]['quantity'];
+                                                ?>
+                                                <div class="qty-control-home" id="cart-control-<?php echo $cart_id; ?>">
+                                                    <div class="qty-btn-home"
+                                                        onclick="updateCartQty(<?php echo $cart_id; ?>, 'decrease', this)">-</div>
+                                                    <div class="qty-val-home"><?php echo $curr_qty; ?></div>
+                                                    <div class="qty-btn-home"
+                                                        onclick="updateCartQty(<?php echo $cart_id; ?>, 'increase', this)">+</div>
+                                                </div>
+                                            <?php } else { ?>
+                                                <a href="javascript:void(0);"
+                                                    onclick="addToCartHome(<?php echo $row['id']; ?>, this)" class="btn-cart-modern"
+                                                    title="Add to Cart">
+                                                    <i class="icon anm anm-cart-l"></i>
+                                                </a>
+                                            <?php } ?>
                                         <?php } else { ?>
                                             <a href="" style="cursor: not-allowed;" onclick="event.preventDefault();"
                                                 class="btn-cart-modern disabled" title="Out of Stock">
@@ -645,10 +674,28 @@
                                                         <?php } ?>
                                                     </div>
                                                     <?php if ($row['productAvailability'] == 'In Stock') { ?>
-                                                        <a href="index.php?page=product&action=add&id=<?php echo $row['id']; ?>"
-                                                            class="btn-cart-modern" title="Add to Cart">
-                                                            <i class="icon anm anm-cart-l"></i>
-                                                        </a>
+                                                        <?php
+                                                        // Check if item is in cart
+                                                        $cart_id = $row['id'];
+                                                        if (isset($_SESSION['cart'][$cart_id])) {
+                                                            $curr_qty = $_SESSION['cart'][$cart_id]['quantity'];
+                                                            ?>
+                                                            <div class="qty-control-home" id="cart-control-<?php echo $cart_id; ?>">
+                                                                <div class="qty-btn-home"
+                                                                    onclick="updateCartQty(<?php echo $cart_id; ?>, 'decrease', this)">
+                                                                    -</div>
+                                                                <div class="qty-val-home"><?php echo $curr_qty; ?></div>
+                                                                <div class="qty-btn-home"
+                                                                    onclick="updateCartQty(<?php echo $cart_id; ?>, 'increase', this)">
+                                                                    +</div>
+                                                            </div>
+                                                        <?php } else { ?>
+                                                            <a href="javascript:void(0);"
+                                                                onclick="addToCartHome(<?php echo $row['id']; ?>, this)"
+                                                                class="btn-cart-modern" title="Add to Cart">
+                                                                <i class="icon anm anm-cart-l"></i>
+                                                            </a>
+                                                        <?php } ?>
                                                     <?php } else { ?>
                                                         <a href="" style="cursor: not-allowed;"
                                                             onclick="event.preventDefault();" class="btn-cart-modern disabled"
@@ -737,10 +784,28 @@
                                                         <?php } ?>
                                                     </div>
                                                     <?php if ($rows['productAvailability'] == 'In Stock') { ?>
-                                                        <a href="index.php?page=product&action=add&id=<?php echo $rows['id']; ?>"
-                                                            class="btn-cart-modern" title="Add to Cart">
-                                                            <i class="icon anm anm-cart-l"></i>
-                                                        </a>
+                                                        <?php
+                                                        // Check if item is in cart
+                                                        $cart_id = $rows['id'];
+                                                        if (isset($_SESSION['cart'][$cart_id])) {
+                                                            $curr_qty = $_SESSION['cart'][$cart_id]['quantity'];
+                                                            ?>
+                                                            <div class="qty-control-home" id="cart-control-<?php echo $cart_id; ?>">
+                                                                <div class="qty-btn-home"
+                                                                    onclick="updateCartQty(<?php echo $cart_id; ?>, 'decrease', this)">
+                                                                    -</div>
+                                                                <div class="qty-val-home"><?php echo $curr_qty; ?></div>
+                                                                <div class="qty-btn-home"
+                                                                    onclick="updateCartQty(<?php echo $cart_id; ?>, 'increase', this)">
+                                                                    +</div>
+                                                            </div>
+                                                        <?php } else { ?>
+                                                            <a href="javascript:void(0);"
+                                                                onclick="addToCartHome(<?php echo $rows['id']; ?>, this)"
+                                                                class="btn-cart-modern" title="Add to Cart">
+                                                                <i class="icon anm anm-cart-l"></i>
+                                                            </a>
+                                                        <?php } ?>
                                                     <?php } else { ?>
                                                         <a href="" style="cursor: not-allowed;"
                                                             onclick="event.preventDefault();" class="btn-cart-modern disabled"
@@ -858,6 +923,10 @@
             </div>
         </div>
     </section>
+
+    <!-- Perfect Fit Section -->
+    <?php include('footer-stitching.php'); ?>
+    <!-- End Perfect Fit Section -->
 
     <!-- Modal for Video Popup -->
     <div id="videoModal" class="video-modal">
@@ -1833,8 +1902,9 @@
                         .catch(function (error) {
                             // If fetch fails, redirect to wishlist page
                             window.location.href = wishlistUrl;
-                        });
-                });
+                                    });
+            }
+        );
             }
         });
     </script>
@@ -3284,5 +3354,196 @@
         }
     }
 </style>
+
+
+<!-- Toast Notification -->
+<div id="home-cart-toast"
+    style="display: none; position: fixed; top: 20px; right: 20px; background: #28a745; color: white; padding: 15px 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 9999; font-size: 14px; animation: slideIn 0.3s ease-out;">
+    <svg style="width: 20px; height: 20px; vertical-align: middle; margin-right: 8px; display: inline-block;"
+        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>
+    <span id="home-toast-message">Product added to cart!</span>
+</div>
+
+<!-- Styles for Quantity Control -->
+<style>
+    .qty-control-home {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100px;
+        /* Wider than original button */
+        height: 40px;
+        border: 1px solid #800020;
+        background: #fff;
+        color: #800020;
+        border-radius: 8px;
+        font-family: sans-serif;
+        font-weight: bold;
+        font-size: 14px;
+        cursor: default;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .qty-btn-home {
+        width: 30px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        user-select: none;
+        font-size: 16px;
+    }
+
+    .qty-btn-home:hover {
+        background-color: #f9f9f9;
+    }
+
+    .qty-val-home {
+        flex: 1;
+        text-align: center;
+    }
+</style>
+
+<script>
+    function addToCartHome(productId, btnElement) {
+        event.preventDefault();
+
+        // Initial Add (Action defaults to 'add' in PHP if not specified, or we can send 'add')
+        fetch('ajax_add_to_cart.php?action=add&id=' + productId)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showHomeToast("Product added to cart!");
+                    updateCartUI(data.total_count);
+
+                    // Replace Button with Quantity Control
+                    const parent = btnElement.parentElement;
+                    const qtyControlHtml = createQtyControlHtml(productId, data.new_qty);
+
+                    // Create a temporary container
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = qtyControlHtml;
+                    const newControl = tempDiv.firstElementChild;
+
+                    parent.replaceChild(newControl, btnElement);
+                } else {
+                    showHomeToast("Error adding to cart.");
+                }
+            })
+            .catch(error => { console.error('Error:', error); showHomeToast("Connection error."); });
+    }
+
+    function updateCartQty(productId, action, controlElement) {
+        // controlElement is the button clicked (+ or -)
+        // We find the parent .qty-control-home
+        const container = controlElement.closest('.qty-control-home');
+        const valSpan = container.querySelector('.qty-val-home');
+
+        fetch('ajax_add_to_cart.php?action=' + action + '&id=' + productId)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    updateCartUI(data.total_count);
+
+                    if (data.new_qty > 0) {
+                        // Update number
+                        valSpan.textContent = data.new_qty;
+                    } else {
+                        // Quantity is 0, revert to Add to Cart button
+                        revertToAddButton(productId, container);
+                    }
+                } else {
+                    showHomeToast("Error updating cart.");
+                }
+            })
+            .catch(error => { console.error('Error:', error); });
+    }
+
+    function createQtyControlHtml(productId, qty) {
+        return `
+            <div class="qty-control-home" id="cart-control-${productId}">
+                <div class="qty-btn-home" onclick="updateCartQty(${productId}, 'decrease', this)">-</div>
+                <div class="qty-val-home">${qty}</div>
+                <div class="qty-btn-home" onclick="updateCartQty(${productId}, 'increase', this)">+</div>
+            </div>
+        `;
+    }
+
+    function revertToAddButton(productId, containerElement) {
+        const parent = containerElement.parentElement;
+
+        // Re-create the Add to Cart button HTML
+        // Note: We need to match existing style classes exactly
+        const btnHtml = `
+            <a href="javascript:void(0);" onclick="addToCartHome(${productId}, this)" class="btn-cart-modern" title="Add to Cart">
+                <i class="icon anm anm-cart-l"></i>
+            </a>
+        `;
+
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = btnHtml;
+        const newBtn = tempDiv.firstElementChild;
+
+        parent.replaceChild(newBtn, containerElement);
+    }
+
+    function updateCartUI(count) {
+         // Update Header Cart Badge
+         const badge = document.getElementById('cart-count-badge');
+         if(badge) badge.textContent = count;
+
+         // Refresh Minicart Content
+         const cartDrawerContent = document.getElementById('cart-drawer');
+         if (cartDrawerContent) {
+             fetch('fetch-minicart.php')
+                 .then(response => response.text())
+                 .then(html => {
+                     cartDrawerContent.innerHTML = html;
+                     
+                     // Optionally ensure it's open if this was an add action, 
+                     // but for +/- quantity updates we might just want to update content silently 
+                     // unless user wants it to pop open. 
+                     // The user request implies "it should auto updated there", 
+                     // which usually means the content inside the drawer updates.
+                 })
+                 .catch(err => console.error('Error updating minicart:', err));
+         }
+    }
+
+    function showHomeToast(message) {
+        var toast = document.getElementById('home-cart-toast');
+        var toastMessage = document.getElementById('home-toast-message');
+
+        toastMessage.textContent = message;
+        toast.style.display = 'block';
+
+        // Animation reset
+        toast.style.animation = 'none';
+        toast.offsetHeight; /* trigger reflow */
+        toast.style.animation = 'slideIn 0.3s ease-out';
+
+        setTimeout(function () {
+            toast.style.animation = 'slideOut 0.3s ease-out';
+            setTimeout(function () {
+                toast.style.display = 'none';
+            }, 300);
+        }, 2000);
+    }
+
+    // Add animation styles dynamically
+    if (!document.getElementById('toast-styles')) {
+        const style = document.createElement('style');
+        style.id = 'toast-styles';
+        style.textContent = `
+            @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+            @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
+        `;
+        document.head.appendChild(style);
+    }
+</script>
 
 <?php include 'footer.php' ?>

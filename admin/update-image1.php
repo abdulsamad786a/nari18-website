@@ -7,7 +7,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 	$pid = intval($_GET['id']);// product id
 	if (isset($_POST['submit'])) {
 		$productname = $_POST['productName'];
-		$productimage1 = $_FILES["productimage1"]["name"];
+		$productimage1 = strtolower($_FILES["productimage1"]["name"]);
 		//$dir="productimages";
 //unlink($dir.'/'.$pimage);
 
@@ -81,7 +81,8 @@ if (strlen($_SESSION['alogin']) == 0) {
 										<div class="alert alert-success">
 											<button type="button" class="close" data-dismiss="alert">×</button>
 											<strong>Well done!</strong>
-											<?php echo htmlentities($_SESSION['msg']); ?>		<?php echo htmlentities($_SESSION['msg'] = ""); ?>
+											<?php echo htmlentities($_SESSION['msg']); ?>
+											<?php echo htmlentities($_SESSION['msg'] = ""); ?>
 										</div>
 									<?php } ?>
 
